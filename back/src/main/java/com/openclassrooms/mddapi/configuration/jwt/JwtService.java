@@ -17,6 +17,7 @@ import java.security.spec.KeySpec;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -46,6 +47,7 @@ public class JwtService {
         this.secretKey = getKeyFromPassword(appJwtSecret, appJwtSalt);
         this.expireDuration = Duration.of(Long.parseLong(appJwtExpiration), ChronoUnit.HOURS);
         this.issuer = appJwtIssuer;
+        // log.info("SecretKey (base64) : {}", convertKeyToBase64(this.secretKey));
     }
 
     /**
@@ -141,5 +143,9 @@ public class JwtService {
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 1000, 512);
 
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "HmacSHA512");
+    }
+
+    private static String convertKeyToBase64(SecretKey key) {
+        return Base64.getEncoder().encodeToString(key.getEncoded());
     }
 }
