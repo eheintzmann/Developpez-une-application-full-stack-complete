@@ -136,7 +136,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String[] jwtSubject = subject.split(",");
         return User.builder()
-                .id(Integer.parseInt(jwtSubject[0]))
+                .id(Long.parseLong(jwtSubject[0]))
                 .email(jwtSubject[1])
                 .build();
     }

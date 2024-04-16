@@ -5,7 +5,7 @@ import com.openclassrooms.mddapi.exception.NotExistingUserException;
 import com.openclassrooms.mddapi.exception.UserAlreadyExitsException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.payload.request.auth.LoginRequest;
-import com.openclassrooms.mddapi.model.payload.response.TokenResponse;
+import com.openclassrooms.mddapi.model.payload.response.auth.TokenResponse;
 import com.openclassrooms.mddapi.model.payload.request.auth.RegisterRequest;
 import com.openclassrooms.mddapi.model.payload.response.auth.AuthMeResponse;
 import com.openclassrooms.mddapi.service.IAuthService;

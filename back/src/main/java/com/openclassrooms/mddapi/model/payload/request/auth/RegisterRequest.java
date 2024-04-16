@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * RegisterRequest DTO
+ * RegisterRequest
  */
 @Builder
 @Data

@@ -1,8 +1,9 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.payload.response.EmptyResponse;
+import com.openclassrooms.mddapi.model.payload.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,9 +23,11 @@ public class GlobalControllerExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public EmptyResponse handleValidationExceptions() {
+    public ResponseEntity<Response> handleValidationExceptions() {
         log.error("Error 400 - Bad Request");
-        return new EmptyResponse();
+        return ResponseEntity
+                .badRequest()
+                .build();
     }
 
 }

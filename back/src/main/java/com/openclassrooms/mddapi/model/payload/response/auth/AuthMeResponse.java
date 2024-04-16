@@ -11,14 +11,14 @@ import lombok.*;
 import java.time.Instant;
 
 /**
- * AuthMeResponse DTO
+ * AuthMeResponse
  */
 @Builder
 @Data
 public class AuthMeResponse implements Response {
 
     @Positive
-    private int id;
+    private Long id;
 
     @NotBlank
     private String name;

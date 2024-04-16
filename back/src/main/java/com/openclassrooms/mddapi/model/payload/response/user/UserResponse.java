@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.Instant;
 
 /**
- * UserResponse DTO
+ * UserResponse
  */
 @Data
 @Builder

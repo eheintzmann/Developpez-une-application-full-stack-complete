@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.mddapi.model.Topic;
+import com.openclassrooms.mddapi.model.entity.Topic;
 import com.openclassrooms.mddapi.service.ITopicService;
 
 @RestController
 @RequestMapping("/api/topics")
 public class TopicController {
 	
-	private ITopicService topicService;
+	private final ITopicService topicService;
 	
 	public TopicController(ITopicService topicService) {
 		this.topicService = topicService;		

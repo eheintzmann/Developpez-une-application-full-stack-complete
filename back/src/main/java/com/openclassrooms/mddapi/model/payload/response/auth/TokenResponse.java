@@ -1,11 +1,12 @@
-package com.openclassrooms.mddapi.model.payload.response;
+package com.openclassrooms.mddapi.model.payload.response.auth;
 
+import com.openclassrooms.mddapi.model.payload.response.Response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * TokenResponse DTO
+ * TokenResponse
  */
 @Data
 @AllArgsConstructor
