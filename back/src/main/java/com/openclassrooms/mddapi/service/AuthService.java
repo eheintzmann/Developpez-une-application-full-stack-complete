@@ -66,6 +66,7 @@ public class AuthService implements IAuthService {
      * @param password user password
      * @return String token
      */
+    @Override
     public String registerUser(String email, String name, String password) {
 
         // If user exists, stop registration, do not return a token
@@ -106,6 +107,7 @@ public class AuthService implements IAuthService {
      * @param password user password
      * @return String token
      */
+    @Override
     public String loginUser(String email, String password) {
 
         Authentication authentication;
@@ -135,6 +137,7 @@ public class AuthService implements IAuthService {
      * @param email user email
      * @return Optional User
      */
+    @Override
     public UserDTO authUser(String email) {
 
         Optional<User> optUser;
