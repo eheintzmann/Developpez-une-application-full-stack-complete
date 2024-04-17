@@ -32,6 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     /**
      * Constructor for JwtFilter class
+     *
      * @param jwtService JwtService
      */
     public JwtFilter(JwtService jwtService) {
@@ -90,7 +91,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (matcher.find()) {
             return true;
         }
-        log.error("Invalid Authorization header : " + "\"" + header + "\"");
+        log.error("Invalid Authorization header : \"{}\"", header);
         return false;
     }
 

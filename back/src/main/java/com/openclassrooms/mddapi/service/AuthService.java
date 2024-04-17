@@ -150,7 +150,7 @@ public class AuthService implements IAuthService {
         }
         return optUser
                 .map(user -> conversionService.convert(user, UserDTO.class))
-                .orElseThrow(() -> new NotExistingUserException(email + " not found"));
+                .orElseThrow(() -> new NotExistingUserException("User " + email + " not found"));
     }
 
 }
