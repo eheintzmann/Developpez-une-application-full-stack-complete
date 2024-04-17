@@ -3,10 +3,12 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
 import com.openclassrooms.mddapi.exception.*;
+import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
@@ -23,6 +25,7 @@ import java.util.*;
 /**
  * Authentification service
  */
+@Slf4j
 @Data
 @Service
 public class AuthService implements IAuthService {
@@ -119,7 +122,12 @@ public class AuthService implements IAuthService {
             throw new CannotAuthenticateException(ex.getMessage());
         }
 
-        User user = (User) authentication.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        User user = User.builder()
+                .id(userPrincipal.getId())
+                .email(userPrincipal.getUsername())
+                .build();
 
         // Return token
         String token;

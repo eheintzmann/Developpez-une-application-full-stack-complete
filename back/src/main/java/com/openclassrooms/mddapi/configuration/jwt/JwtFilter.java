@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
 import com.openclassrooms.mddapi.exception.InvalidJWTSubjectException;
+import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import io.micrometer.common.lang.NonNullApi;
@@ -168,10 +169,7 @@ public class JwtFilter extends OncePerRequestFilter {
             throw new InvalidJWTSubjectException("Not matching ID and email");
         }
 
-        return User.builder()
-                .id(Long.parseLong(jwtSubject[0]))
-                .email(jwtSubject[1])
-                .build();
+        return new UserPrincipal(user);
     }
 
 }
