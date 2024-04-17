@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
+import com.openclassrooms.mddapi.exception.InvalidJWTSubjectException;
 import com.openclassrooms.mddapi.model.entity.User;
+import com.openclassrooms.mddapi.repository.UserRepository;
 import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,12 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,14 +33,19 @@ import java.util.regex.Pattern;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for JwtFilter class
      *
      * @param jwtService JwtService
      */
-    public JwtFilter(JwtService jwtService) {
+    public JwtFilter(
+            JwtService jwtService,
+            UserRepository userRepository
+    ) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -70,8 +79,14 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+
+
         // If the token valid, update the authentication context with the user details ID and email
-        setAuthenticationContext(token, request);
+        try {
+            setAuthenticationContext(token, request);
+        } catch (InvalidJWTSubjectException | UsernameNotFoundException ex) {
+            log.error(ex.getMessage());
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -136,6 +151,23 @@ public class JwtFilter extends OncePerRequestFilter {
         String subject = jwtService.getSubject(token);
 
         String[] jwtSubject = subject.split(",");
+
+        User user = userRepository.findByEmail(jwtSubject[1])
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("User " + jwtSubject[1] + " not found"));
+
+
+        long id;
+        try {
+            id = Long.parseLong(jwtSubject[0]);
+        } catch (Exception ex) {
+            throw new InvalidJWTSubjectException("Invalid JWT subject");
+        }
+
+        if(!Objects.equals(user.getId(), id)) {
+            throw new InvalidJWTSubjectException("Not matching ID and email");
+        }
+
         return User.builder()
                 .id(Long.parseLong(jwtSubject[0]))
                 .email(jwtSubject[1])
