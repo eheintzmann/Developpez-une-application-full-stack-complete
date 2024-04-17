@@ -1,14 +1,13 @@
 package com.openclassrooms.mddapi.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,10 +21,31 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="post_id")
 	private Long id;
-	
+
+	@Column(nullable = false, unique = true)
+	private String title;
+
+	@Column(columnDefinition = "TEXT")
+	private String content;
+
+	@OneToMany(
+			mappedBy = "post",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<Comment> comments = new ArrayList<>();
+
 	@ManyToOne
 	@JoinColumn(name = "topic_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private Topic topic;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private User author;
 
 	@CreationTimestamp
 	@Column(name = "created_at")
@@ -34,7 +54,5 @@ public class Post {
 	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private Instant updatedAt;
-	
-	// TODO : to finish...
-	
+
 }

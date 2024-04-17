@@ -60,7 +60,7 @@ public class AuthController {
         try {
             token = this.authService.registerUser(
                     request.getEmail(),
-                    request.getName(),
+                    request.getUsername(),
                     request.getPassword()
             );
         } catch (UserAlreadyExitsException ex) {

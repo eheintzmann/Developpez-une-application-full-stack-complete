@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,8 +25,23 @@ public class Topic {
 	@Column(name = "topic_id")
 	private Long id;
 	
-	@Column(nullable = false)
-	private String name;
+	@Column(nullable = false, unique = true)
+	private String title;
+
+	@Column(columnDefinition = "TEXT")
+	private String description;
+
+	@OneToMany(
+			mappedBy = "topic",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<Post> posts = new ArrayList<>();
+
+	@ManyToMany(
+			mappedBy = "subscriptions"
+	)
+	private List<User> subscribers = new ArrayList<>();
 
 	@CreationTimestamp
 	@Column(name = "created_at")

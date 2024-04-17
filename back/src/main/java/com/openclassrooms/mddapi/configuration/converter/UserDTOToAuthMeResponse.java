@@ -20,7 +20,7 @@ public class UserDTOToAuthMeResponse implements Converter<UserDTO, AuthMeRespons
 
         return AuthMeResponse.builder()
                 .id(userDTO.getId())
-                .name(userDTO.getName())
+                .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .createdAt(userDTO.getCreatedAt())
                 .updateAt(userDTO.getUpdatedAt())

@@ -78,7 +78,7 @@ public class AuthService implements IAuthService {
 
         // Create new user
         User user = User.builder()
-                .name(name)
+                .username(name)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .build();

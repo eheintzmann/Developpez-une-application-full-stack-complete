@@ -21,7 +21,7 @@ public class AuthMeResponse implements Response {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String username;
 
     @Email
     private String email;

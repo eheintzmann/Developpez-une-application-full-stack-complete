@@ -1,10 +1,7 @@
 package com.openclassrooms.mddapi.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,6 +20,21 @@ public class Comment {
 	@Column(name = "comment_id")
 	private Long id;
 
+	@Column(columnDefinition = "TEXT")
+	private String content;
+
+	@ManyToOne
+	@JoinColumn(name = "post_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private Post post;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private User author;
+
 	@CreationTimestamp
 	@Column(name = "created_at")
 	private Instant createdAt;
@@ -30,7 +42,5 @@ public class Comment {
 	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private Instant updatedAt;
-
-	// TODO : to finish...
 
 }

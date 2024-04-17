@@ -11,8 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * User entity
@@ -33,9 +35,39 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
 
     private String password;
+
+    @OneToMany(
+            mappedBy = "author",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "author",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Comment> comments = new ArrayList<>();
+
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "user_topic",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
+    private List<Topic> subscriptions = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")

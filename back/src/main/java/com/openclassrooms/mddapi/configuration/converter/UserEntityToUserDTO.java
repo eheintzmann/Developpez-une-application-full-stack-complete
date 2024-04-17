@@ -20,7 +20,7 @@ public class UserEntityToUserDTO implements Converter<User, UserDTO> {
 
         return UserDTO.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
