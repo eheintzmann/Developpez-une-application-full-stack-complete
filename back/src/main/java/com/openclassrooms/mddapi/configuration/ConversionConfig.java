@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.configuration;
 
+import com.openclassrooms.mddapi.configuration.converter.TopicEntityToTopicDTO;
 import com.openclassrooms.mddapi.configuration.converter.UserDTOToAuthMeResponse;
 import com.openclassrooms.mddapi.configuration.converter.UserEntityToUserDTO;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class ConversionConfig {
 
         converters.add(new UserEntityToUserDTO());
         converters.add(new UserDTOToAuthMeResponse());
+        converters.add(new TopicEntityToTopicDTO());
 
         conversionService.setConverters(converters);
         return conversionService;

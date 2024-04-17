@@ -5,24 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 /**
- * User DTO
+ * Topic DTO
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class TopicDTO {
 
     private Long id;
 
-    private String email;
+    private String title;
 
-    private String username;
+    private String description;
 
-    private Instant createdAt;
+    private boolean isSubscribed;
 
-    private Instant updatedAt;
 }

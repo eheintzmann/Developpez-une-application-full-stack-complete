@@ -127,13 +127,6 @@ public class AuthController {
     )
     public ResponseEntity<AuthMeResponse> autMe(Principal principal) {
 
-        if (principal == null) {
-            log.error("Principal is null.");
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
-
         UserDTO userDTO;
         try {
             userDTO = authService.authUser(principal.getName());

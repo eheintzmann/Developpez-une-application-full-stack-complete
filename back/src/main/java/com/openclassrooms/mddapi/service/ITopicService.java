@@ -1,11 +1,12 @@
 package com.openclassrooms.mddapi.service;
 
+import java.security.Principal;
 import java.util.List;
 
-import com.openclassrooms.mddapi.model.entity.Topic;
+import com.openclassrooms.mddapi.model.dto.TopicDTO;
 
 public interface ITopicService {
 
-	List<Topic> getTopics();
+	List<TopicDTO> getTopics(Principal principal);
 
 }
