@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.model.payload.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,51 @@ public class GlobalControllerExceptionHandler {
      *
      * @return Response
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = {
+            MethodArgumentNotValidException.class,
+            UserAlreadyExitsException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Response> handleValidationExceptions() {
-        log.error("Error 400 - Bad Request");
+    public ResponseEntity<Response> handleBadRequestExceptions(Exception ex) {
+        log.error("Error 400 (Bad Request) - {}", ex.getMessage());
         return ResponseEntity
                 .badRequest()
+                .build();
+    }
+
+    /**
+     * handler for error 401
+     *
+     * @return Response
+     */
+    @ExceptionHandler(value = {
+            NotExistingUserException.class,
+            InvalidJWTSubjectException.class,
+            CannotAuthenticateException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response> handleUnauthorizedExceptions(Exception ex) {
+        log.error("Error 401 (Unauthorized) - {} ", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .build();
+    }
+
+    /**
+     * handler for error 500
+     * @return Response
+     */
+    @ExceptionHandler(value = {
+            CannotReadException.class,
+            CannotSaveException.class,
+            CannotGenerateTokenException.class,
+            Exception.class
+    })
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<Response> handleInternalErrorExceptions(Exception ex) {
+        log.error("Error 500 (Internal Server Error) - {}", ex.getMessage());
+        return ResponseEntity
+                .internalServerError()
                 .build();
     }
 

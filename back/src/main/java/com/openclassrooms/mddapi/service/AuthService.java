@@ -20,8 +20,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 /**
  * Authentification service
  */
@@ -41,10 +39,10 @@ public class AuthService implements IAuthService {
     /**
      * Constructor for AuthentificationService class
      *
-     * @param authManager AuthenticationManager
-     * @param jwtService JwtService
+     * @param authManager     AuthenticationManager
+     * @param jwtService      JwtService
      * @param passwordEncoder PasswordEncoder
-     * @param userRepository UserRepository
+     * @param userRepository  UserRepository
      */
     @Autowired
     AuthService(
@@ -64,8 +62,8 @@ public class AuthService implements IAuthService {
     /**
      * Register a new user
      *
-     * @param email user email
-     * @param name username
+     * @param email    user email
+     * @param name     username
      * @param password user password
      * @return String token
      */
@@ -100,13 +98,13 @@ public class AuthService implements IAuthService {
         } catch (Exception ex) {
             throw new CannotGenerateTokenException(ex.getMessage());
         }
-         return token;
+        return token;
     }
 
     /**
      * Log in an existing user
      *
-     * @param email user email
+     * @param email    user email
      * @param password user password
      * @return String token
      */
@@ -148,15 +146,7 @@ public class AuthService implements IAuthService {
     @Override
     public UserDTO authUser(String email) {
 
-        Optional<User> optUser;
-        try {
-            optUser = this
-                    .userRepository
-                    .findByEmail(email);
-        } catch(Exception ex) {
-            throw new CannotReadException(ex.getMessage());
-        }
-        return optUser
+        return this.userRepository.findByEmail(email)
                 .map(user -> conversionService.convert(user, UserDTO.class))
                 .orElseThrow(() -> new NotExistingUserException("User " + email + " not found"));
     }

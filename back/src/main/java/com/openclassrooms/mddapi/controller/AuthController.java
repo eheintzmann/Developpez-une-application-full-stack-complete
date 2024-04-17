@@ -1,8 +1,5 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.exception.CannotAuthenticateException;
-import com.openclassrooms.mddapi.exception.NotExistingUserException;
-import com.openclassrooms.mddapi.exception.UserAlreadyExitsException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.payload.request.auth.LoginRequest;
 import com.openclassrooms.mddapi.model.payload.response.auth.TokenResponse;
@@ -56,24 +53,11 @@ public class AuthController {
     )
     public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterRequest request) {
 
-        String token;
-        try {
-            token = this.authService.registerUser(
-                    request.getEmail(),
-                    request.getUsername(),
-                    request.getPassword()
-            );
-        } catch (UserAlreadyExitsException ex) {
-            log.error("Email {} already used", request.getEmail());
-            return ResponseEntity
-                    .badRequest()
-                    .build();
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
+        String token = this.authService.registerUser(
+                request.getEmail(),
+                request.getUsername(),
+                request.getPassword()
+        );
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -94,25 +78,15 @@ public class AuthController {
 
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
 
-        String token;
-        try {
-            token = this.authService.loginUser(
-                    request.getEmail(),
-                    request.getPassword()
-            );
-        } catch (CannotAuthenticateException ex) {
-            log.info("Cannot authenticate user {}", request.getEmail());
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .build();
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
+        String token = this.authService
+                .loginUser(
+                        request.getEmail(),
+                        request.getPassword()
+                );
 
-        return ResponseEntity.ok(new TokenResponse(token));
+        return ResponseEntity.ok(
+                new TokenResponse(token)
+        );
     }
 
     /**
@@ -127,31 +101,9 @@ public class AuthController {
     )
     public ResponseEntity<AuthMeResponse> autMe(Principal principal) {
 
-        UserDTO userDTO;
-        try {
-            userDTO = authService.authUser(principal.getName());
-        } catch (NotExistingUserException ex) {
-            log.info("User {} does not exist.", principal.getName());
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        } catch (Exception ex) {
-            log.error("Internal error.");
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
+        UserDTO userDTO = authService.authUser(principal.getName());
 
-        AuthMeResponse authMeResponse;
-        try {
-            authMeResponse = conversionService.convert(userDTO, AuthMeResponse.class);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
-        }
-        return ResponseEntity.ok(authMeResponse);
+        return ResponseEntity.ok(conversionService.convert(userDTO, AuthMeResponse.class));
     }
 
 }
