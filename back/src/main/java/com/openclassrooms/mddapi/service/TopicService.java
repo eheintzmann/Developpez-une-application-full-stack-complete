@@ -1,8 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.openclassrooms.mddapi.exception.NotExistingUserException;
 import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
@@ -31,22 +30,22 @@ public class TopicService implements ITopicService {
 	}
 
 	@Override
-	public List<TopicDTO> getTopics(Principal principal) {
+	public SortedSet<TopicDTO> getTopics(Principal principal) {
 
 		User user = userRepository.findByEmail(principal.getName())
 				.orElseThrow(
 						() -> new NotExistingUserException("Cannot find user : " + principal.getName())
 				);
 
-		List<TopicDTO> topicDTOs = new ArrayList<>();
+		SortedSet<TopicDTO> topicsDTO = new TreeSet<>(Comparator.comparing(TopicDTO::getTitle));
 		for (Topic topic: topicRepository.findAll()) {
 			TopicDTO topicDTO = conversionService.convert(topic, TopicDTO.class);
 			if (topicDTO != null && topic.getSubscribers().contains(user)) {
 				topicDTO.setSubscribed(true);
 			}
-			topicDTOs.add(topicDTO);
+			topicsDTO.add(topicDTO);
 		}
-		return topicDTOs;
+		return topicsDTO;
 	}
 	
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Profile Post DTO
+ * Subscription DTO
  */
 @Data
 @AllArgsConstructor

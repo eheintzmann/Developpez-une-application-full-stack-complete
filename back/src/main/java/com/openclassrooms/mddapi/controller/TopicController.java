@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.SortedSet;
 
 import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class TopicController {
 	}
 
 	@GetMapping
-	public List<TopicDTO> getTopics(Principal principal) {
+	public SortedSet<TopicDTO> getTopics(Principal principal) {
 		return topicService.getTopics(principal);
 	}
 

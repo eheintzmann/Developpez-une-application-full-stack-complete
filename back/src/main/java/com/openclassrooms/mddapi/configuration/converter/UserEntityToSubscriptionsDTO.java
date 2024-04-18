@@ -6,7 +6,8 @@ import com.openclassrooms.mddapi.model.entity.Topic;
 import com.openclassrooms.mddapi.model.entity.User;
 import org.springframework.core.convert.converter.Converter;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 /**
  * Convert User to Profile DTO
@@ -23,12 +24,12 @@ public class UserEntityToSubscriptionsDTO implements Converter<User, Subscriptio
     public SubscriptionsDTO convert(User user) {
 
         SubscriptionsDTO subscriptionsDTO = SubscriptionsDTO.builder()
-                .feed(new ArrayList<>())
+                .subscriptions(new TreeSet<>(Comparator.comparing(SubscriptionDTO::getTitle)))
                 .build();
 
         for (Topic subscription : user.getSubscriptions()) {
             if (subscriptionsDTO != null) {
-                subscriptionsDTO.getFeed().add(
+                subscriptionsDTO.getSubscriptions().add(
                         SubscriptionDTO.builder()
                                 .id(subscription.getId())
                                 .title(subscription.getTitle())

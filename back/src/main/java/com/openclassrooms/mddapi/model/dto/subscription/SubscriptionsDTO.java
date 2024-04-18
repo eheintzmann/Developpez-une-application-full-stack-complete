@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
- * User Feed DTO
+ * Subscriptions DTO
  */
 @Data
 @AllArgsConstructor
@@ -16,5 +18,5 @@ import java.util.List;
 @Builder
 public class SubscriptionsDTO {
 
-        private List<SubscriptionDTO> feed;
+        private SortedSet<SubscriptionDTO> subscriptions = new TreeSet<>(Comparator.comparing(SubscriptionDTO::getTitle));
 }
