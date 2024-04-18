@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 /**
  * Global Controller for Exception handling
  */
@@ -24,7 +26,8 @@ public class GlobalControllerExceptionHandler {
      */
     @ExceptionHandler(value = {
             MethodArgumentNotValidException.class,
-            UserAlreadyExitsException.class
+            UserAlreadyExitsException.class,
+            SQLIntegrityConstraintViolationException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Response> handleBadRequestExceptions(Exception ex) {

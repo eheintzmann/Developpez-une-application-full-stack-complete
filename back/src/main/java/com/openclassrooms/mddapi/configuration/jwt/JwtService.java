@@ -59,7 +59,7 @@ public class JwtService {
     public String generateAccessToken(User user) {
         return Jwts.builder()
                 // Subject is combination of the user’s ID and email, separated by a comma
-                .subject(String.format("%s,%s", user.getId(), user.getEmail()))
+                .subject(String.format("%s", user.getId()))
                 // Issuer name
                 .issuer(issuer)
                 // Token is issued at the current date and time

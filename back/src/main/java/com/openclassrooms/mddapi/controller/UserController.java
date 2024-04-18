@@ -1,10 +1,12 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.dto.UserDTO;
-import com.openclassrooms.mddapi.model.payload.request.user.UserRequest;
+import com.openclassrooms.mddapi.model.payload.request.user.ProfileRequest;
+import com.openclassrooms.mddapi.model.payload.response.user.ProfileResponse;
 import com.openclassrooms.mddapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +19,30 @@ public class UserController {
 
 
 	private final UserService userService;
+	private final ConversionService conversionService;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, @Qualifier("conversionService") ConversionService conversionService) {
 		this.userService = userService;
+		this.conversionService = conversionService;
 	}
 
 	@GetMapping
-	public ResponseEntity<UserDTO> getUser(Principal principal) {
-		return ResponseEntity.ok(userService.getProfile(principal));
+	public ResponseEntity<ProfileResponse> getUser(Principal principal) {
+		return ResponseEntity.ok(
+				conversionService.convert(
+						userService.getProfile(principal),
+						ProfileResponse.class
+				)
+		);
 	}
 
 	@PutMapping
-	public ResponseEntity<UserDTO> putUser(Principal principal, @Valid @RequestBody UserRequest userRequest) {
+	public ResponseEntity<ProfileResponse> putUser(Principal principal, @Valid @RequestBody ProfileRequest profileRequest) {
 		return ResponseEntity.ok(
-				this.userService.updateProfile(principal, userRequest.getUsername(), userRequest.getEmail())
+				conversionService.convert(
+						userService.updateProfile(principal, profileRequest.getUsername(), profileRequest.getEmail()),
+						ProfileResponse.class
+				)
 		);
 	}
 	

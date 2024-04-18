@@ -151,23 +151,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String subject = jwtService.getSubject(token);
 
-        String[] jwtSubject = subject.split(",");
-
-        User user = userRepository.findByEmail(jwtSubject[1])
-                .orElseThrow(
-                        () -> new UsernameNotFoundException("User " + jwtSubject[1] + " not found"));
-
-
         long id;
+
         try {
-            id = Long.parseLong(jwtSubject[0]);
+            id = Long.parseLong(subject);
         } catch (Exception ex) {
             throw new InvalidJWTSubjectException("Invalid JWT subject");
         }
 
-        if(!Objects.equals(user.getId(), id)) {
-            throw new InvalidJWTSubjectException("Not matching ID and email");
-        }
+        User user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("User " + subject + " not found"));
 
         return new UserPrincipal(user);
     }

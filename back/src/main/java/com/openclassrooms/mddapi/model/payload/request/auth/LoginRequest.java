@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * LoginRequest
+ * Login Request
  */
 @Builder
 @Data

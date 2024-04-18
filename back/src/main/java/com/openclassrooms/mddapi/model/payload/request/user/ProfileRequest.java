@@ -6,11 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * User Request
+ * Profile Request
  */
 @Builder
 @Data
-public class UserRequest {
+public class ProfileRequest {
 
     @Email
     @NotBlank
