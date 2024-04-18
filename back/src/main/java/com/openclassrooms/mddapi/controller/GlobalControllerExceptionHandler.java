@@ -60,7 +60,6 @@ public class GlobalControllerExceptionHandler {
             CannotReadException.class,
             CannotSaveException.class,
             CannotGenerateTokenException.class,
-            Exception.class
     })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Response> handleInternalErrorExceptions(Exception ex) {

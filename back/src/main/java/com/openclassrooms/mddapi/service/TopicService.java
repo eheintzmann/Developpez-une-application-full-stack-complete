@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.openclassrooms.mddapi.exception.NotExistingUserException;
-import com.openclassrooms.mddapi.model.dto.TopicDTO;
+import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.core.convert.ConversionService;

@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.controller;
 import java.security.Principal;
 import java.util.List;
 
-import com.openclassrooms.mddapi.model.dto.TopicDTO;
+import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +26,5 @@ public class TopicController {
 	public List<TopicDTO> getTopics(Principal principal) {
 		return topicService.getTopics(principal);
 	}
-	
-	
+
 }

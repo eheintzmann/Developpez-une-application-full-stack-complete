@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.configuration.converter;
 
-import com.openclassrooms.mddapi.model.dto.TopicDTO;
+import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
 import com.openclassrooms.mddapi.model.entity.Topic;
 import org.springframework.core.convert.converter.Converter;
 
