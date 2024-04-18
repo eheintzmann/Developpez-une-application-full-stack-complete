@@ -41,9 +41,7 @@ public class SubscriptionService implements ISubscriptionService {
 	public SubscriptionsDTO subscribeTo(Long topicId, Principal principal) {
 
 		User user = this.getUserEntity(principal);
-
-		Topic topic = topicRepository.findById(topicId)
-				.orElseThrow(() -> new NotExistingTopicException("Cannot find topic " + topicId));
+		Topic topic = this.getTopicEntity(topicId);
 
 		if (!user.getSubscriptions().contains(topic)) {
 			user.getSubscriptions().add(topic);
@@ -56,10 +54,8 @@ public class SubscriptionService implements ISubscriptionService {
 	@Override
 	public SubscriptionsDTO deleteSubscription(Long topicId, Principal principal) {
 
-		 User user = this.getUserEntity(principal);
-
-		Topic topic = topicRepository.findById(topicId)
-				.orElseThrow(() -> new NotExistingTopicException("Cannot find topic " + topicId));
+		User user = this.getUserEntity(principal);
+		Topic topic = this.getTopicEntity(topicId);
 
 		user.getSubscriptions().remove(topic);
 
@@ -72,6 +68,12 @@ public class SubscriptionService implements ISubscriptionService {
 		return userRepository
 				.findByEmail(principal.getName())
 				.orElseThrow(() -> new NotExistingUserException("Cannot find user " + principal.getName()));
+	}
+
+	private Topic getTopicEntity(Long topicId) {
+		return topicRepository
+				.findById(topicId)
+				.orElseThrow(() -> new NotExistingTopicException("Cannot find topic " + topicId));
 	}
 
 }

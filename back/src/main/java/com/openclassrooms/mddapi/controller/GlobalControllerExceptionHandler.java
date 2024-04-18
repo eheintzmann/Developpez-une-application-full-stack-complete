@@ -27,7 +27,8 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(value = {
             MethodArgumentNotValidException.class,
             UserAlreadyExitsException.class,
-            SQLIntegrityConstraintViolationException.class
+            SQLIntegrityConstraintViolationException.class,
+            NotExistingTopicException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Response> handleBadRequestExceptions(Exception ex) {
