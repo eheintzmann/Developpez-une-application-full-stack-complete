@@ -1,12 +1,9 @@
 package com.openclassrooms.mddapi.exception;
 
-/**
- * Storage error
- */
 public class CannotReadException extends RuntimeException {
 
     /**
-     * Constructor for StorageException class
+     * Constructor for CannotReadException class
      *
      * @param message String
      */
@@ -15,7 +12,7 @@ public class CannotReadException extends RuntimeException {
     }
 
     /**
-     * Constructor for StorageException class
+     * Constructor for CannotReadException class
      *
      * @param message String
      * @param cause Throwable

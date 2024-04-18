@@ -29,7 +29,7 @@ public class ConversionConfig {
         converters.add(new UserEntityToUserDTO());
         converters.add(new UserDTOToAuthMeResponse());
         converters.add(new TopicEntityToTopicDTO());
-        converters.add(new UserEntityToFeedDTO());
+        converters.add(new UserEntityToSubscriptionsDTO());
         converters.add(new UserDTOToProfileResponse());
 
         conversionService.setConverters(converters);

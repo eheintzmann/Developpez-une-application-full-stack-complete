@@ -1,4 +1,4 @@
-package com.openclassrooms.mddapi.model.dto.feed;
+package com.openclassrooms.mddapi.model.dto.subscription;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FeedDTO {
+public class SubscriptionsDTO {
 
         private List<SubscriptionDTO> feed;
 }

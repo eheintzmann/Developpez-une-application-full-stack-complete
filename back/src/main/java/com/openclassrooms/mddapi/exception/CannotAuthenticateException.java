@@ -1,12 +1,10 @@
 package com.openclassrooms.mddapi.exception;
 
-/**
- * Storage error
- */
+
 public class CannotAuthenticateException extends RuntimeException {
 
     /**
-     * Constructor for StorageException class
+     * Constructor for CannotAuthenticateException class
      *
      * @param message String
      */
@@ -15,7 +13,7 @@ public class CannotAuthenticateException extends RuntimeException {
     }
 
     /**
-     * Constructor for StorageException class
+     * Constructor for CannotAuthenticateException class
      *
      * @param message String
      * @param cause Throwable

@@ -1,4 +1,4 @@
-package com.openclassrooms.mddapi.model.dto.feed;
+package com.openclassrooms.mddapi.model.dto.subscription;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,12 +1,9 @@
 package com.openclassrooms.mddapi.exception;
 
-/**
- * Storage error
- */
 public class NotExistingUserException extends RuntimeException {
 
     /**
-     * Constructor for StorageException class
+     * Constructor for NotExistingUserException class
      *
      * @param message String
      */
@@ -15,7 +12,7 @@ public class NotExistingUserException extends RuntimeException {
     }
 
     /**
-     * Constructor for StorageException class
+     * Constructor for NotExistingUserException class
      *
      * @param message String
      * @param cause Throwable
