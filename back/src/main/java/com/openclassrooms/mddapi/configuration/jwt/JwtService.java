@@ -1,7 +1,11 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
+import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
+import com.openclassrooms.mddapi.exception.token.TokenLectureException;
+import com.openclassrooms.mddapi.exception.token.TokenValidationException;
 import com.openclassrooms.mddapi.model.entity.User;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,19 +61,25 @@ public class JwtService {
      * @return Access Token
      */
     public String generateAccessToken(User user) {
-        return Jwts.builder()
-                // Subject is combination of the user’s ID and email, separated by a comma
-                .subject(String.format("%s", user.getId()))
-                // Issuer name
-                .issuer(issuer)
-                // Token is issued at the current date and time
-                .issuedAt(Date.from(Instant.now()))
-                // Token expiration
-                .expiration(Date.from(Instant.now().plus(expireDuration)))
-                // Token is signed using a secret key. Signature algorithm is HMAC using SHA-512.
-                .signWith(secretKey, Jwts.SIG.HS512)
-                // Compact token into its final String form.
-                .compact();
+        try {
+            return Jwts.builder()
+                    // Subject is combination of the user’s ID and email, separated by a comma
+                    .subject(String.format("%s", user.getId()))
+                    // Issuer name
+                    .issuer(issuer)
+                    // Token is issued at the current date and time
+                    .issuedAt(Date.from(Instant.now()))
+                    // Token expiration
+                    .expiration(Date.from(Instant.now().plus(expireDuration)))
+                    // Token is signed using a secret key. Signature algorithm is HMAC using SHA-512.
+                    .signWith(secretKey, Jwts.SIG.HS512)
+                    // Compact token into its final String form.
+                    .compact();
+        } catch (InvalidKeyException ex) {
+            throw new TokenGenerationException("Invalid Key !", ex);
+        } catch (Exception ex){
+            throw new TokenGenerationException("Token generation error !", ex);
+        }
     }
 
     /**
@@ -87,20 +97,22 @@ public class JwtService {
                     .parseSignedClaims(token);
             return true;
         } catch (ExpiredJwtException ex) {
-            log.error("JWT expired ! " + ex.getMessage());
+            throw new TokenValidationException("JWT expired !", ex);
         } catch (MalformedJwtException ex) {
-            log.error("Token is invalid ! " + ex.getMessage());
+            throw new TokenValidationException("Token is invalid !", ex);
         } catch (UnsupportedJwtException ex) {
-            log.error("JWT is not supported ! " + ex.getMessage());
+            throw new TokenValidationException("JWT is not supported !", ex);
         } catch (SignatureException ex) {
-            log.error("Signature validation failed ! " + ex.getMessage());
+            throw new TokenValidationException("Signature validation failed !", ex);
         } catch (IncorrectClaimException ex) {
-            log.error("Incorrect claimn ! " + ex.getMessage());
+            throw new TokenValidationException("Incorrect claim !", ex);
         } catch (IllegalArgumentException ex) {
-            log.error("Token is null, empty or only whitespace ! " + ex.getMessage());
+            throw new TokenValidationException("Token is null, empty or only whitespace ! ", ex);
+        } catch (JwtException ex) {
+            throw new TokenValidationException("JWT error !", ex);
+        } catch (Exception ex) {
+            throw new TokenValidationException("Token validation error !", ex);
         }
-
-        return false;
     }
 
     /**
@@ -111,7 +123,11 @@ public class JwtService {
      * @return String
      */
     public String getSubject(String token) {
-        return parseClaims(token).getSubject();
+        try {
+            return parseClaims(token).getSubject();
+        } catch (Exception ex) {
+            throw new TokenLectureException("Cannot read subject !", ex);
+        }
     }
 
     /**
@@ -121,11 +137,19 @@ public class JwtService {
      * @return Claims
      */
     private Claims parseClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (IllegalArgumentException ex) {
+            throw new TokenLectureException("Token is null, empty or only whitespace ! ", ex);
+        } catch (JwtException ex) {
+            throw new TokenLectureException("JWT error !", ex);
+        } catch (Exception ex) {
+            throw new TokenLectureException("Token lecture error !", ex);
+        }
     }
 
     /**

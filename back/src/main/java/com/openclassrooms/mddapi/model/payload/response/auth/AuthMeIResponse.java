@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.model.payload.response.auth;
 
 import com.fasterxml.jackson.annotation.*;
-import com.openclassrooms.mddapi.model.payload.response.Response;
+import com.openclassrooms.mddapi.model.payload.response.IResponse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import java.time.Instant;
  */
 @Builder
 @Data
-public class AuthMeResponse implements Response {
+public class AuthMeIResponse implements IResponse {
 
     @Positive
     private Long id;

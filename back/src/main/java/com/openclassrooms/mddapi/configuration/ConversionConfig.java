@@ -31,6 +31,7 @@ public class ConversionConfig {
         converters.add(new TopicEntityToTopicDTO());
         converters.add(new UserEntityToSubscriptionsDTO());
         converters.add(new UserDTOToProfileResponse());
+        converters.add(new PostEntityToPostDTO());
 
         conversionService.setConverters(converters);
         return conversionService;

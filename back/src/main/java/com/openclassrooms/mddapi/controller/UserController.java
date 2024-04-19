@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.payload.request.user.ProfileRequest;
-import com.openclassrooms.mddapi.model.payload.response.user.ProfileResponse;
+import com.openclassrooms.mddapi.model.payload.response.user.ProfileIResponse;
 import com.openclassrooms.mddapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +27,21 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<ProfileResponse> getUser(Principal principal) {
+	public ResponseEntity<ProfileIResponse> getUser(Principal principal) {
 		return ResponseEntity.ok(
 				conversionService.convert(
 						userService.getProfile(principal),
-						ProfileResponse.class
+						ProfileIResponse.class
 				)
 		);
 	}
 
 	@PutMapping
-	public ResponseEntity<ProfileResponse> putUser(Principal principal, @Valid @RequestBody ProfileRequest profileRequest) {
+	public ResponseEntity<ProfileIResponse> putUser(Principal principal, @Valid @RequestBody ProfileRequest profileRequest) {
 		return ResponseEntity.ok(
 				conversionService.convert(
 						userService.updateProfile(principal, profileRequest.getUsername(), profileRequest.getEmail()),
-						ProfileResponse.class
+						ProfileIResponse.class
 				)
 		);
 	}

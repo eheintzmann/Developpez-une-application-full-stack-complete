@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.model.payload.response.auth;
 
-import com.openclassrooms.mddapi.model.payload.response.Response;
+import com.openclassrooms.mddapi.model.payload.response.IResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenResponse implements Response {
+public class TokenIResponse implements IResponse {
 
     private String token;
 }

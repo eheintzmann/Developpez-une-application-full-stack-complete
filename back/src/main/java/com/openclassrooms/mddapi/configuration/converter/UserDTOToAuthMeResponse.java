@@ -1,13 +1,13 @@
 package com.openclassrooms.mddapi.configuration.converter;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
-import com.openclassrooms.mddapi.model.payload.response.auth.AuthMeResponse;
+import com.openclassrooms.mddapi.model.payload.response.auth.AuthMeIResponse;
 import org.springframework.core.convert.converter.Converter;
 
 /**
  * Convert UserDTO to AuthMeResponse
  */
-public class UserDTOToAuthMeResponse implements Converter<UserDTO, AuthMeResponse> {
+public class UserDTOToAuthMeResponse implements Converter<UserDTO, AuthMeIResponse> {
 
     /**
      * Convert UserDTO to AuthMeResponse
@@ -16,9 +16,9 @@ public class UserDTOToAuthMeResponse implements Converter<UserDTO, AuthMeRespons
      * @return AuthMeResponse
      */
     @Override
-    public AuthMeResponse convert(UserDTO userDTO) {
+    public AuthMeIResponse convert(UserDTO userDTO) {
 
-        return AuthMeResponse.builder()
+        return AuthMeIResponse.builder()
                 .id(userDTO.getId())
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())

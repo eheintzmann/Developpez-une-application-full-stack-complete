@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.model.payload.response.user;
 
-import com.openclassrooms.mddapi.model.payload.response.Response;
+import com.openclassrooms.mddapi.model.payload.response.IResponse;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class ProfileResponse implements Response {
+public class ProfileIResponse implements IResponse {
 
     private Long id;
 

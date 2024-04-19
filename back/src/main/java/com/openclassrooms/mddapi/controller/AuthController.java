@@ -2,9 +2,9 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.payload.request.auth.LoginRequest;
-import com.openclassrooms.mddapi.model.payload.response.auth.TokenResponse;
+import com.openclassrooms.mddapi.model.payload.response.auth.TokenIResponse;
 import com.openclassrooms.mddapi.model.payload.request.auth.RegisterRequest;
-import com.openclassrooms.mddapi.model.payload.response.auth.AuthMeResponse;
+import com.openclassrooms.mddapi.model.payload.response.auth.AuthMeIResponse;
 import com.openclassrooms.mddapi.service.IAuthService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class AuthController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<TokenIResponse> register(@Valid @RequestBody RegisterRequest request) {
 
         String token = this.authService.registerUser(
                 request.getEmail(),
@@ -61,7 +61,7 @@ public class AuthController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new TokenResponse(token));
+                .body(new TokenIResponse(token));
     }
 
     /**
@@ -76,7 +76,7 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
 
-    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<TokenIResponse> login(@Valid @RequestBody LoginRequest request) {
 
         String token = this.authService
                 .loginUser(
@@ -85,7 +85,7 @@ public class AuthController {
                 );
 
         return ResponseEntity.ok(
-                new TokenResponse(token)
+                new TokenIResponse(token)
         );
     }
 
@@ -99,11 +99,11 @@ public class AuthController {
             path = "me",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<AuthMeResponse> autMe(Principal principal) {
+    public ResponseEntity<AuthMeIResponse> autMe(Principal principal) {
 
         UserDTO userDTO = authService.authUser(principal.getName());
 
-        return ResponseEntity.ok(conversionService.convert(userDTO, AuthMeResponse.class));
+        return ResponseEntity.ok(conversionService.convert(userDTO, AuthMeIResponse.class));
     }
 
 }

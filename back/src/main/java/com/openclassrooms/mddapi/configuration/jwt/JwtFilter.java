@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
-import com.openclassrooms.mddapi.exception.InvalidJWTSubjectException;
+import com.openclassrooms.mddapi.exception.NotExistingTopicException;
+import com.openclassrooms.mddapi.exception.token.TokenLectureException;
+import com.openclassrooms.mddapi.exception.token.TokenValidationException;
 import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -62,43 +64,38 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    )
-            throws ServletException, IOException {
+    ) throws ServletException, IOException {
 
-        // If no Bearer token in Authorization header, continue the filter chain without updating authentication context
-        if (!hasAuthorizationBearer(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = getAccessToken(request);
-
-        // If the token is invalid, continue the filter chain without updating authentication context
-        if (!jwtService.validateAccessToken(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-
-
-        // If the token valid, update the authentication context with the user details ID and email
         try {
-            setAuthenticationContext(token, request);
-        } catch (InvalidJWTSubjectException | UsernameNotFoundException ex) {
+            // If no Bearer token in Authorization header, continue the filter chain without updating authentication context
+            if (!hasAuthorizationBearer(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String token = getAccessToken(request);
+
+            // If the token valid, update the authentication context with the user details ID and email
+            if (jwtService.validateAccessToken(token)) {
+                setAuthenticationContext(token, request);
+            }
+
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Check if request has a Bearer token in Authorization header
-     *
-     * @param request HttpServletRequest
-     * @return boolean
-     */
+        /**
+         * Check if request has a Bearer token in Authorization header
+         *
+         * @param request HttpServletRequest
+         * @return boolean
+         */
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (ObjectUtils.isEmpty(header)) {
+            log.info("No Authorization header");
             return false;
         }
         Pattern pattern = Pattern.compile("^Bearer .+");
@@ -148,19 +145,18 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     private UserDetails getUserDetails(String token) {
 
+        User user;
         String subject = jwtService.getSubject(token);
-
-        long id;
-
         try {
-            id = Long.parseLong(subject);
+            user = userRepository.findById(Long.parseLong(subject))
+                    .orElseThrow(
+                            () -> new UsernameNotFoundException("Cannot find user " + subject)
+                    );
+        } catch (NumberFormatException | UsernameNotFoundException ex ) {
+            throw new TokenLectureException("Invalid subject " + subject + " !", ex);
         } catch (Exception ex) {
-            throw new InvalidJWTSubjectException("Invalid JWT subject");
+            throw new TokenLectureException("Token lecture error !", ex);
         }
-
-        User user = userRepository.findById(id)
-                .orElseThrow(
-                        () -> new UsernameNotFoundException("User " + subject + " not found"));
 
         return new UserPrincipal(user);
     }

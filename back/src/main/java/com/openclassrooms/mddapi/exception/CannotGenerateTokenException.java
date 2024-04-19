@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.exception;
 
-public class CannotGenerateTokenException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class CannotGenerateTokenException extends AuthenticationException {
 
     /**
      * Constructor for CannotGenerateTokenException class

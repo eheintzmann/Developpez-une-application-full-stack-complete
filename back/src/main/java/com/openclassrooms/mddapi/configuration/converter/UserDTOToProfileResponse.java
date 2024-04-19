@@ -1,13 +1,13 @@
 package com.openclassrooms.mddapi.configuration.converter;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
-import com.openclassrooms.mddapi.model.payload.response.user.ProfileResponse;
+import com.openclassrooms.mddapi.model.payload.response.user.ProfileIResponse;
 import org.springframework.core.convert.converter.Converter;
 
 /**
  * Convert UserDTO to Profile Response
  */
-public class UserDTOToProfileResponse implements Converter<UserDTO, ProfileResponse> {
+public class UserDTOToProfileResponse implements Converter<UserDTO, ProfileIResponse> {
 
     /**
      * Convert UserDTO to ProfileResponse
@@ -16,9 +16,9 @@ public class UserDTOToProfileResponse implements Converter<UserDTO, ProfileRespo
      * @return ProfileResponse
      */
     @Override
-    public ProfileResponse convert(UserDTO userDTO) {
+    public ProfileIResponse convert(UserDTO userDTO) {
 
-        return ProfileResponse.builder()
+        return ProfileIResponse.builder()
                 .id(userDTO.getId())
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())

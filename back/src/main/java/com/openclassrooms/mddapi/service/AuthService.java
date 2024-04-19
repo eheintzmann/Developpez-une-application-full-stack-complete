@@ -15,7 +15,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,13 +91,7 @@ public class AuthService implements IAuthService {
         }
 
         // Return token
-        String token;
-        try {
-            token = jwtService.generateAccessToken(user);
-        } catch (Exception ex) {
-            throw new CannotGenerateTokenException(ex.getMessage());
-        }
-        return token;
+       return jwtService.generateAccessToken(user);
     }
 
     /**
@@ -112,13 +105,9 @@ public class AuthService implements IAuthService {
     public String loginUser(String email, String password) {
 
         Authentication authentication;
-        try {
-            authentication = authManager.authenticate(
+        authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-        } catch (AuthenticationException ex) {
-            throw new CannotAuthenticateException(ex.getMessage());
-        }
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
@@ -128,13 +117,7 @@ public class AuthService implements IAuthService {
                 .build();
 
         // Return token
-        String token;
-        try {
-            token = jwtService.generateAccessToken(user);
-        } catch (Exception ex) {
-            throw new CannotGenerateTokenException(ex.getMessage());
-        }
-        return token;
+        return jwtService.generateAccessToken(user);
     }
 
     /**

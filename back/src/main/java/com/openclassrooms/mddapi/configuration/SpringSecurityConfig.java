@@ -4,8 +4,9 @@ import com.openclassrooms.mddapi.configuration.jwt.JwtFilter;
 import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,6 +35,10 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SpringSecurityConfig {
     private final JwtFilter jwtFilter;
     private final UserRepository userRepository;
+
+    @Autowired
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
 
     /**
      * Constructor for SpringSecurityConfig class
@@ -104,8 +110,8 @@ public class SpringSecurityConfig {
                 // Do not authenticate these requests
                 .requestMatchers(
                         antMatcher(HttpMethod.POST, "/api/auth/login"),
-                        antMatcher(HttpMethod.POST, "/api/auth/register")
-//                        antMatcher(HttpMethod.GET, "/doc/**")
+                        antMatcher(HttpMethod.POST, "/api/auth/register"),
+                        antMatcher(HttpMethod.GET, "/error")
                 ).permitAll()
                 // Authenticate these requests
                 .requestMatchers(antMatcher("/api/**")).authenticated()
@@ -114,14 +120,7 @@ public class SpringSecurityConfig {
         );
 
         // Send Http status 401 when error occurs
-        http.exceptionHandling(handlingConfigurer -> handlingConfigurer
-                .authenticationEntryPoint((request, response, exception) -> response
-                        .sendError(
-                                HttpServletResponse.SC_UNAUTHORIZED,
-                                exception.getMessage()
-                        )
-                )
-        );
+        http.exceptionHandling(handlingConfigurer -> handlingConfigurer.authenticationEntryPoint(authEntryPoint));
 
         // Add a filter to validate the tokens with every authenticated request
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
