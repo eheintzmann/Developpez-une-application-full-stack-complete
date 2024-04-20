@@ -5,8 +5,6 @@ import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,10 +33,6 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SpringSecurityConfig {
     private final JwtFilter jwtFilter;
     private final UserRepository userRepository;
-
-    @Autowired
-    @Qualifier("delegatedAuthenticationEntryPoint")
-    AuthenticationEntryPoint authEntryPoint;
 
     /**
      * Constructor for SpringSecurityConfig class
@@ -98,7 +92,10 @@ public class SpringSecurityConfig {
      * @throws Exception Exception
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            AuthenticationEntryPoint delegatedAuthenticationEntryPoint
+            ) throws Exception {
 
         // Use stateless session; session won't be used to store user's state.
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -120,7 +117,9 @@ public class SpringSecurityConfig {
         );
 
         // Send Http status 401 when error occurs
-        http.exceptionHandling(handlingConfigurer -> handlingConfigurer.authenticationEntryPoint(authEntryPoint));
+        http.exceptionHandling(
+                handlingConfigurer -> handlingConfigurer.authenticationEntryPoint(delegatedAuthenticationEntryPoint)
+        );
 
         // Add a filter to validate the tokens with every authenticated request
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

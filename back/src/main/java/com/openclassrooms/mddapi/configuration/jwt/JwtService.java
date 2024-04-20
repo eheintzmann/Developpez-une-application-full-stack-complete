@@ -51,7 +51,6 @@ public class JwtService {
         this.secretKey = getKeyFromPassword(appJwtSecret, appJwtSalt);
         this.expireDuration = Duration.of(Long.parseLong(appJwtExpiration), ChronoUnit.HOURS);
         this.issuer = appJwtIssuer;
-        // log.info("SecretKey (base64) : {}", convertKeyToBase64(this.secretKey));
     }
 
     /**
@@ -169,7 +168,7 @@ public class JwtService {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "HmacSHA512");
     }
 
-    private static String convertKeyToBase64(SecretKey key) {
-        return Base64.getEncoder().encodeToString(key.getEncoded());
+    public void logSecretKey(SecretKey key) {
+        log.info("SecretKey (base64) : {}", Base64.getEncoder().encodeToString(key.getEncoded()));
     }
 }
