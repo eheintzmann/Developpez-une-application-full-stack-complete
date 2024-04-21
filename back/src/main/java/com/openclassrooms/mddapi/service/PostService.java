@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.exception.NotExistingUserException;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.post.PostDTO;
 import com.openclassrooms.mddapi.model.dto.post.PostsDTO;
 import com.openclassrooms.mddapi.model.entity.Post;
@@ -50,7 +50,7 @@ public class PostService implements IPostService {
 	private User getUserEntity(Principal principal) {
 		return userRepository
 				.findByEmail(principal.getName())
-				.orElseThrow(() -> new NotExistingUserException("Cannot find user " + principal.getName()));
+				.orElseThrow(() -> new NonExistingUserException("Cannot find user " + principal.getName()));
 	}
 
 }

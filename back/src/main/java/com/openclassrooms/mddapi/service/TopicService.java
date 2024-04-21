@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.service;
 import java.security.Principal;
 import java.util.*;
 
-import com.openclassrooms.mddapi.exception.NotExistingUserException;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -34,7 +34,7 @@ public class TopicService implements ITopicService {
 
 		User user = userRepository.findByEmail(principal.getName())
 				.orElseThrow(
-						() -> new NotExistingUserException("Cannot find user : " + principal.getName())
+						() -> new NonExistingUserException("Cannot find user : " + principal.getName())
 				);
 
 		SortedSet<TopicDTO> topicsDTO = new TreeSet<>(Comparator.comparing(TopicDTO::getTitle));

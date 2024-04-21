@@ -1,8 +1,6 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
-import com.openclassrooms.mddapi.exception.NotExistingTopicException;
 import com.openclassrooms.mddapi.exception.token.TokenLectureException;
-import com.openclassrooms.mddapi.exception.token.TokenValidationException;
 import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;

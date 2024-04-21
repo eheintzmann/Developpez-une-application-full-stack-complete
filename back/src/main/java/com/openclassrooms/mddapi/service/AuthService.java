@@ -2,7 +2,8 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
-import com.openclassrooms.mddapi.exception.*;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
@@ -70,8 +71,8 @@ public class AuthService implements IAuthService {
     public String registerUser(String email, String name, String password) {
 
         // If user exists, stop registration, do not return a token
-        if (userRepository.existsByEmail(email)) {
-            throw new UserAlreadyExitsException(email + " is already used");
+        if (userRepository.existsByEmailOrUsername(email, name)) {
+            throw new AlreadyExitingUserException("Email (" + email + ") or username ("  +name + ") is already used");
         }
 
         // If user doesn't exist, register it
@@ -84,11 +85,7 @@ public class AuthService implements IAuthService {
                 .build();
 
         // Save user in db
-        try {
-            userRepository.saveAndFlush(user);
-        } catch (Exception ex) {
-            throw new CannotSaveException(ex.getMessage());
-        }
+        userRepository.saveAndFlush(user);
 
         // Return token
        return jwtService.generateAccessToken(user);
@@ -131,7 +128,7 @@ public class AuthService implements IAuthService {
 
         return this.userRepository.findByEmail(email)
                 .map(user -> conversionService.convert(user, UserDTO.class))
-                .orElseThrow(() -> new NotExistingUserException("User " + email + " not found"));
+                .orElseThrow(() -> new NonExistingUserException("User " + email + " not found"));
     }
 
 }

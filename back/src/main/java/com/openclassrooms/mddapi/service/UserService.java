@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.exception.NotExistingUserException;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -26,7 +26,7 @@ public class UserService implements IUserService {
     public UserDTO getProfile(Principal principal) {
         User user = userRepository
                 .findByEmail(principal.getName())
-                .orElseThrow(() -> new NotExistingUserException("Cannot find user {}" + principal.getName()));
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user {}" + principal.getName()));
 
         return conversionService.convert(user, UserDTO.class);
     }
@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     public UserDTO updateProfile(Principal principal, String username, String email) {
         User user = userRepository
                 .findByEmail(principal.getName())
-                .orElseThrow(() -> new NotExistingUserException("Cannot find user {}" + principal.getName()));
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user {}" + principal.getName()));
 
         user.setUsername(username);
         user.setEmail(email);

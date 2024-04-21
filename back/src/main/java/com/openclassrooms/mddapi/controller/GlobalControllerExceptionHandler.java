@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
+import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.model.payload.response.ApiErrorIResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -21,42 +22,104 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     /**
      * handler for error 401
      *
-     * @return Response
+     * @param req request
+     * @param ex exception
+     * @return API error response
      */
     @ExceptionHandler({ AuthenticationException.class })
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ApiErrorIResponse> handleAuthenticationExceptions(AuthenticationException ex) {
+    public ResponseEntity<ApiErrorIResponse> handleAuthenticationExceptions(
+            HttpServletRequest req,
+            AuthenticationException ex
+    ) {
         log.error("Error 401 (Unauthorized) -> {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiErrorIResponse("Authentication Error"));
+                .body(ApiErrorIResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Authentication Error")
+                        .build()
+                );
     }
 
+    /**
+     * handler for error 400
+     *
+     * @param req request
+     * @param ex exception
+     * @return API error response
+     */
+    @ExceptionHandler({ AlreadyExitingUserException.class} )
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorIResponse> handleAlreadyExistingException(
+            HttpServletRequest req,
+            RuntimeException ex
+    ) {
+        log.error("Error 400 (Bad Request) -> {}", ex.getMessage());
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorIResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Bad Request")
+                        .build()
+                );
+    }
+
+    /**
+     * handler for error 500
+     *
+     * @param req request
+     * @param ex exception
+     * @return API error response
+     */
     @ExceptionHandler({ TokenGenerationException.class })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ApiErrorIResponse> handleTokenGenerationExceptions(TokenGenerationException ex) {
+    public ResponseEntity<ApiErrorIResponse> handleTokenGenerationExceptions(
+            HttpServletRequest req,
+            TokenGenerationException ex
+    ) {
         log.error("Error 500 (Token Generation Error) -> {}", ex.getMessage());
         return ResponseEntity
                 .internalServerError()
-                .body(new ApiErrorIResponse("Internal Server Error"));
+                .body(ApiErrorIResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Internal Server Error")
+                        .build()
+                );
     }
 
+
+
+    /**
+     * handler for generic exceptions
+     *
+     * @param req request
+     * @param ex exception
+     * @return API error response
+     */
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ApiErrorIResponse> defaultErrorHandler(HttpServletRequest req, Exception ex) throws Exception {
-        // If the exception is annotated with @ResponseStatus rethrow it and let
-        // the framework handle it - like the OrderNotFoundException example
-        // at the start of this post.
-        // AnnotationUtils is a Spring Framework utility class.
+    public ResponseEntity<ApiErrorIResponse> defaultErrorHandler(
+            HttpServletRequest req,
+            Exception ex
+    ) throws Exception {
+        // If the exception is annotated with @ResponseStatus rethrow it and let the framework handle it
         log.info("Exception -> {}", ex.getClass().getName());
-        if (AnnotationUtils.findAnnotation
-                (ex.getClass(), ResponseStatus.class) != null)
+        if (AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class) != null)
             throw ex;
 
         // Otherwise setup and send the user to a default error-view.
         log.error("Error 500 (Generic Error) -> {}", ex.getMessage());
         return ResponseEntity
                 .internalServerError()
-                .body(new ApiErrorIResponse("Internal Server Error"));
+                .body(ApiErrorIResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Internal Server Error")
+                        .build()
+                );
     }
 
 }
