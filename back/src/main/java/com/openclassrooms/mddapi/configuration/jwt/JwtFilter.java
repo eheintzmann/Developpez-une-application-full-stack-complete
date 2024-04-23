@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
 import com.openclassrooms.mddapi.exception.token.TokenLectureException;
-import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import io.micrometer.common.lang.NonNullApi;
@@ -156,7 +155,7 @@ public class JwtFilter extends OncePerRequestFilter {
             throw new TokenLectureException("Token lecture error !", ex);
         }
 
-        return new UserPrincipal(user);
+        return user;
     }
 
 }

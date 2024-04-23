@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
+import com.openclassrooms.mddapi.model.entity.User;
 
 public interface IAuthService {
 
@@ -26,8 +27,8 @@ public interface IAuthService {
     /**
      * Return details of a given user
      *
-     * @param email user email
-     * @return User
+     * @param user User
+     * @return UserDTO
      */
-    UserDTO authUser(String email);
+    UserDTO authUser(User user);
 }

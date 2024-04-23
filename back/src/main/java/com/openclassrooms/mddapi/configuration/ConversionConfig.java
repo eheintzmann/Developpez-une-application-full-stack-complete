@@ -29,9 +29,10 @@ public class ConversionConfig {
         converters.add(new UserEntityToUserDTO());
         converters.add(new UserDTOToAuthMeResponse());
         converters.add(new TopicEntityToTopicDTO());
-        converters.add(new UserEntityToSubscriptionsDTO());
         converters.add(new UserDTOToProfileResponse());
         converters.add(new PostEntityToPostDTO());
+        converters.add(new PostEntitiesToPostsDTO());
+        converters.add(new TopicEntityToSubscriptionDTO());
 
         conversionService.setConverters(converters);
         return conversionService;

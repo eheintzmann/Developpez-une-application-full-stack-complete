@@ -1,10 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.model.dto.post.PostsDTO;
-
-import java.security.Principal;
+import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
+import com.openclassrooms.mddapi.model.entity.User;
 
 public interface IPostService {
 
-    PostsDTO getPosts(Principal principal);
+    /**
+     *
+     * @param user User
+     * @return PostsDTO
+     */
+    PostsResponse getPosts(User user);
 }

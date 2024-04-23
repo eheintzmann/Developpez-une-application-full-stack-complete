@@ -4,7 +4,6 @@ import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
-import com.openclassrooms.mddapi.model.UserPrincipal;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -101,34 +100,31 @@ public class AuthService implements IAuthService {
     @Override
     public String loginUser(String email, String password) {
 
-        Authentication authentication;
-        authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password)
-            );
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        );
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        // if user
+        if (authentication.isAuthenticated()) {
+            //retrieve user
+            User user = (User) authentication.getPrincipal();
 
-        User user = User.builder()
-                .id(userPrincipal.getId())
-                .email(userPrincipal.getUsername())
-                .build();
-
-        // Return token
-        return jwtService.generateAccessToken(user);
+            // Return token
+            return jwtService.generateAccessToken(user);
+        }
+        throw new NonExistingUserException("Cannot find user " + email);
     }
 
     /**
      * Return details of a given user
      *
-     * @param email user email
+     * @param user User
      * @return Optional User
      */
     @Override
-    public UserDTO authUser(String email) {
+    public UserDTO authUser(User user) {
 
-        return this.userRepository.findByEmail(email)
-                .map(user -> conversionService.convert(user, UserDTO.class))
-                .orElseThrow(() -> new NonExistingUserException("User " + email + " not found"));
+        return conversionService.convert(user, UserDTO.class);
     }
 
 }

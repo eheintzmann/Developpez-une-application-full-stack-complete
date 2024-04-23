@@ -1,15 +1,33 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.model.dto.subscription.SubscriptionsDTO;
+import com.openclassrooms.mddapi.model.dto.subscription.SubscriptionDTO;
+import com.openclassrooms.mddapi.model.entity.User;
 
-import java.security.Principal;
+import java.util.List;
 
 public interface ISubscriptionService {
 
-    SubscriptionsDTO getSubscriptions(Principal principal);
+    /**
+     *
+     * @param user User
+     * @return SubscriptionsDTO
+     */
+    List<SubscriptionDTO> getSubscriptions(User user);
 
-    SubscriptionsDTO subscribeTo(Long topicId, Principal principal);
+    /**
+     *
+     * @param topicId Topic id
+     * @param user User
+     * @return SubscriptionsDTO
+     */
+    List<SubscriptionDTO> subscribeTo(Long topicId, User user);
 
-    SubscriptionsDTO deleteSubscription(Long topicId, Principal principal);
+    /**
+     *
+     * @param topicId Topic id
+     * @param user User
+     * @return SubscriptionsDTO
+     */
+    List<SubscriptionDTO> deleteSubscription(Long topicId, User user);
 
 }

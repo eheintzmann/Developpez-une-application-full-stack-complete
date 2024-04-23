@@ -28,6 +28,8 @@ public class Post {
 	@Column(columnDefinition = "TEXT")
 	private String content;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@OneToMany(
 			mappedBy = "post",
 			cascade = CascadeType.ALL,

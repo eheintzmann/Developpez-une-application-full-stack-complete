@@ -100,7 +100,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      * @param ex exception
      * @return API error response
      */
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler({ Exception.class })
     public ResponseEntity<ApiErrorIResponse> defaultErrorHandler(
             HttpServletRequest req,
             Exception ex

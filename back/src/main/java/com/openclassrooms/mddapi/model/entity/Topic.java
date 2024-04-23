@@ -1,10 +1,7 @@
 package com.openclassrooms.mddapi.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,6 +27,8 @@ public class Topic {
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@OneToMany(
 			mappedBy = "topic",
 			cascade = CascadeType.ALL,
@@ -37,6 +36,8 @@ public class Topic {
 	)
 	private List<Post> posts = new ArrayList<>();
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@ManyToMany(
 			mappedBy = "subscriptions"
 	)

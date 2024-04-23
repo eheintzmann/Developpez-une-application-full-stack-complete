@@ -1,10 +1,10 @@
 package com.openclassrooms.mddapi.controller;
 
-import java.security.Principal;
-import java.util.SortedSet;
-
-import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
+import com.openclassrooms.mddapi.model.entity.User;
+import com.openclassrooms.mddapi.model.payload.response.topic.TopicsResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ import com.openclassrooms.mddapi.service.ITopicService;
 @RestController
 @RequestMapping("/api/topics")
 public class TopicController {
-	
+
 	private final ITopicService topicService;
 
 	public TopicController(ITopicService topicService) {
@@ -23,8 +23,13 @@ public class TopicController {
 	}
 
 	@GetMapping
-	public SortedSet<TopicDTO> getTopics(Principal principal) {
-		return topicService.getTopics(principal);
+	public ResponseEntity<TopicsResponse> getTopics(@AuthenticationPrincipal User user) {
+		return ResponseEntity.ok(TopicsResponse
+				.builder()
+				.topics(topicService.getTopics(user))
+				.build()
+		);
+
 	}
 
 }

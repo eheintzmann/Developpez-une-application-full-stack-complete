@@ -1,8 +1,7 @@
 package com.openclassrooms.mddapi.configuration;
 
 import com.openclassrooms.mddapi.configuration.jwt.JwtFilter;
-import com.openclassrooms.mddapi.model.UserPrincipal;
-import com.openclassrooms.mddapi.model.entity.User;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -52,13 +50,10 @@ public class SpringSecurityConfig {
      */
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> {
-            User user = userRepository.findByEmail(username)
-                    .orElseThrow(
-                            () -> new UsernameNotFoundException("User " + username + " not found")
-                    );
-            return new UserPrincipal(user);
-        };
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(
+                        () -> new NonExistingUserException("User " + username + " not found")
+                );
     }
 
     /**

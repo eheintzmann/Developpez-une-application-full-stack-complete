@@ -1,13 +1,24 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
-
-import java.security.Principal;
+import com.openclassrooms.mddapi.model.entity.User;
 
 public interface IUserService {
 
-    UserDTO getProfile(Principal principal);
+    /**
+     *
+     * @param user User
+     * @return UserDTO
+     */
+    UserDTO getProfile(User user);
 
-    UserDTO updateProfile(Principal principal, String username, String email);
+    /**
+     *
+     * @param user User
+     * @param username String
+     * @param email String
+     * @return UserDTO
+     */
+    UserDTO updateProfile(User user, String username, String email);
 
 }

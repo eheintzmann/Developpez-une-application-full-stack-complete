@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
+import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.model.payload.request.auth.LoginRequest;
 import com.openclassrooms.mddapi.model.payload.response.auth.TokenIResponse;
 import com.openclassrooms.mddapi.model.payload.request.auth.RegisterRequest;
@@ -12,9 +13,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 /**
  * Authentification REST controller
@@ -92,16 +92,16 @@ public class AuthController {
     /**
      * /auth/me route
      *
-     * @param principal Principal
+     * @param user User
      * @return ResponseEntity
      */
     @GetMapping(
             path = "me",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<AuthMeIResponse> autMe(Principal principal) {
+    public ResponseEntity<AuthMeIResponse> autMe(@AuthenticationPrincipal User user) {
 
-        UserDTO userDTO = authService.authUser(principal.getName());
+        UserDTO userDTO = authService.authUser(user);
 
         return ResponseEntity.ok(conversionService.convert(userDTO, AuthMeIResponse.class));
     }

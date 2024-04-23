@@ -1,12 +1,12 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.dto.subscription.SubscriptionsDTO;
+import com.openclassrooms.mddapi.model.payload.response.subscription.SubscriptionsResponse;
+import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.ISubscriptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -20,19 +20,36 @@ public class SubscriptionController {
 	}
 
 	@GetMapping
-	public ResponseEntity<SubscriptionsDTO> getSubscriptions(Principal principal) {
-		return ResponseEntity.ok(subscriptionService.getSubscriptions(principal));
+	public ResponseEntity<SubscriptionsResponse> getSubscriptions(@AuthenticationPrincipal User user) {
+		return ResponseEntity.ok(SubscriptionsResponse
+				.builder()
+				.subscriptions(subscriptionService.getSubscriptions(user))
+				.build()
+		);
 	}
 
 	@PostMapping(path = "/{id}")
-	public ResponseEntity<SubscriptionsDTO> postSubscription(@PathVariable Long id,  Principal principal) {
-		return ResponseEntity.ok(subscriptionService.subscribeTo(id, principal));
+	public ResponseEntity<SubscriptionsResponse> postSubscription(
+			@PathVariable Long id,
+			@AuthenticationPrincipal User user
+	) {
+		return ResponseEntity.ok(SubscriptionsResponse
+				.builder()
+				.subscriptions(subscriptionService.subscribeTo(id, user))
+				.build()
+		);
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<SubscriptionsDTO> deleteSubscription(@PathVariable Long id, Principal principal) {
-
-		return ResponseEntity.ok(subscriptionService.deleteSubscription(id, principal));
+	public ResponseEntity<SubscriptionsResponse> deleteSubscription(
+			@PathVariable Long id,
+			@AuthenticationPrincipal User user
+	) {
+		return ResponseEntity.ok(SubscriptionsResponse
+				.builder()
+				.subscriptions(subscriptionService.deleteSubscription(id, user))
+				.build()
+		);
 	}
 
 }

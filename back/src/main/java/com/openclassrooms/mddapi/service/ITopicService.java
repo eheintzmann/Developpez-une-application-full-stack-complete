@@ -1,12 +1,17 @@
 package com.openclassrooms.mddapi.service;
 
-import java.security.Principal;
-import java.util.SortedSet;
+import java.util.List;
 
 import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
+import com.openclassrooms.mddapi.model.entity.User;
 
 public interface ITopicService {
 
-	SortedSet<TopicDTO> getTopics(Principal principal);
+	/**
+	 *
+	 * @param user User
+	 * @return Topics DTO
+	 */
+	List<TopicDTO> getTopics(User user);
 
 }

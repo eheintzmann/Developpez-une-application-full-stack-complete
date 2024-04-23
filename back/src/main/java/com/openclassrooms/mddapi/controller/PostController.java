@@ -1,14 +1,14 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.dto.post.PostsDTO;
+import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
+import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -22,8 +22,8 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<PostsDTO> getPosts(Principal principal) {
-		return ResponseEntity.ok(postService.getPosts(principal));
+	public ResponseEntity<PostsResponse> getPosts(@AuthenticationPrincipal User user) {
+		return ResponseEntity.ok(postService.getPosts(user));
 	}
 
 }
