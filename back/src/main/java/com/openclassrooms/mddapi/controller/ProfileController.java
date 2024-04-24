@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/user/profile")
+public class ProfileController {
 
 
 	private final UserService userService;
 	private final ConversionService conversionService;
 
-	public UserController(UserService userService, ConversionService conversionService) {
+	public ProfileController(UserService userService, ConversionService conversionService) {
 		this.userService = userService;
 		this.conversionService = conversionService;
 	}
