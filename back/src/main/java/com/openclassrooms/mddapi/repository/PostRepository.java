@@ -12,8 +12,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     /**
      *
      * @param userId user id
-     * @return Topics
+     * @return Posts
      */
-    @Query("Select p From Topic t inner join t.subscribers u inner join t.posts p where u.id = :userId")
+    @Query("Select p From Topic t inner join t.subscribers u inner join t.posts p where u.id = :userId order by p.updatedAt desc")
     Iterable<Post> findPostsByUsersId(Long userId);
 }
