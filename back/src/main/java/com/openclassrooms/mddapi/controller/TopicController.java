@@ -13,7 +13,7 @@ import com.openclassrooms.mddapi.service.ITopicService;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/topics")
+@RequestMapping("/api/v1/topics")
 public class TopicController {
 
 	private final ITopicService topicService;

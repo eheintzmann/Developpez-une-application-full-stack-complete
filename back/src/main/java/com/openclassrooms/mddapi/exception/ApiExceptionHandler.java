@@ -1,4 +1,4 @@
-package com.openclassrooms.mddapi.controller;
+package com.openclassrooms.mddapi.exception;
 
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * handler for error 401

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/user/subscriptions")
+@RequestMapping("/api/v1/user/subscriptions")
 public class SubscriptionController {
 
 	private final ISubscriptionService subscriptionService;
