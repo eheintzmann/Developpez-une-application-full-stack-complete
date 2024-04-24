@@ -83,12 +83,12 @@ public class SpringSecurityConfig {
                 // Do not authenticate these requests
                 .requestMatchers(
                         antMatcher(HttpMethod.POST, "/api/v1/auth/login"),
-                        antMatcher(HttpMethod.POST, "/api/v1/auth/register"),
-                        antMatcher(HttpMethod.GET, "/error")
+                        antMatcher(HttpMethod.POST, "/api/v1/auth/register")
                 ).permitAll()
                 // Authenticate these requests
                 .requestMatchers(
-                        antMatcher("/api/v1/**")
+                        antMatcher("/api/v1/**"),
+                        antMatcher(HttpMethod.GET, "/error")
                 ).authenticated()
                 // Deny all other requests
                 .anyRequest().denyAll()
