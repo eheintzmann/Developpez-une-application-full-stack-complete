@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ApiErrorIResponse implements IResponse {
+public class ApiErrorResponse implements IResponse {
 
     private String url;
 

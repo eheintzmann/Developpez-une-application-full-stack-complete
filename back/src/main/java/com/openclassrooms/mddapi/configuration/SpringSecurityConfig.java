@@ -1,8 +1,6 @@
 package com.openclassrooms.mddapi.configuration;
 
 import com.openclassrooms.mddapi.configuration.jwt.JwtFilter;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
-import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -30,30 +27,14 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableWebSecurity
 public class SpringSecurityConfig {
     private final JwtFilter jwtFilter;
-    private final UserRepository userRepository;
 
     /**
      * Constructor for SpringSecurityConfig class
      *
-     * @param jwtFilter JwtFilter
-     * @param userRepository UserRepository
+     * @param jwtFilter      JwtFilter
      */
-    public SpringSecurityConfig(JwtFilter jwtFilter, UserRepository userRepository) {
+    public SpringSecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * New UserDetailsService instance
-     *
-     * @return UserDetailsService
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(
-                        () -> new NonExistingUserException("User " + username + " not found")
-                );
     }
 
     /**
@@ -102,11 +83,13 @@ public class SpringSecurityConfig {
                 // Do not authenticate these requests
                 .requestMatchers(
                         antMatcher(HttpMethod.POST, "/api/auth/login"),
-                        antMatcher(HttpMethod.POST, "/api/auth/register"),
-                        antMatcher(HttpMethod.GET, "/error")
+                        antMatcher(HttpMethod.POST, "/api/auth/register")
                 ).permitAll()
                 // Authenticate these requests
-                .requestMatchers(antMatcher("/api/**")).authenticated()
+                .requestMatchers(
+                        antMatcher("/api/**"),
+                        antMatcher(HttpMethod.GET, "/error")
+                ).authenticated()
                 // Deny all other requests
                 .anyRequest().denyAll()
         );

@@ -1,8 +1,5 @@
 package com.openclassrooms.mddapi.configuration.jwt;
 
-import com.openclassrooms.mddapi.exception.token.TokenLectureException;
-import com.openclassrooms.mddapi.model.entity.User;
-import com.openclassrooms.mddapi.repository.UserRepository;
 import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,8 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -32,7 +28,7 @@ import java.util.regex.Pattern;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final UserDetailsService userDetailsService;
 
     /**
      * Constructor for JwtFilter class
@@ -41,10 +37,10 @@ public class JwtFilter extends OncePerRequestFilter {
      */
     public JwtFilter(
             JwtService jwtService,
-            UserRepository userRepository
+            UserDetailsService userDetailsServiceImpl
     ) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
+        this.userDetailsService = userDetailsServiceImpl;
     }
 
     /**
@@ -92,7 +88,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (ObjectUtils.isEmpty(header)) {
-            log.info("No Authorization header");
             return false;
         }
         Pattern pattern = Pattern.compile("^Bearer .+");
@@ -122,10 +117,8 @@ public class JwtFilter extends OncePerRequestFilter {
      * @param request HttpServletRequest
      */
     private void setAuthenticationContext(String token, HttpServletRequest request) {
-        UserDetails userDetails = getUserDetails(token);
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
+                this.userDetailsService.loadUserByUsername(jwtService.getSubject(token)),
                 null,
                 null
         );
@@ -133,29 +126,6 @@ public class JwtFilter extends OncePerRequestFilter {
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-    }
-
-    /**
-     *
-     * @param token Access Token
-     * @return UserDetails
-     */
-    private UserDetails getUserDetails(String token) {
-
-        User user;
-        String subject = jwtService.getSubject(token);
-        try {
-            user = userRepository.findById(Long.parseLong(subject))
-                    .orElseThrow(
-                            () -> new UsernameNotFoundException("Cannot find user " + subject)
-                    );
-        } catch (NumberFormatException | UsernameNotFoundException ex ) {
-            throw new TokenLectureException("Invalid subject " + subject + " !", ex);
-        } catch (Exception ex) {
-            throw new TokenLectureException("Token lecture error !", ex);
-        }
-
-        return user;
     }
 
 }

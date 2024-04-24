@@ -2,7 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
-import com.openclassrooms.mddapi.model.payload.response.ApiErrorIResponse;
+import com.openclassrooms.mddapi.model.payload.response.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -29,14 +30,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      */
     @ExceptionHandler({ AuthenticationException.class })
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ApiErrorIResponse> handleAuthenticationExceptions(
+    public ResponseEntity<ApiErrorResponse> handleAuthenticationExceptions(
             HttpServletRequest req,
             AuthenticationException ex
     ) {
         log.error("Error 401 (Unauthorized) -> {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ApiErrorIResponse
+                .body(ApiErrorResponse
                         .builder()
                         .url(req.getRequestURI())
                         .message("Authentication Error")
@@ -53,14 +54,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      */
     @ExceptionHandler({ AlreadyExitingUserException.class} )
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorIResponse> handleAlreadyExistingException(
+    public ResponseEntity<ApiErrorResponse> handleAlreadyExistingException(
             HttpServletRequest req,
             AlreadyExitingUserException ex
     ) {
         log.error("Error 400 (Bad Request) -> {}", ex.getMessage());
         return ResponseEntity
                 .badRequest()
-                .body(ApiErrorIResponse
+                .body(ApiErrorResponse
                         .builder()
                         .url(req.getRequestURI())
                         .message("Bad Request")
@@ -77,14 +78,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      */
     @ExceptionHandler({ DataIntegrityViolationException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiErrorIResponse> handleAlreadyExistingException(
+    public ResponseEntity<ApiErrorResponse> handleAlreadyExistingException(
             HttpServletRequest req,
             DataIntegrityViolationException ex
     ) {
         log.error("Error 400 (Data Integrity Violation) -> {}", ex.getMessage());
         return ResponseEntity
                 .badRequest()
-                .body(ApiErrorIResponse
+                .body(ApiErrorResponse
                         .builder()
                         .url(req.getRequestURI())
                         .message("Bad Request")
@@ -102,14 +103,14 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      */
     @ExceptionHandler({ TokenGenerationException.class })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ApiErrorIResponse> handleTokenGenerationExceptions(
+    public ResponseEntity<ApiErrorResponse> handleTokenGenerationExceptions(
             HttpServletRequest req,
             TokenGenerationException ex
     ) {
         log.error("Error 500 (Token Generation Error) -> {}", ex.getMessage());
         return ResponseEntity
                 .internalServerError()
-                .body(ApiErrorIResponse
+                .body(ApiErrorResponse
                         .builder()
                         .url(req.getRequestURI())
                         .message("Internal Server Error")
@@ -127,7 +128,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
      * @return API error response
      */
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<ApiErrorIResponse> defaultErrorHandler(
+    public ResponseEntity<ApiErrorResponse> defaultErrorHandler(
             HttpServletRequest req,
             Exception ex
     ) throws Exception {
@@ -140,7 +141,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         log.error("Error 500 (Generic Error) -> {}", ex.getMessage());
         return ResponseEntity
                 .internalServerError()
-                .body(ApiErrorIResponse
+                .body(ApiErrorResponse
                         .builder()
                         .url(req.getRequestURI())
                         .message("Internal Server Error")

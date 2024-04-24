@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenIResponse implements IResponse {
+public class TokenResponse implements IResponse {
 
     private String token;
 }

@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.exception.user;
 
-public class NonExistingUserException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class NonExistingUserException extends AuthenticationException {
 
     /**
      * Constructor for NonExistingUserException class

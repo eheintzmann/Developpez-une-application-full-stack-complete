@@ -93,26 +93,27 @@ public class AuthService implements IAuthService {
     /**
      * Log in an existing user
      *
-     * @param email    user email
+     * @param login  user email
      * @param password user password
      * @return String token
      */
     @Override
-    public String loginUser(String email, String password) {
+    public String loginUser(String login, String password) {
+
+        User user = userRepository
+                .findByEmail(login)
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + login));
 
         Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
+                new UsernamePasswordAuthenticationToken(user.getId(), password)
         );
 
-        // if user
+        // if user  authenticated
         if (authentication.isAuthenticated()) {
-            //retrieve user
-            User user = (User) authentication.getPrincipal();
-
             // Return token
             return jwtService.generateAccessToken(user);
         }
-        throw new NonExistingUserException("Cannot find user " + email);
+        throw new NonExistingUserException("Cannot find user " + login);
     }
 
     /**

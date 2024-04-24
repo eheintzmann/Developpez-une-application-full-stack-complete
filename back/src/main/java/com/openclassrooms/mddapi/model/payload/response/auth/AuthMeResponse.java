@@ -15,7 +15,7 @@ import java.time.Instant;
  */
 @Builder
 @Data
-public class AuthMeIResponse implements IResponse {
+public class AuthMeResponse implements IResponse {
 
     @Positive
     private Long id;
