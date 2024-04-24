@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -54,7 +55,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiErrorIResponse> handleAlreadyExistingException(
             HttpServletRequest req,
-            RuntimeException ex
+            AlreadyExitingUserException ex
     ) {
         log.error("Error 400 (Bad Request) -> {}", ex.getMessage());
         return ResponseEntity
@@ -66,6 +67,31 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                         .build()
                 );
     }
+
+    /**
+     * handler for error 400 (Data Integrity Violation)
+     *
+     * @param req request
+     * @param ex exception
+     * @return API error response
+     */
+    @ExceptionHandler({ DataIntegrityViolationException.class })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorIResponse> handleAlreadyExistingException(
+            HttpServletRequest req,
+            DataIntegrityViolationException ex
+    ) {
+        log.error("Error 400 (Data Integrity Violation) -> {}", ex.getMessage());
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorIResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Bad Request")
+                        .build()
+                );
+    }
+
 
     /**
      * handler for error 500
