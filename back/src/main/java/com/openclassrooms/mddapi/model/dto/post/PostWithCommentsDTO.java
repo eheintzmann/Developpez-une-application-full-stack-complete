@@ -13,15 +13,15 @@ public class PostWithCommentsDTO {
 
 	private Long id;
 
+	private String topic;
+
+	private String author;
+
 	private String title;
 
 	private String content;
 
 	private List<CommentDTO> comments;
-
-	private String topic;
-
-	private String author;
 
 	private Instant updatedAt;
 

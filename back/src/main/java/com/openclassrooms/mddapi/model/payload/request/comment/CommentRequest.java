@@ -1,4 +1,4 @@
-package com.openclassrooms.mddapi.model.payload.request.post;
+package com.openclassrooms.mddapi.model.payload.request.comment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
@@ -7,19 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * Post Request
+ * Comment Request
  */
 @Builder
 @Data
-public class PostRequest {
-
-    @NotEmpty
-    private String title;
+public class CommentRequest {
 
     @NotEmpty
     private String content;
 
     @Min(0)
-    @JsonProperty(value = "topic_id")
-    private Long topicId;
+    @JsonProperty(value = "post_id")
+    private Long postId;
 }
