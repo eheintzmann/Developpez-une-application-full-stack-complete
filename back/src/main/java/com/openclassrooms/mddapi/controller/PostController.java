@@ -1,9 +1,11 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
+import com.openclassrooms.mddapi.model.payload.request.post.PostRequest;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,6 +47,16 @@ public class PostController {
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<PostWithCommentsDTO> getPost(@PathVariable Long id) {
 		return ResponseEntity.ok(postService.getPost(id));
+	}
+
+	@PostMapping
+	public  ResponseEntity<PostWithCommentsDTO> postPost(
+			@AuthenticationPrincipal User user,
+			@Valid @RequestBody PostRequest req
+	) {
+		return ResponseEntity.ok(
+				postService.createPost(user, req.getTitle(), req.getContent(), req.getTopicId())
+		);
 	}
 
 }

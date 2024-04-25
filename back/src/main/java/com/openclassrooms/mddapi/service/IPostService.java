@@ -20,4 +20,6 @@ public interface IPostService {
      * @return Post
      */
     PostWithCommentsDTO getPost(Long id);
+
+    PostWithCommentsDTO createPost(User user, String title, String content, Long id);
 }
