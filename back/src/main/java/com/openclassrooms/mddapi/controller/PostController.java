@@ -5,6 +5,8 @@ import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
 import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
 	private final IPostService postService;
+	private final ConversionService conversionService;
 
-	public PostController(IPostService postService) {
+	public PostController(IPostService postService, @Qualifier("conversionService") ConversionService conversionService) {
 		this.postService = postService;
+		this.conversionService = conversionService;
 	}
 
 	@GetMapping
@@ -32,9 +36,10 @@ public class PostController {
 					flags = Pattern.Flag.CASE_INSENSITIVE
 			) String order
 	) {
-		return ResponseEntity.ok(postService.getPosts(
-						user,
-						Sort.Direction.fromString(order)
+		return ResponseEntity.ok(
+				conversionService.convert(
+						postService.getPosts(user, Sort.Direction.fromString(order)),
+						PostsResponse.class
 				)
 		);
 	}
