@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.model.entity.Post;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.PostRepository;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,9 +23,12 @@ public class PostService implements IPostService {
 
 
 	@Override
-	public PostsResponse getPosts(User user) {
+	public PostsResponse getPosts(User user, Sort.Direction sortDirection) {
 
-		Iterable<Post> posts = this.postRepository.findPostsByUsersId(user.getId());
+		Iterable<Post> posts = this.postRepository.findPostsByUsersId(
+				user.getId(),
+				Sort.by(sortDirection, "p.updatedAt")
+		);
 
 		return conversionService.convert(posts, PostsResponse.class);
 	}

@@ -3,11 +3,14 @@ package com.openclassrooms.mddapi.controller;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
+import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -22,8 +25,18 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<PostsResponse> getPosts(@AuthenticationPrincipal User user) {
-		return ResponseEntity.ok(postService.getPosts(user));
+	public ResponseEntity<PostsResponse> getPosts(
+			@AuthenticationPrincipal User user,
+			@RequestParam(defaultValue = "desc") @Pattern(
+					regexp = "^(asc|desc)$",
+					flags = Pattern.Flag.CASE_INSENSITIVE
+			) String order
+	) {
+		return ResponseEntity.ok(postService.getPosts(
+						user,
+						Sort.Direction.fromString(order)
+				)
+		);
 	}
 
 }
