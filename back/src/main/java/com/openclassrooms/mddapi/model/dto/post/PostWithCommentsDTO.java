@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Data
 @Builder
@@ -19,7 +17,7 @@ public class PostWithCommentsDTO {
 
 	private String content;
 
-	private SortedSet<CommentDTO> comments = new TreeSet<>(Comparator.comparing(CommentDTO::getUpdatedAt));
+	private List<CommentDTO> comments;
 
 	private String topic;
 

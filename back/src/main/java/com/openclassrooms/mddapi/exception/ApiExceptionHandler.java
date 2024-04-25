@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.exception;
 
+import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.model.payload.response.ApiErrorResponse;
@@ -92,6 +93,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         .build()
                 );
     }
+
+    @ExceptionHandler({ NonExistingPostException.class })
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ApiErrorResponse> handleNonExistingPostException(
+            HttpServletRequest req,
+            NonExistingPostException ex
+    ) {
+        log.error("Error 404 (Not Found) -> {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiErrorResponse
+                        .builder()
+                        .url(req.getRequestURI())
+                        .message("Not Found")
+                        .build()
+                );
+    }
+
 
 
     /**

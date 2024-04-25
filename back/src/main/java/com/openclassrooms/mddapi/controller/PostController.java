@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
@@ -10,10 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -42,6 +40,11 @@ public class PostController {
 						PostsResponse.class
 				)
 		);
+	}
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<PostWithCommentsDTO> getPost(@PathVariable Long id) {
+		return ResponseEntity.ok(postService.getPost(id));
 	}
 
 }

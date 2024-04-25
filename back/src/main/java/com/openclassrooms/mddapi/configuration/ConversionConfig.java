@@ -33,6 +33,7 @@ public class ConversionConfig {
         converters.add(new PostEntityToPostDTO());
         converters.add(new PostEntitiesToPostsDTO());
         converters.add(new TopicEntityToSubscriptionDTO());
+        converters.add(new PostEntityToPostWitCommentsDTO());
 
         conversionService.setConverters(converters);
         return conversionService;
