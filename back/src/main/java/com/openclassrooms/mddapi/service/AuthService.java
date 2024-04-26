@@ -2,7 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.CannotAuthenticateUserException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
@@ -102,7 +102,7 @@ public class AuthService implements IAuthService {
 
         User user = userRepository
                 .findByEmail(login)
-                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + login));
+                .orElseThrow(() -> new CannotAuthenticateUserException("Cannot authenticate user " + login));
 
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getId(), password)
@@ -113,7 +113,7 @@ public class AuthService implements IAuthService {
             // Return token
             return jwtService.generateAccessToken(user);
         }
-        throw new NonExistingUserException("Cannot find user " + login);
+        throw new CannotAuthenticateUserException("Cannot authenticate user " + login);
     }
 
     /**

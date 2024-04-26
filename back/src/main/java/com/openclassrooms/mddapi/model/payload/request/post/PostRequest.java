@@ -20,6 +20,6 @@ public class PostRequest {
     private String content;
 
     @Min(0)
-    @JsonProperty(value = "topic_id")
+    @JsonProperty("topic_id")
     private Long topicId;
 }

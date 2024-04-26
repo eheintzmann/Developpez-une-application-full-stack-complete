@@ -4,11 +4,14 @@ import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.token.TokenLectureException;
 import com.openclassrooms.mddapi.exception.token.TokenValidationException;
 import com.openclassrooms.mddapi.model.entity.User;
+import com.openclassrooms.mddapi.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -29,10 +32,11 @@ import java.util.Date;
  */
 @Slf4j
 @Service
-public class JwtService {
+public class JwtService implements IJwtService {
     private final Duration expireDuration;
     private final String issuer;
     private final SecretKey secretKey;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for JwtService class
@@ -46,11 +50,36 @@ public class JwtService {
             @Value("${app.jwt.secret}") String appJwtSecret,
             @Value("${app.jwt.salt}") String appJwtSalt,
             @Value("${app.jwt.expiration}") String appJwtExpiration,
-            @Value("${app.jwt.issuer}") String appJwtIssuer
-    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
+            @Value("${app.jwt.issuer}") String appJwtIssuer,
+            UserRepository userRepository) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.secretKey = getKeyFromPassword(appJwtSecret, appJwtSalt);
         this.expireDuration = Duration.of(Long.parseLong(appJwtExpiration), ChronoUnit.HOURS);
         this.issuer = appJwtIssuer;
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * Load a User using his token
+     *
+     * @param token String
+     * @return UserDetails
+     */
+    @Override
+    public UserDetails loadUserByToken(String token) {
+        return loadUserByUsername(getSubject(token));
+    }
+
+    /**
+     *
+     * @param username user id
+     * @return UserDetails
+     * @throws UsernameNotFoundException ex
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findById(Long.parseLong(username))
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("User " + username + " not found"));
     }
 
     /**
@@ -59,6 +88,7 @@ public class JwtService {
      * @param user User
      * @return Access Token
      */
+    @Override
     public String generateAccessToken(User user) {
         try {
             return Jwts.builder()
@@ -87,6 +117,7 @@ public class JwtService {
      * @param token String
      * @return boolean
      */
+    @Override
     public boolean validateAccessToken(String token) {
         try {
             Jwts.parser()
@@ -168,7 +199,9 @@ public class JwtService {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "HmacSHA512");
     }
 
+
     public void logSecretKey(SecretKey key) {
         log.info("SecretKey (base64) : {}", Base64.getEncoder().encodeToString(key.getEncoded()));
     }
+
 }

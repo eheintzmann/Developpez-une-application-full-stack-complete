@@ -13,9 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -31,7 +31,7 @@ public class SpringSecurityConfig {
     /**
      * Constructor for SpringSecurityConfig class
      *
-     * @param jwtFilter      JwtFilter
+     * @param jwtFilter JwtFilter
      */
     public SpringSecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
@@ -70,8 +70,8 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-            AuthenticationEntryPoint delegatedAuthenticationEntryPoint
-            ) throws Exception {
+            HandlerExceptionResolver handlerExceptionResolver
+    ) throws Exception {
 
         // Use stateless session; session won't be used to store user's state.
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -87,8 +87,7 @@ public class SpringSecurityConfig {
                 ).permitAll()
                 // Authenticate these requests
                 .requestMatchers(
-                        antMatcher("/api/v1/**"),
-                        antMatcher(HttpMethod.GET, "/error")
+                        antMatcher("/api/v1/**")
                 ).authenticated()
                 // Deny all other requests
                 .anyRequest().denyAll()
@@ -96,7 +95,22 @@ public class SpringSecurityConfig {
 
         // Send Http status 401 when error occurs
         http.exceptionHandling(
-                handlingConfigurer -> handlingConfigurer.authenticationEntryPoint(delegatedAuthenticationEntryPoint)
+                handlingConfigurer -> handlingConfigurer
+                        .authenticationEntryPoint(
+                                (request, response, authException) -> handlerExceptionResolver.resolveException(
+                                        request,
+                                        response,
+                                        null,
+                                        authException
+                                )
+                        )
+                        .accessDeniedHandler((request, response, accessDeniedException) -> handlerExceptionResolver.resolveException(
+                                        request,
+                                        response,
+                                        null,
+                                        accessDeniedException
+                                )
+                        )
         );
 
         // Add a filter to validate the tokens with every authenticated request
