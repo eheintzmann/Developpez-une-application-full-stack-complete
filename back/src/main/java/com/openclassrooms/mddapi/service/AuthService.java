@@ -87,7 +87,7 @@ public class AuthService implements IAuthService {
         userRepository.saveAndFlush(user);
 
         // Return token
-       return jwtService.generateAccessToken(user);
+        return jwtService.generateAccessToken(user);
     }
 
     /**

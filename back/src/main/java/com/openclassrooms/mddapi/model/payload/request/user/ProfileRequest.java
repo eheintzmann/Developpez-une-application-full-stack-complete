@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.model.payload.request.user;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,11 +12,11 @@ import lombok.Data;
 @Data
 public class ProfileRequest {
 
-    @Email
-    @NotBlank
+    @Email(message = "invalid email")
     private String email;
 
-    @NotBlank
     private String username;
 
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,}$", message = "invalid password")
+    private String password;
 }
