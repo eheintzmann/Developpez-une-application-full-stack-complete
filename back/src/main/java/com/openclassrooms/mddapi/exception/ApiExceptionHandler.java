@@ -41,7 +41,7 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             AlreadyExitingUserException ex
     ) {
-        log.error("Error 400 (Bad Request) -> {}", ex.getMessage());
+        logError(HttpStatus.BAD_REQUEST, ex);
         return ResponseEntity
                 .badRequest()
                 .body(
@@ -50,22 +50,41 @@ public class ApiExceptionHandler {
     }
 
     /**
+     * handler for error 400 (HttpMessageNotReadableException)
+     *
+     * @param req request
+     * @param ex  exception
+     * @return API error response
+     */
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<LinkedHashMap<String, Object>> handleAlreadyExistingException(
+            HttpServletRequest req,
+            HttpMessageNotReadableException ex
+    ) {
+        logError(HttpStatus.BAD_REQUEST, ex);
+        return ResponseEntity
+                .badRequest()
+                .body(
+                        getResponseBody("", req, HttpStatus.BAD_REQUEST)
+                );
+    }
+
+
+    /**
      * handler for error 400 (Data Integrity Violation)
      *
      * @param req request
      * @param ex  exception
      * @return API error response
      */
-    @ExceptionHandler({
-            DataIntegrityViolationException.class,
-            HttpMessageNotReadableException.class
-    })
+    @ExceptionHandler({DataIntegrityViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<LinkedHashMap<String, Object>> handleAlreadyExistingException(
             HttpServletRequest req,
             Exception ex
     ) {
-        log.error("Error 400 ({}) -> {}", ex.getClass().getName(), ex.getMessage());
+        logError(HttpStatus.BAD_REQUEST, ex);
         return ResponseEntity
                 .badRequest()
                 .body(
@@ -80,7 +99,8 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             MethodArgumentNotValidException ex
     ) {
-        log.error("Error 400 ({}) -> {}", ex.getStatusCode(), ex.getDetailMessageArguments());
+        logError(HttpStatus.valueOf(ex.getStatusCode().value()), ex);
+
 
         Map<String, String> errors = new LinkedHashMap<>();
         ex.getBindingResult().getAllErrors().forEach(objectError -> {
@@ -109,7 +129,7 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             AuthenticationException ex
     ) {
-        log.error("Error 401 (Unauthorized) -> {}", ex.getMessage());
+        logError(HttpStatus.UNAUTHORIZED, ex);
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(
@@ -130,7 +150,7 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             AccessDeniedException ex
     ) {
-        log.error("Error 403 (Forbidden) -> {}", ex.getMessage());
+        logError(HttpStatus.FORBIDDEN, ex);
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(getResponseBody("", req, HttpStatus.FORBIDDEN));
@@ -149,7 +169,7 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             Exception ex
     ) {
-        log.error("Error 404 (Not Found) -> {}", ex.getMessage());
+        logError(HttpStatus.NOT_FOUND, ex);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(getResponseBody("", req, HttpStatus.NOT_FOUND));
@@ -169,7 +189,7 @@ public class ApiExceptionHandler {
             HttpServletRequest req,
             TokenGenerationException ex
     ) {
-        log.error("Error 500 (Token Generation Error) -> {}", ex.getMessage());
+        logError(HttpStatus.INTERNAL_SERVER_ERROR, ex);
         return ResponseEntity
                 .internalServerError()
                 .body(
@@ -191,10 +211,9 @@ public class ApiExceptionHandler {
             Exception ex
     ) {
 
-        log.info("Status code -> {}", req.toString());
         log.info("Exception -> {}", ex.getClass().getName());
-        // Otherwise setup and send the user to a default error-view.
-        log.error("Error 500 (Generic Error) -> {}", ex.getMessage());
+
+        logError(HttpStatus.BAD_REQUEST, ex);
         return ResponseEntity
                 .internalServerError()
                 .body(
@@ -202,6 +221,13 @@ public class ApiExceptionHandler {
                 );
     }
 
+    /**
+     *
+     * @param messages Object
+     * @param req HttpServletRequest
+     * @param status HttpStatus
+     * @return LinkedHashMap<String,Object>
+     */
     private LinkedHashMap<String, Object> getResponseBody(
             Object messages,
             HttpServletRequest req,
@@ -216,5 +242,14 @@ public class ApiExceptionHandler {
         }
         map.put("message", messages);
         return map;
+    }
+
+    /**
+     *
+     * @param status HttpStatus
+     * @param ex Exception
+     */
+    private void logError(HttpStatus status, Exception ex) {
+        log.error("Error {} ({}) -> {}", status, ex.getClass().getSimpleName(), ex.getMessage());
     }
 }
