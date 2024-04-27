@@ -77,7 +77,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         });
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
-                "validation failed"
+                "Validation failed"
         );
         problemDetail.setProperty("errors", errors);
         return ResponseEntity
@@ -193,7 +193,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .internalServerError()
                 .body(
-                        ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "an error occurred")
+                        ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred")
                 );
     }
 
