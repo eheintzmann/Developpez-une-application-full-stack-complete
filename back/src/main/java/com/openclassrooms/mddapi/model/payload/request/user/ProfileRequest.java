@@ -2,14 +2,12 @@ package com.openclassrooms.mddapi.model.payload.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /**
  * Profile Request
  */
-@Builder
-@Data
+@Getter
 public class ProfileRequest {
 
     @Email(message = "invalid email")
