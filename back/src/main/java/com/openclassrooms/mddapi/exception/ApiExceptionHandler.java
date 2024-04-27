@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.exception;
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
+import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -59,10 +60,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
+            @Nonnull MethodArgumentNotValidException ex,
+            @Nonnull HttpHeaders headers,
+            @Nonnull HttpStatusCode status,
+            @Nonnull WebRequest request
     ) {
 
         logError(HttpStatus.valueOf(ex.getStatusCode().value()), ex);
