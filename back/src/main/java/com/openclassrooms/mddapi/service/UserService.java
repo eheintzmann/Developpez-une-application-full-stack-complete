@@ -4,19 +4,22 @@ import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final ConversionService conversionService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
-            ConversionService conversionService
-    ){
+            ConversionService conversionService,
+            PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.conversionService = conversionService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -25,11 +28,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO updateProfile(User user, String username, String email) {
-        user.setUsername(username);
-        user.setEmail(email);
+    public UserDTO updateProfile(User user, String username, String email, String password) {
+        if (username != null) {
+            user.setUsername(username);
+        }
+        if (email != null) {
+            user.setEmail(email);
+        }
+        if (password != null) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
 
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
 
         return conversionService.convert(user, UserDTO.class);
     }

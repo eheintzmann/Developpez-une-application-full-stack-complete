@@ -17,8 +17,9 @@ public interface IUserService {
      * @param user User
      * @param username String
      * @param email String
+     * @param password String
      * @return UserDTO
      */
-    UserDTO updateProfile(User user, String username, String email);
+    UserDTO updateProfile(User user, String username, String email, String password);
 
 }

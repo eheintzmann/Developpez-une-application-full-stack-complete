@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import java.util.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@DynamicUpdate
 @Table(name = "users")
 public class User implements UserDetails {
 

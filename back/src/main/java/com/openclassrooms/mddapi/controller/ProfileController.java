@@ -35,14 +35,19 @@ public class ProfileController {
 		);
 	}
 
-	@PutMapping
-	public ResponseEntity<ProfileIResponse> putUser(
+	@PatchMapping
+	public ResponseEntity<ProfileIResponse> patchUser(
 			@Valid @RequestBody ProfileRequest profileRequest,
 			@AuthenticationPrincipal User user
 	) {
 		return ResponseEntity.ok(
 				conversionService.convert(
-						userService.updateProfile(user, profileRequest.getUsername(), profileRequest.getEmail()),
+						userService.updateProfile(
+								user,
+								profileRequest.getUsername(),
+								profileRequest.getEmail(),
+								profileRequest.getPassword()
+						),
 						ProfileIResponse.class
 				)
 		);
