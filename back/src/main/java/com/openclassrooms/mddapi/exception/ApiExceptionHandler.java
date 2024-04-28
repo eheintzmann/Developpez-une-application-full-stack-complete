@@ -2,7 +2,9 @@ package com.openclassrooms.mddapi.exception;
 
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
+import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -137,10 +139,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex  exception
      * @return Problem details
      */
-    @ExceptionHandler({NonExistingPostException.class})
+    @ExceptionHandler({
+            NonExistingPostException.class,
+            NonExistingTopicException.class,
+            NonExistingUserException.class
+    })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ProblemDetail> handleNonExistingPostExceptions(
-            NonExistingPostException ex,
+            Exception ex,
             WebRequest req
     ) {
         logError(HttpStatus.NOT_FOUND, ex);

@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.repository;
 
 import com.openclassrooms.mddapi.model.entity.Topic;
 import com.openclassrooms.mddapi.model.entity.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -43,6 +44,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param userId user Id
      * @return User
      */
-    @Query("Select u From User u left join u.subscriptions t where u.id = :userId")
-    Optional<User> findUsersByIdWithSubscriptions(Long userId);
+
+    @EntityGraph(attributePaths = {"subscriptions"})
+    @Query("Select u From User u where u.id = :userId")
+    Optional<User> findUserByIdWithSubscriptions(Long userId);
 }

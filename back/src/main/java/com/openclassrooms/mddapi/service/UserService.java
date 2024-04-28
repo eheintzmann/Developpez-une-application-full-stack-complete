@@ -1,9 +1,11 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +25,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDTO getProfile(User user) {
+    public UserDTO getProfile(UserDetails userDetails) {
+        User user = userRepository
+                .findById(Long.parseLong(userDetails.getUsername()))
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername()));
+
         return conversionService.convert(user, UserDTO.class);
     }
 
     @Override
-    public UserDTO updateProfile(User user, String username, String email, String password) {
+    public UserDTO updateProfile(UserDetails userDetails, String username, String email, String password) {
+        User user = userRepository
+                .findById(Long.parseLong(userDetails.getUsername()))
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername()));
+
         if (username != null) {
             user.setUsername(username);
         }
@@ -39,7 +49,8 @@ public class UserService implements IUserService {
             user.setPassword(passwordEncoder.encode(password));
         }
 
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
+
 
         return conversionService.convert(user, UserDTO.class);
     }

@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.model.payload.request.user.ProfileRequest;
 import com.openclassrooms.mddapi.model.payload.response.user.ProfileIResponse;
 import com.openclassrooms.mddapi.service.UserService;
@@ -9,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -26,10 +26,10 @@ public class ProfileController {
 	}
 
 	@GetMapping
-	public ResponseEntity<ProfileIResponse> getUser(@AuthenticationPrincipal User user) {
+	public ResponseEntity<ProfileIResponse> getUser(@AuthenticationPrincipal UserDetails userDetails) {
 		return ResponseEntity.ok(
 				conversionService.convert(
-						userService.getProfile(user),
+						userService.getProfile(userDetails),
 						ProfileIResponse.class
 				)
 		);
@@ -38,12 +38,12 @@ public class ProfileController {
 	@PatchMapping
 	public ResponseEntity<ProfileIResponse> patchUser(
 			@Valid @RequestBody ProfileRequest profileRequest,
-			@AuthenticationPrincipal User user
+			@AuthenticationPrincipal UserDetails userDetails
 	) {
 		return ResponseEntity.ok(
 				conversionService.convert(
 						userService.updateProfile(
-								user,
+								userDetails,
 								profileRequest.getUsername(),
 								profileRequest.getEmail(),
 								profileRequest.getPassword()

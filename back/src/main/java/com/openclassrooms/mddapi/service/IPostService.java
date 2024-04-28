@@ -2,17 +2,17 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.entity.Post;
-import com.openclassrooms.mddapi.model.entity.User;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IPostService {
 
     /**
      *
-     * @param user User
+     * @param userDetails User details
      * @return PostsDTO
      */
-    Iterable<Post> getPosts(User user, Sort.Direction sortDirection);
+    Iterable<Post> getPosts(UserDetails userDetails, Sort.Direction sortDirection);
 
     /**
      *
@@ -21,5 +21,13 @@ public interface IPostService {
      */
     PostWithCommentsDTO getPost(Long id);
 
-    PostWithCommentsDTO createPost(User user, String title, String content, Long id);
+    /**
+     *
+     * @param userDetails User details
+     * @param title Post title
+     * @param content Post content
+     * @param topicId Topic id
+     * @return PostWithCommentsDTO
+     */
+    PostWithCommentsDTO createPost(UserDetails userDetails, String title, String content, Long topicId);
 }

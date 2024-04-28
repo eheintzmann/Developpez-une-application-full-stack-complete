@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
-import com.openclassrooms.mddapi.model.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IAuthService {
 
@@ -27,8 +27,8 @@ public interface IAuthService {
     /**
      * Return details of a given user
      *
-     * @param user User
+     * @param userDetails User details
      * @return UserDTO
      */
-    UserDTO authUser(User user);
+    UserDTO authUser(UserDetails userDetails);
 }

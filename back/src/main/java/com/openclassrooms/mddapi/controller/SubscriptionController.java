@@ -1,11 +1,11 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.payload.response.subscription.SubscriptionsResponse;
-import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.ISubscriptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -20,10 +20,10 @@ public class SubscriptionController {
 	}
 
 	@GetMapping
-	public ResponseEntity<SubscriptionsResponse> getSubscriptions(@AuthenticationPrincipal User user) {
+	public ResponseEntity<SubscriptionsResponse> getSubscriptions(@AuthenticationPrincipal UserDetails userDetails) {
 		return ResponseEntity.ok(SubscriptionsResponse
 				.builder()
-				.subscriptions(subscriptionService.getSubscriptions(user))
+				.subscriptions(subscriptionService.getSubscriptions(userDetails))
 				.build()
 		);
 	}
@@ -31,11 +31,11 @@ public class SubscriptionController {
 	@PostMapping(path = "/{id}")
 	public ResponseEntity<SubscriptionsResponse> postSubscription(
 			@PathVariable Long id,
-			@AuthenticationPrincipal User user
+			@AuthenticationPrincipal UserDetails userDetails
 	) {
 		return ResponseEntity.ok(SubscriptionsResponse
 				.builder()
-				.subscriptions(subscriptionService.subscribeTo(id, user))
+				.subscriptions(subscriptionService.subscribeTo(id, userDetails))
 				.build()
 		);
 	}
@@ -43,11 +43,11 @@ public class SubscriptionController {
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<SubscriptionsResponse> deleteSubscription(
 			@PathVariable Long id,
-			@AuthenticationPrincipal User user
+			@AuthenticationPrincipal UserDetails userDetails
 	) {
 		return ResponseEntity.ok(SubscriptionsResponse
 				.builder()
-				.subscriptions(subscriptionService.deleteSubscription(id, user))
+				.subscriptions(subscriptionService.deleteSubscription(id, userDetails))
 				.build()
 		);
 	}

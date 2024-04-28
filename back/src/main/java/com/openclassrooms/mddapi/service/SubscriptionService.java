@@ -8,6 +8,7 @@ import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,17 +32,19 @@ public class SubscriptionService implements ISubscriptionService {
 	}
 
 	@Override
-	public List<SubscriptionDTO> getSubscriptions(User user) {
+	public List<SubscriptionDTO> getSubscriptions(UserDetails userDetails) {
+
 		List<SubscriptionDTO> subscriptionsDTO = new ArrayList<>();
-		userRepository.findSubscriptionsByUser(user.getId()).forEach(
+		userRepository.findSubscriptionsByUser(Long.parseLong(userDetails.getUsername())).forEach(
 				subscription -> subscriptionsDTO.add(conversionService.convert(subscription, SubscriptionDTO.class))
 		);
 		return subscriptionsDTO;
 	}
 
 	@Override
-	public List<SubscriptionDTO> subscribeTo(Long topicId, User user) {
-		User userWithSubscriptions = this.getUserWithSubscriptions(user.getId());
+	public List<SubscriptionDTO> subscribeTo(Long topicId, UserDetails userDetails) {
+
+		User userWithSubscriptions = this.getUserWithSubscriptions(Long.parseLong(userDetails.getUsername()));
 		Topic topic = this.getTopicEntity(topicId);
 
 		if (!userWithSubscriptions.getSubscriptions().contains(topic)) {
@@ -49,19 +52,20 @@ public class SubscriptionService implements ISubscriptionService {
 		}
 		userRepository.saveAndFlush(userWithSubscriptions);
 
-		return this.getSubscriptions(userWithSubscriptions);
+		return this.getSubscriptions(userDetails);
 	}
 
 	@Override
-	public List<SubscriptionDTO> deleteSubscription(Long topicId, User user) {
-		User userWithSubscriptions = this.getUserWithSubscriptions(user.getId());
+	public List<SubscriptionDTO> deleteSubscription(Long topicId, UserDetails userDetails) {
+
+		User userWithSubscriptions = this.getUserWithSubscriptions(Long.parseLong(userDetails.getUsername()));
 		Topic topic = this.getTopicEntity(topicId);
 
 		userWithSubscriptions.getSubscriptions().remove(topic);
 
 		userRepository.saveAndFlush(userWithSubscriptions);
 
-		return this.getSubscriptions(userWithSubscriptions);
+		return this.getSubscriptions(userDetails);
 	}
 
 	private Topic getTopicEntity(Long topicId) {
@@ -72,7 +76,7 @@ public class SubscriptionService implements ISubscriptionService {
 
 	private User getUserWithSubscriptions(Long id) {
 		return userRepository
-				.findUsersByIdWithSubscriptions(id)
+				.findUserByIdWithSubscriptions(id)
 				.orElseThrow(() -> new NonExistingUserException("Cannot find user " + id));
 	}
 

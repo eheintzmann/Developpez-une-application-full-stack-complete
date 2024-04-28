@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.service;
 import java.util.List;
 
 import com.openclassrooms.mddapi.model.dto.topic.TopicDTO;
-import com.openclassrooms.mddapi.model.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface ITopicService {
 
@@ -12,6 +12,6 @@ public interface ITopicService {
 	 * @param user User
 	 * @return Topics DTO
 	 */
-	List<TopicDTO> getTopics(User user);
+	List<TopicDTO> getTopics(UserDetails userDetails);
 
 }

@@ -8,11 +8,11 @@ import java.time.Instant;
 @Builder
 public class PostDTO {
 
+	private Long id;
+
 	private String topic;
 
 	private String author;
-
-	private Long id;
 
 	private String title;
 

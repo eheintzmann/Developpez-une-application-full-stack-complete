@@ -1,8 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.model.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface ICommentService {
 
-    void createComment(String content, Long postId, User user);
+    /**
+     *
+     * @param content Comment content
+     * @param postId  Post id
+     * @param userDetails User details
+     */
+    void createComment(String content, Long postId, UserDetails userDetails);
 }

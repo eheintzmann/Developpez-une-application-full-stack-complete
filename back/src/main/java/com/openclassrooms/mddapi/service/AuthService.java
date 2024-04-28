@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
 import com.openclassrooms.mddapi.exception.user.CannotAuthenticateUserException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
+import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -13,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,7 +71,7 @@ public class AuthService implements IAuthService {
 
         // If user exists, stop registration, do not return a token
         if (userRepository.existsByEmailOrUsername(email, name)) {
-            throw new AlreadyExitingUserException("Email (" + email + ") or username ("  +name + ") is already used");
+            throw new AlreadyExitingUserException("Email (" + email + ") or username (" + name + ") is already used");
         }
 
         // If user doesn't exist, register it
@@ -93,7 +93,7 @@ public class AuthService implements IAuthService {
     /**
      * Log in an existing user
      *
-     * @param login  user email
+     * @param login    user email
      * @param password user password
      * @return String token
      */
@@ -102,14 +102,10 @@ public class AuthService implements IAuthService {
 
         User user = userRepository
                 .findByEmail(login)
-                .orElseThrow(() -> new CannotAuthenticateUserException("Cannot authenticate user " + login));
-
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getId(), password)
-        );
+                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + login));
 
         // if user  authenticated
-        if (authentication.isAuthenticated()) {
+        if (passwordEncoder.matches(password, user.getPassword())) {
             // Return token
             return jwtService.generateAccessToken(user);
         }
@@ -119,11 +115,17 @@ public class AuthService implements IAuthService {
     /**
      * Return details of a given user
      *
-     * @param user User
+     * @param userDetails User details
      * @return Optional User
      */
     @Override
-    public UserDTO authUser(User user) {
+    public UserDTO authUser(UserDetails userDetails) {
+
+        User user = userRepository
+                .findById(Long.parseLong(userDetails.getUsername()))
+                .orElseThrow(() -> new CannotAuthenticateUserException(
+                        "Cannot authenticate user " + userDetails.getUsername())
+                );
 
         return conversionService.convert(user, UserDTO.class);
     }

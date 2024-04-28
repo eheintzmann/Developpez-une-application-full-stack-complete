@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.controller;
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.payload.request.post.PostRequest;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
-import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.service.IPostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -13,6 +12,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -30,7 +30,7 @@ public class PostController {
 
 	@GetMapping
 	public ResponseEntity<PostsResponse> getPosts(
-			@AuthenticationPrincipal User user,
+			@AuthenticationPrincipal UserDetails userDetails,
 			@RequestParam(defaultValue = "desc") @Pattern(
 					regexp = "^(asc|desc)$",
 					flags = Pattern.Flag.CASE_INSENSITIVE
@@ -38,7 +38,7 @@ public class PostController {
 	) {
 		return ResponseEntity.ok(
 				conversionService.convert(
-						postService.getPosts(user, Sort.Direction.fromString(order)),
+						postService.getPosts(userDetails, Sort.Direction.fromString(order)),
 						PostsResponse.class
 				)
 		);
@@ -51,11 +51,11 @@ public class PostController {
 
 	@PostMapping
 	public  ResponseEntity<PostWithCommentsDTO> postPost(
-			@AuthenticationPrincipal User user,
+			@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody PostRequest req
 	) {
 		return ResponseEntity.ok(
-				postService.createPost(user, req.getTitle(), req.getContent(), req.getTopicId())
+				postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getTopicId())
 		);
 	}
 

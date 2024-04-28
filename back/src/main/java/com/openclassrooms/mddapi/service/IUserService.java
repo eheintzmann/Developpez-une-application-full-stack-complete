@@ -1,25 +1,25 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.model.dto.UserDTO;
-import com.openclassrooms.mddapi.model.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IUserService {
 
     /**
      *
-     * @param user User
+     * @param userDetails User details
      * @return UserDTO
      */
-    UserDTO getProfile(User user);
+    UserDTO getProfile(UserDetails userDetails);
 
     /**
      *
-     * @param user User
+     * @param userDetails  User details
      * @param username String
      * @param email String
      * @param password String
      * @return UserDTO
      */
-    UserDTO updateProfile(User user, String username, String email, String password);
+    UserDTO updateProfile(UserDetails userDetails, String username, String email, String password);
 
 }
