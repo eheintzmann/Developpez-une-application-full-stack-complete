@@ -28,7 +28,7 @@ public class PostController {
 		this.conversionService = conversionService;
 	}
 
-	@GetMapping
+	@GetMapping("/user")
 	public ResponseEntity<PostsResponse> getPosts(
 			@AuthenticationPrincipal UserDetails userDetails,
 			@RequestParam(defaultValue = "desc") @Pattern(

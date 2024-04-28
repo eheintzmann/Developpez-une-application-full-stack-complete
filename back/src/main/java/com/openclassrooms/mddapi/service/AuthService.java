@@ -5,7 +5,6 @@ import com.openclassrooms.mddapi.configuration.jwt.JwtService;
 import com.openclassrooms.mddapi.exception.user.CannotAuthenticateUserException;
 import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
-import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.Data;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,24 +108,6 @@ public class AuthService implements IAuthService {
             return jwtService.generateAccessToken(user);
         }
         throw new CannotAuthenticateUserException("Cannot authenticate user " + login);
-    }
-
-    /**
-     * Return details of a given user
-     *
-     * @param userDetails User details
-     * @return Optional User
-     */
-    @Override
-    public UserDTO authUser(UserDetails userDetails) {
-
-        User user = userRepository
-                .findById(Long.parseLong(userDetails.getUsername()))
-                .orElseThrow(() -> new CannotAuthenticateUserException(
-                        "Cannot authenticate user " + userDetails.getUsername())
-                );
-
-        return conversionService.convert(user, UserDTO.class);
     }
 
 }
