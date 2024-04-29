@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.model.payload.request.auth;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 /**
@@ -10,10 +10,11 @@ import lombok.Getter;
 @Getter
 public class LoginRequest {
 
-    @Email(message = "invalid email")
-    @NotBlank(message = "email is required")
-    private String email;
+    @NotBlank(message = "email or username is required")
+    @Size(max = 255, message = "255 characters maximum")
+    private String login;
 
     @NotBlank(message = "password is required")
+    @Size(max = 255, message = "255 characters maximum")
     private String password;
 }

@@ -69,7 +69,7 @@ public class AuthController {
 
         String token = this.authService
                 .loginUser(
-                        request.getEmail(),
+                        request.getLogin(),
                         request.getPassword()
                 );
 

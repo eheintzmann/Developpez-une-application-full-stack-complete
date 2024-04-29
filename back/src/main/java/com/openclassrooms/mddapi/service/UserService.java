@@ -1,10 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.NotUniqueEmailException;
+import com.openclassrooms.mddapi.exception.user.NotUniqueUsernameException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import java.util.Objects;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +22,7 @@ public class UserService implements IUserService {
     public UserService(
             UserRepository userRepository,
             ConversionService conversionService,
-            PasswordEncoder passwordEncoder){
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.conversionService = conversionService;
         this.passwordEncoder = passwordEncoder;
@@ -39,18 +43,42 @@ public class UserService implements IUserService {
                 .findById(Long.parseLong(userDetails.getUsername()))
                 .orElseThrow(() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername()));
 
-        if (username != null) {
+        if (username != null && !Objects.equals(username, user.getUsername())) {
             user.setUsername(username);
+
+            try {
+                userRepository.save(user);
+            } catch (DataIntegrityViolationException ex) {
+
+                if (userRepository.existsByUsername(username)) {
+                    throw new NotUniqueUsernameException("username " + username + " already registered");
+                }
+
+                throw ex;
+            }
         }
-        if (email != null) {
+
+        if (email != null && !Objects.equals(email, user.getEmail())) {
             user.setEmail(email);
+
+            try {
+                userRepository.save(user);
+            } catch (DataIntegrityViolationException ex) {
+
+                if (userRepository.existsByEmail(email)) {
+                    throw new NotUniqueEmailException("email " + email + " already registered");
+                }
+
+                throw ex;
+            }
         }
+
         if (password != null) {
             user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
         }
 
-        userRepository.saveAndFlush(user);
-
+        userRepository.flush();
 
         return conversionService.convert(user, UserDTO.class);
     }

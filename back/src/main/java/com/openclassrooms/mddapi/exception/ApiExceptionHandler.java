@@ -3,8 +3,9 @@ package com.openclassrooms.mddapi.exception;
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
-import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.NotUniqueEmailException;
+import com.openclassrooms.mddapi.exception.user.NotUniqueUsernameException;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -35,10 +36,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex  exception
      * @return Problem details
      */
-    @ExceptionHandler({AlreadyExitingUserException.class})
+    @ExceptionHandler({
+            NotUniqueEmailException.class,
+            NotUniqueUsernameException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ProblemDetail> handleAlreadyExistingExceptions(
-            AlreadyExitingUserException ex,
+            RuntimeException ex,
             WebRequest req
     ) {
         logError(HttpStatus.BAD_REQUEST, ex);

@@ -2,9 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.configuration.ConversionConfig;
 import com.openclassrooms.mddapi.configuration.jwt.JwtService;
-import com.openclassrooms.mddapi.exception.user.CannotAuthenticateUserException;
-import com.openclassrooms.mddapi.exception.user.AlreadyExitingUserException;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.*;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import lombok.Data;
@@ -12,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,29 +59,37 @@ public class AuthService implements IAuthService {
      * Register a new user
      *
      * @param email    user email
-     * @param name     username
+     * @param username     username
      * @param password user password
      * @return String token
      */
     @Override
-    public String registerUser(String email, String name, String password) {
-
-        // If user exists, stop registration, do not return a token
-        if (userRepository.existsByEmailOrUsername(email, name)) {
-            throw new AlreadyExitingUserException("Email (" + email + ") or username (" + name + ") is already used");
-        }
+    public String registerUser(String email, String username, String password) {
 
         // If user doesn't exist, register it
 
         // Create new user
         User user = User.builder()
-                .username(name)
+                .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .build();
 
-        // Save user in db
-        userRepository.saveAndFlush(user);
+        try {
+            // Save user in db
+            userRepository.saveAndFlush(user);
+        } catch (DataIntegrityViolationException ex) {
+
+            if (userRepository.existsByEmail(email)) {
+                throw new NotUniqueEmailException("email " + email + " already registered");
+            }
+
+            if (userRepository.existsByUsername(username)) {
+                throw new NotUniqueUsernameException("username " + username + " already registered");
+            }
+
+            throw ex;
+        }
 
         // Return token
         return jwtService.generateAccessToken(user);
@@ -100,7 +107,12 @@ public class AuthService implements IAuthService {
 
         User user = userRepository
                 .findByEmail(login)
-                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + login));
+                .orElseGet(
+                        () -> userRepository.findByUsername(login)
+                                .orElseThrow(
+                                        () -> new NonExistingUserException("Cannot find user " + login)
+                                )
+                );
 
         // if user  authenticated
         if (passwordEncoder.matches(password, user.getPassword())) {

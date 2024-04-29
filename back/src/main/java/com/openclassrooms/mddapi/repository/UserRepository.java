@@ -19,9 +19,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Find user by his email
      *
      * @param email user email
-     * @return Optional<User>
+     * @return Optional User
      */
     Optional<User> findByEmail(String email);
+
+    /**
+     *
+     * @param username username
+     * @return Optional User
+     */
+    Optional<User> findByUsername(String username);
+
 
     /**
      * Check user existence
@@ -29,7 +37,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param email user email
      * @return boolean
      */
-    boolean existsByEmailOrUsername(String email, String username);
+    boolean existsByEmail(String email);
+
+    /**
+     * Check user existence
+     *
+     * @param username username
+     * @return boolean
+     */
+    boolean existsByUsername(String username);
 
     /**
      *
