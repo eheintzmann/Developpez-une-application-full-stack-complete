@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.exception;
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
+import com.openclassrooms.mddapi.exception.topic.NotUniquePostTitleException;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueEmailException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueUsernameException;
@@ -38,7 +39,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler({
             NotUniqueEmailException.class,
-            NotUniqueUsernameException.class
+            NotUniqueUsernameException.class,
+            NotUniquePostTitleException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ProblemDetail> handleAlreadyExistingExceptions(

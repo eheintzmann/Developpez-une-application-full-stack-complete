@@ -24,7 +24,20 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Iterable<Post> findPostsByUsersId(Long userId, Sort sort);
 
 
+    /**
+     *
+     * @param postId Post id
+     * @return Optional Post
+     */
     @EntityGraph(attributePaths = {"topic", "author", "comments", "comments.author"})
     @Query("SELECT p FROM Post p WHERE p.id = :postId")
     Optional<Post> findPostByIdWithTopicWithAuthorWithComments(Long postId);
+
+    /**
+     * Check existence of a Post
+     *
+     * @param title String
+     * @return boolean
+     */
+    boolean existsByTitle(String title);
 }

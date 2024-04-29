@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
+import com.openclassrooms.mddapi.exception.topic.NotUniquePostTitleException;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.entity.Post;
@@ -12,6 +13,7 @@ import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -85,7 +87,16 @@ public class PostService implements IPostService {
 				.author(user)
 				.build();
 
-		postRepository.saveAndFlush(post);
+		try {
+			postRepository.save(post);
+		} catch (DataIntegrityViolationException ex) {
+
+			if (postRepository.existsByTitle(title)) {
+				throw new NotUniquePostTitleException("title " + title + " already used");
+			}
+
+			throw ex;
+		}
 
 		return conversionService.convert(post, PostWithCommentsDTO.class);
 	}
