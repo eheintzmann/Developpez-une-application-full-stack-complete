@@ -2,8 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.model.payload.response.subscription.SubscriptionsResponse;
 import com.openclassrooms.mddapi.model.payload.response.topic.TopicsResponse;
-import com.openclassrooms.mddapi.service.SubscriptionService;
-import lombok.extern.slf4j.Slf4j;
+import com.openclassrooms.mddapi.service.ISubscriptionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,15 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.service.ITopicService;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/topics")
 public class TopicController {
 
 	private final ITopicService topicService;
-	private final SubscriptionService subscriptionService;
+	private final ISubscriptionService subscriptionService;
 
-	public TopicController(ITopicService topicService, SubscriptionService subscriptionService) {
+	public TopicController(
+			ITopicService topicService,
+			ISubscriptionService subscriptionService
+	) {
 		this.topicService = topicService;
 		this.subscriptionService = subscriptionService;
 	}

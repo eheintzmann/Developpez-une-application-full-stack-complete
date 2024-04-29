@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.configuration;
 
 import com.openclassrooms.mddapi.configuration.jwt.JwtFilter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,7 +21,6 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 /**
  * Configuration class for Spring Security
  */
-@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {

@@ -11,7 +11,6 @@ import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.PostRepository;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -29,7 +28,7 @@ public class PostService implements IPostService {
 
 	public PostService(
 			PostRepository postRepository,
-			@Qualifier("conversionService") ConversionService conversionService,
+			ConversionService conversionService,
 			TopicRepository topicRepository,
 			UserRepository userRepository
 	) {

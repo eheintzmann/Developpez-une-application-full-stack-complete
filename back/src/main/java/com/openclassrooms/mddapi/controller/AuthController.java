@@ -5,7 +5,6 @@ import com.openclassrooms.mddapi.model.payload.response.auth.TokenResponse;
 import com.openclassrooms.mddapi.model.payload.request.auth.RegisterRequest;
 import com.openclassrooms.mddapi.service.IAuthService;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Authentification REST controller
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth/")
 public class AuthController {

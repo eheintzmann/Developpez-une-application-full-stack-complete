@@ -16,7 +16,6 @@ import java.util.List;
 
 @Service
 public class SubscriptionService implements ISubscriptionService {
-
 	private final UserRepository userRepository;
 	private final ConversionService conversionService;
 	private final TopicRepository topicRepository;

@@ -1,58 +1,39 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.configuration.ConversionConfig;
-import com.openclassrooms.mddapi.configuration.jwt.JwtService;
+import com.openclassrooms.mddapi.configuration.jwt.IJwtService;
 import com.openclassrooms.mddapi.exception.user.*;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Authentification service
+ * Auth service
  */
-@Slf4j
-@Data
 @Service
 public class AuthService implements IAuthService {
-
-    private final ConversionConfig conversionConfig;
-    private final ConversionService conversionService;
-    private AuthenticationManager authManager;
-    private JwtService jwtService;
-    private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
-    private UserDetailsService userDetailsService;
+    private final IJwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for AuthentificationService class
      *
-     * @param authManager     AuthenticationManager
      * @param jwtService      JwtService
      * @param passwordEncoder PasswordEncoder
      * @param userRepository  UserRepository
      */
     @Autowired
     AuthService(
-            AuthenticationManager authManager,
-            JwtService jwtService,
+            IJwtService jwtService,
             PasswordEncoder passwordEncoder,
-            UserRepository userRepository,
-            ConversionConfig conversionConfig, @Qualifier("conversionService") ConversionService conversionService) {
-        this.authManager = authManager;
+            UserRepository userRepository
+    ) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.conversionConfig = conversionConfig;
-        this.conversionService = conversionService;
     }
 
     /**

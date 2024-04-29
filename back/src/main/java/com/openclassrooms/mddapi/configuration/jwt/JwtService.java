@@ -197,7 +197,6 @@ public class JwtService implements IJwtService {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "HmacSHA512");
     }
 
-
     public void logSecretKey(SecretKey key) {
         log.info("SecretKey (base64) : {}", Base64.getEncoder().encodeToString(key.getEncoded()));
     }
