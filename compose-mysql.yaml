@@ -4,7 +4,7 @@ services:
     image: mysql:8.0
     command: --default-authentication-plugin=caching_sha2_password
     restart: always
-    env_file: .env
+    env_file: back/config/.env
     ports:
       - "${MYSQL_PORT:-3306}:3306"
     volumes:
@@ -16,7 +16,7 @@ services:
   adminer:
     image: adminer
     restart: always
-    env_file: .env
+    env_file: back/config/.env
     ports:
       - "${ADMINER_PORT:-8080}:8080"
 volumes:
