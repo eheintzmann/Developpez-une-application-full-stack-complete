@@ -1,9 +1,11 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.model.dto.post.PostDTO;
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
-import com.openclassrooms.mddapi.model.entity.Post;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 public interface IPostService {
 
@@ -12,7 +14,7 @@ public interface IPostService {
      * @param userDetails User details
      * @return PostsDTO
      */
-    Iterable<Post> getPosts(UserDetails userDetails, Sort.Direction sortDirection);
+    List<PostDTO> getPosts(UserDetails userDetails, Sort.Direction sortDirection);
 
     /**
      *

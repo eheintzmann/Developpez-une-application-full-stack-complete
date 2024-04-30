@@ -9,7 +9,7 @@ public interface ITopicService {
 
 	/**
 	 *
-	 * @param user User
+	 * @param userDetails User details
 	 * @return Topics DTO
 	 */
 	List<TopicDTO> getTopics(UserDetails userDetails);

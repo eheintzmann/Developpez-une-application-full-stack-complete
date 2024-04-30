@@ -1,8 +1,8 @@
 package com.openclassrooms.mddapi.configuration.converter;
 
 import com.openclassrooms.mddapi.model.dto.post.PostDTO;
+import com.openclassrooms.mddapi.model.payload.response.post.PostResponse;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
-import com.openclassrooms.mddapi.model.entity.Post;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Convert Post To PostDTO
  */
-public class PostEntitiesToPostsDTO implements Converter<List<Post>, PostsResponse> {
+public class PostsDTOToPostsResponse implements Converter<List<PostDTO>, PostsResponse> {
 
     /**
      * Convert Post to PostDTO
@@ -20,14 +20,14 @@ public class PostEntitiesToPostsDTO implements Converter<List<Post>, PostsRespon
      * @return PostsDTO
      */
     @Override
-    public PostsResponse convert(List<Post> posts) {
-        List<PostDTO> feed = new ArrayList<>();
-        posts.forEach(post -> feed.add(PostDTO.builder()
+    public PostsResponse convert(List<PostDTO> posts) {
+        List<PostResponse> feed = new ArrayList<>();
+        posts.forEach(post -> feed.add(PostResponse.builder()
                         .id(post.getId())
                         .title(post.getTitle())
                         .content(post.getContent())
-                        .author(post.getAuthor().getUsername())
-                        .topic(post.getTopic().getTitle())
+                        .author(post.getAuthor())
+                        .topic(post.getTopic())
                         .updatedAt(post.getUpdatedAt())
                         .build()
                 )

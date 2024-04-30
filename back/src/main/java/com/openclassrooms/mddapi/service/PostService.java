@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
 import com.openclassrooms.mddapi.exception.topic.NotUniquePostTitleException;
 import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.model.dto.post.PostDTO;
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.entity.Post;
 import com.openclassrooms.mddapi.model.entity.Topic;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PostService implements IPostService {
@@ -40,12 +42,15 @@ public class PostService implements IPostService {
 
 
 	@Override
-	public Iterable<Post> getPosts(UserDetails userDetails, Sort.Direction sortDirection) {
+	public List<PostDTO> getPosts(UserDetails userDetails, Sort.Direction sortDirection) {
 
-		return this.postRepository.findPostsByUsersId(
+		List<PostDTO> postsDTO = new ArrayList<>();
+		this.postRepository.findPostsByUsersId(
 				Long.parseLong(userDetails.getUsername()),
 				Sort.by(sortDirection, "p.updatedAt")
-		);
+		).forEach(post -> postsDTO.add(conversionService.convert(post, PostDTO.class)));
+
+		return postsDTO;
 	}
 
 	@Override

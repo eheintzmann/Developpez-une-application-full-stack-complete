@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.payload.request.post.PostRequest;
+import com.openclassrooms.mddapi.model.payload.response.post.PostWithCommentsResponse;
 import com.openclassrooms.mddapi.model.payload.response.post.PostsResponse;
 import com.openclassrooms.mddapi.service.IPostService;
 import jakarta.validation.Valid;
@@ -45,17 +45,25 @@ public class PostController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<PostWithCommentsDTO> getPost(@PathVariable Long id) {
-		return ResponseEntity.ok(postService.getPost(id));
+	public ResponseEntity<PostWithCommentsResponse> getPost(@PathVariable Long id) {
+		return ResponseEntity.ok(
+				conversionService.convert(
+						postService.getPost(id),
+						PostWithCommentsResponse.class
+				)
+		);
 	}
 
 	@PostMapping
-	public  ResponseEntity<PostWithCommentsDTO> postPost(
+	public ResponseEntity<PostWithCommentsResponse> postPost(
 			@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody PostRequest req
 	) {
 		return ResponseEntity.ok(
-				postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getTopicId())
+				conversionService.convert(
+						postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getTopicId()),
+						PostWithCommentsResponse.class
+				)
 		);
 	}
 
