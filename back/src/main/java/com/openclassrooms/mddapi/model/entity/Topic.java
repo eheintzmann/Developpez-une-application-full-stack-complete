@@ -30,6 +30,7 @@ public class Topic {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(
+			fetch = FetchType.LAZY,
 			mappedBy = "topic",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
@@ -39,6 +40,7 @@ public class Topic {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(
+			fetch = FetchType.LAZY,
 			mappedBy = "subscriptions"
 	)
 	private List<User> subscribers = new ArrayList<>();

@@ -37,6 +37,7 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(
+            fetch = FetchType.LAZY,
             mappedBy = "author",
             cascade = CascadeType.ALL,
             orphanRemoval = true
@@ -46,6 +47,7 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(
+            fetch = FetchType.LAZY,
             mappedBy = "author",
             cascade = CascadeType.ALL,
             orphanRemoval = true

@@ -24,13 +24,19 @@ public class Comment {
 	private String content;
 
 	@ManyToOne
-	@JoinColumn(name = "post_id")
+	@JoinColumn(
+			name = "post_id",
+			nullable = false
+	)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Post post;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(
+			name = "user_id",
+			nullable = false
+	)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private User author;

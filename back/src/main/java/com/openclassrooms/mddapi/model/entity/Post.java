@@ -31,6 +31,7 @@ public class Post {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(
+			fetch = FetchType.LAZY,
 			mappedBy = "post",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
@@ -38,13 +39,19 @@ public class Post {
 	private List<Comment> comments = new ArrayList<>();
 
 	@ManyToOne
-	@JoinColumn(name = "topic_id")
+	@JoinColumn(
+			nullable = false,
+			name = "topic_id"
+	)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Topic topic;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(
+			nullable = false,
+			name = "user_id"
+	)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private User author;
