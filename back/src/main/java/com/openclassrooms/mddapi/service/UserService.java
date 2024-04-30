@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueEmailException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueUsernameException;
 import com.openclassrooms.mddapi.model.dto.UserDTO;
@@ -32,7 +32,7 @@ public class UserService implements IUserService {
     public UserDTO getProfile(UserDetails userDetails) {
         User user = userRepository
                 .findById(Long.parseLong(userDetails.getUsername()))
-                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername()));
+                .orElseThrow(() -> new InvalidUserException("Cannot find user " + userDetails.getUsername()));
 
         return conversionService.convert(user, UserDTO.class);
     }
@@ -41,7 +41,7 @@ public class UserService implements IUserService {
     public UserDTO updateProfile(UserDetails userDetails, String username, String email, String password) {
         User user = userRepository
                 .findById(Long.parseLong(userDetails.getUsername()))
-                .orElseThrow(() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername()));
+                .orElseThrow(() -> new InvalidUserException("Cannot find user " + userDetails.getUsername()));
 
         if (username != null && !Objects.equals(username, user.getUsername())) {
             user.setUsername(username);

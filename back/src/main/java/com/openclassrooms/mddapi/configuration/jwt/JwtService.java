@@ -3,7 +3,9 @@ package com.openclassrooms.mddapi.configuration.jwt;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.token.TokenLectureException;
 import com.openclassrooms.mddapi.exception.token.TokenValidationException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.model.entity.User;
+import com.openclassrooms.mddapi.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.SignatureException;
@@ -35,6 +37,7 @@ public class JwtService implements IJwtService {
     private final Duration expireDuration;
     private final String issuer;
     private final SecretKey secretKey;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for JwtService class
@@ -48,11 +51,12 @@ public class JwtService implements IJwtService {
             @Value("${app.jwt.secret}") String appJwtSecret,
             @Value("${app.jwt.salt}") String appJwtSalt,
             @Value("${app.jwt.expiration}") String appJwtExpiration,
-            @Value("${app.jwt.issuer}") String appJwtIssuer
-    ) throws NoSuchAlgorithmException, InvalidKeySpecException {
+            @Value("${app.jwt.issuer}") String appJwtIssuer,
+            UserRepository userRepository) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.secretKey = getKeyFromPassword(appJwtSecret, appJwtSalt);
         this.expireDuration = Duration.of(Long.parseLong(appJwtExpiration), ChronoUnit.HOURS);
         this.issuer = appJwtIssuer;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -74,6 +78,11 @@ public class JwtService implements IJwtService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Long userId = Long.parseLong(username);
+        if (!userRepository.existsById(userId)) {
+            throw new UsernameNotFoundException("Cannot find username " + username);
+        }
         return JwtUserDetails
                 .builder()
                 .id(Long.parseLong(username))

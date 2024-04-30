@@ -2,7 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import java.util.*;
 
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.model.entity.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.core.convert.ConversionService;
@@ -33,7 +33,7 @@ public class TopicService implements ITopicService {
 		User user = userRepository
 				.findById(Long.parseLong(userDetails.getUsername()))
 				.orElseThrow(
-						() -> new NonExistingUserException("Cannot find user " + userDetails.getUsername())
+						() -> new InvalidUserException("Cannot find user " + userDetails.getUsername())
 				);
 
 		List<TopicDTO> topicsDTO = new ArrayList<>();

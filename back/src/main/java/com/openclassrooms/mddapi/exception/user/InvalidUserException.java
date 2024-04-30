@@ -2,24 +2,24 @@ package com.openclassrooms.mddapi.exception.user;
 
 import org.springframework.security.core.AuthenticationException;
 
-public class NonExistingUserException extends AuthenticationException {
+public class InvalidUserException extends AuthenticationException {
 
     /**
-     * Constructor for NonExistingUserException class
+     * Constructor for InvalidUserException class
      *
      * @param message String
      */
-    public NonExistingUserException(String message) {
+    public InvalidUserException(String message) {
         super(message);
     }
 
     /**
-     * Constructor for NonExistingUserException class
+     * Constructor for InvalidUserException class
      *
      * @param message String
      * @param cause Throwable
      */
-    public NonExistingUserException(String message, Throwable cause) {
+    public InvalidUserException(String message, Throwable cause) {
         super(message, cause);
     }
 }

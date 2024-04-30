@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,12 +60,14 @@ public class PostController {
 			@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody PostRequest req
 	) {
-		return ResponseEntity.ok(
-				conversionService.convert(
-						postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getTopicId()),
-						PostWithCommentsResponse.class
-				)
-		);
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(
+						conversionService.convert(
+								postService.createPost(userDetails, req.getTitle(), req.getContent(), req.getTopicId()),
+								PostWithCommentsResponse.class
+						)
+				);
 	}
 
 }

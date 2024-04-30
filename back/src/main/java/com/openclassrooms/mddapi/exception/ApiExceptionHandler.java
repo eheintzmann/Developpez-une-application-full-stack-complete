@@ -4,7 +4,6 @@ import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.token.TokenGenerationException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
 import com.openclassrooms.mddapi.exception.topic.NotUniquePostTitleException;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueEmailException;
 import com.openclassrooms.mddapi.exception.user.NotUniqueUsernameException;
 import jakarta.annotation.Nonnull;
@@ -104,7 +103,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({AuthenticationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ProblemDetail> handleAuthenticationExceptions(
-            AuthenticationException ex,
+            RuntimeException ex,
             WebRequest req
     ) {
         logError(HttpStatus.UNAUTHORIZED, ex);
@@ -147,8 +146,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler({
             NonExistingPostException.class,
-            NonExistingTopicException.class,
-            NonExistingUserException.class
+            NonExistingTopicException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ProblemDetail> handleNonExistingPostExceptions(

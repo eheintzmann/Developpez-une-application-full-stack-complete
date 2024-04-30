@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.model.entity.Comment;
 import com.openclassrooms.mddapi.model.entity.Post;
 import com.openclassrooms.mddapi.model.entity.User;
@@ -32,7 +32,7 @@ public class CommentService implements ICommentService{
                         Long.parseLong(userDetails.getUsername())
                 )
                 .orElseThrow(
-                        () -> new NonExistingUserException("cannot find user "  + userDetails.getUsername())
+                        () -> new InvalidUserException("cannot find user "  + userDetails.getUsername())
                 );
 
         Post post = postRepository

@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.model.dto.subscription.SubscriptionDTO;
 import com.openclassrooms.mddapi.model.entity.Topic;
 import com.openclassrooms.mddapi.model.entity.User;
@@ -76,7 +76,7 @@ public class SubscriptionService implements ISubscriptionService {
 	private User getUserWithSubscriptions(Long id) {
 		return userRepository
 				.findUserByIdWithSubscriptions(id)
-				.orElseThrow(() -> new NonExistingUserException("Cannot find user " + id));
+				.orElseThrow(() -> new InvalidUserException("Cannot find user " + id));
 	}
 
 }

@@ -3,7 +3,7 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.exception.post.NonExistingPostException;
 import com.openclassrooms.mddapi.exception.topic.NonExistingTopicException;
 import com.openclassrooms.mddapi.exception.topic.NotUniquePostTitleException;
-import com.openclassrooms.mddapi.exception.user.NonExistingUserException;
+import com.openclassrooms.mddapi.exception.user.InvalidUserException;
 import com.openclassrooms.mddapi.model.dto.post.PostDTO;
 import com.openclassrooms.mddapi.model.dto.post.PostWithCommentsDTO;
 import com.openclassrooms.mddapi.model.entity.Post;
@@ -73,7 +73,7 @@ public class PostService implements IPostService {
 						Long.parseLong(userDetails.getUsername())
 				)
 				.orElseThrow(
-						() -> new NonExistingUserException("cannot find user "  + userDetails.getUsername())
+						() -> new InvalidUserException("cannot find user "  + userDetails.getUsername())
 				);
 
 		Topic topic = topicRepository

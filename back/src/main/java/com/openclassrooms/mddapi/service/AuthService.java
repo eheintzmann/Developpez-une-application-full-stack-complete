@@ -91,7 +91,7 @@ public class AuthService implements IAuthService {
                 .orElseGet(
                         () -> userRepository.findByUsername(login)
                                 .orElseThrow(
-                                        () -> new NonExistingUserException("Cannot find user " + login)
+                                        () -> new InvalidUserException("Cannot find user " + login)
                                 )
                 );
 
