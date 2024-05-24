@@ -1,1 +1,49 @@
-<p>login works!</p>
+@if (isPhone$ | async) {
+  <a mat-icon-button aria-hidden="false" aria-label="Back">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </a>
+
+  <div id="login-page">
+    <header>
+      <img alt="MDD" ngSrc="mdd.png" width="225" height="130"/>
+    </header>
+
+    <mat-grid-list cols="1" rowHeight="6em" class="form-card">
+      <form [formGroup]="loginForm">
+
+        <mat-grid-tile>
+          <header>
+            Se connecter
+          </header>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="form-group">
+            <label for="login">E-mail ou nom d’utilisateur</label>
+            <mat-form-field>
+              <input matInput id="login">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <mat-form-field>
+              <input matInput id="password" type="password">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="action-buttons">
+            <button mat-flat-button>Se connecter</button>
+          </div>
+        </mat-grid-tile>
+      </form>
+
+    </mat-grid-list>
+  </div>
+} @else {
+  <p>desktop login </p>
+}
