@@ -1,5 +1,6 @@
-version: '3.4'
+name: db
 services:
+
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=caching_sha2_password
@@ -7,17 +8,14 @@ services:
     env_file: back/config/.env
     ports:
       - "${MYSQL_PORT:-3306}:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
       retries: 20
+
   adminer:
     image: adminer
     restart: always
     env_file: back/config/.env
     ports:
-      - "${ADMINER_PORT:-8080}:8080"
-volumes:
-  mysql_data:
+      - "${ADMINER_PORT:-9090}:8080"

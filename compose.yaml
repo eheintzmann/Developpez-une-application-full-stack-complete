@@ -1,0 +1,35 @@
+include:
+  - compose-mysql.yaml
+
+name: mdd-app
+services:
+
+  backend:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-back
+      target: run
+    env_file: ./back/config/.env
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      MYSQL_HOST: "mysql"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+#  frontend:
+#    build:
+#      context: ./front/
+#      dockerfile: docker/Dockerfile-front
+#      target: run
+#    env_file: .env
+#    ports:
+#      - "${FRONT_END:-80}:80"
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#      backend:
+#        condition: service_started
+#    volumes:
+#      - "./docker/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro"

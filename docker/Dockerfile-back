@@ -1,0 +1,14 @@
+### STAGE 1: Build ###
+FROM maven:3-eclipse-temurin-17 AS build
+
+COPY back/pom.xml .
+COPY back/src src
+COPY back/config config
+
+RUN mvn clean install -DskipTests
+
+### STAGE 2: Run ###
+FROM eclipse-temurin:17-jre-alpine AS run
+COPY --from=build target/*.jar app.jar
+COPY --from=build config/ config
+ENTRYPOINT ["java", "-jar", "app.jar"]

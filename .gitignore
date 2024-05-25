@@ -7,5 +7,5 @@
 out
 gen
 
-back/config/.env
-config
+/back/config/.env
+/config/
