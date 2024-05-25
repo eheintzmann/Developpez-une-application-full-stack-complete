@@ -1,8 +1,8 @@
-#login-page header {
-  margin: auto;
-  text-align: center;
+.form-card fieldset {
+  border: none;
 }
-.form-card header {
+
+.form-card legend {
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -14,7 +14,7 @@ mat-form-field {
   width: 250px;
 }
 
-.action-buttons * {
+.form-buttons * {
   border-radius: 5px;
   width: 139px;
   height: 40px;

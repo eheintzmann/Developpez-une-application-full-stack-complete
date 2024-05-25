@@ -1,20 +1,14 @@
-@if (isPhone$ | async) {
-  <a mat-icon-button aria-hidden="false" aria-label="Back">
-    <mat-icon>keyboard_backspace</mat-icon>
-  </a>
+<app-top-bar></app-top-bar>
+<div id="login-page">
 
-  <div id="login-page">
-    <header>
-      <img alt="MDD" ngSrc="mdd.png" width="225" height="130" priority>
-    </header>
-
-    <mat-grid-list cols="1" rowHeight="6em" class="form-card">
-      <form [formGroup]="loginForm">
+  <form [formGroup]="loginForm" class="form-card">
+    <fieldset>
+      <mat-grid-list cols="1" rowHeight="6em">
 
         <mat-grid-tile>
-          <header>
+          <legend>
             Se connecter
-          </header>
+          </legend>
         </mat-grid-tile>
 
         <mat-grid-tile>
@@ -44,16 +38,15 @@
         </mat-grid-tile>
 
         <mat-grid-tile>
-          <div class="action-buttons">
+          <div class="form-buttons">
             <button mat-flat-button type="submit" (click)="onConnect()" [disabled]="loginForm.invalid">
               Se connecter
             </button>
           </div>
         </mat-grid-tile>
-      </form>
 
-    </mat-grid-list>
-  </div>
-} @else {
-  <p>desktop login </p>
-}
+      </mat-grid-list>
+    </fieldset>
+  </form>
+
+</div>
