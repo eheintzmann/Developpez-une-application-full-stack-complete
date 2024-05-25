@@ -7,6 +7,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
+import { AuthService } from "../../services/auth.service";
+import { BearerToken } from "../../interfaces/bearerToken";
+import { tap } from "rxjs";
+
 
 @Component({
   selector: 'app-login',
@@ -29,9 +33,13 @@ import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
-  passwordPattern: string = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,}$"
+  error: string =  '';
+  hide: boolean = true;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private authService: AuthService,
+    private formBuilder: FormBuilder
+  ) {
   }
 
   ngOnInit(): void {
@@ -44,7 +52,29 @@ export class LoginComponent implements OnInit {
       ],
     })
   }
-  onConnect(): void {
-    console.log(this.loginForm.value)
+
+  onSubmit(): void {
+    this.authService.login(this.loginForm.value.login, this.loginForm.value.password)
+      .pipe(
+        tap({
+            next: (bearer: BearerToken): void => {
+              this.error = '';
+              console.log('Token: ' + bearer.token)
+            },
+            error: err => {
+              if (err.status) {
+                if (err.status === 401) {
+                  this.error = 'Identifiants invalides';
+                  return
+                } else if (err.status === 400) {
+                  this.error = 'Mauvaise requête';
+                  return;
+                }
+              }
+              this.error = 'Erreur inconnue';
+            }
+          }
+        )
+      ).subscribe();
   }
 }

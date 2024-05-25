@@ -1,9 +1,9 @@
 <app-top-bar></app-top-bar>
 <div id="login-page">
 
-  <form [formGroup]="loginForm" class="form-card">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-card">
     <fieldset>
-      <mat-grid-list cols="1" rowHeight="6em">
+      <mat-grid-list cols="1" rowHeight="7em">
 
         <mat-grid-tile>
           <legend>
@@ -31,7 +31,11 @@
             </div>
             <div class="form-group-field">
               <mat-form-field>
-                <input matInput id="password" type="password" formControlName="password">
+                <input matInput id="password" [type]="hide ? 'password' : 'text'"  formControlName="password">
+                <button mat-icon-button matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
               </mat-form-field>
             </div>
           </div>
@@ -39,9 +43,15 @@
 
         <mat-grid-tile>
           <div class="form-buttons">
-            <button mat-flat-button type="submit" (click)="onConnect()" [disabled]="loginForm.invalid">
-              Se connecter
-            </button>
+            <div>
+              <button mat-flat-button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+            </div>
+            @if (!!error) {
+              <a color="warn" class="error" mat-fab extended>
+                  <mat-icon>error</mat-icon>
+                  {{ error }}
+              </a>
+            }
           </div>
         </mat-grid-tile>
 
