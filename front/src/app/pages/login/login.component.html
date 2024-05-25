@@ -5,7 +5,7 @@
 
   <div id="login-page">
     <header>
-      <img alt="MDD" ngSrc="mdd.png" width="225" height="130"/>
+      <img alt="MDD" ngSrc="mdd.png" width="225" height="130" priority>
     </header>
 
     <mat-grid-list cols="1" rowHeight="6em" class="form-card">
@@ -19,25 +19,35 @@
 
         <mat-grid-tile>
           <div class="form-group">
-            <label for="login">E-mail ou nom d’utilisateur</label>
-            <mat-form-field>
-              <input matInput id="login">
-            </mat-form-field>
+            <div class="form-group-label">
+              <label for="login">E-mail ou nom d’utilisateur</label>
+            </div>
+            <div class="form-group-field">
+              <mat-form-field>
+                <input matInput id="login" formControlName="login">
+              </mat-form-field>
+            </div>
           </div>
         </mat-grid-tile>
 
         <mat-grid-tile>
           <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <mat-form-field>
-              <input matInput id="password" type="password">
-            </mat-form-field>
+            <div class="form-group-label">
+              <label for="password">Mot de passe</label>
+            </div>
+            <div class="form-group-field">
+              <mat-form-field>
+                <input matInput id="password" type="password" formControlName="password">
+              </mat-form-field>
+            </div>
           </div>
         </mat-grid-tile>
 
         <mat-grid-tile>
           <div class="action-buttons">
-            <button mat-flat-button>Se connecter</button>
+            <button mat-flat-button type="submit" (click)="onConnect()" [disabled]="loginForm.invalid">
+              Se connecter
+            </button>
           </div>
         </mat-grid-tile>
       </form>

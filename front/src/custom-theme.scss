@@ -3,6 +3,7 @@
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
+@use 'app/styles/m3-theme';
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -11,13 +12,8 @@
 
 // Define the theme object.
 $mdd-app-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$violet-palette,
-    tertiary: mat.$violet-palette,
-  ),
   density: (
-    scale: 0,
+    scale: -2,
   )
 ));
 
@@ -25,7 +21,8 @@ $mdd-app-theme: mat.define-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
-  @include mat.all-component-themes($mdd-app-theme);
+  @include mat.all-component-themes(m3-theme.$light-theme);
+  @include mat.all-component-densities($mdd-app-theme)
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

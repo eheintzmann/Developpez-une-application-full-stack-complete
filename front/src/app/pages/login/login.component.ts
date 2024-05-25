@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isPhone$ = this.responsive.observe([
       Breakpoints.XSmall
     ]).pipe(
@@ -55,5 +55,8 @@ export class LoginComponent implements OnInit {
         null, [Validators.required, Validators.maxLength(255)]
       ],
     })
+  }
+  onConnect(): void {
+    console.log(this.loginForm.value)
   }
 }
