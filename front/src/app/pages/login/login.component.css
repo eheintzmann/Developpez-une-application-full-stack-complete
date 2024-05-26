@@ -1,8 +1,22 @@
-.form-card fieldset {
-  border: none;
+#login-page {
+  margin: auto calc(50vw - 125px );
+}
+mat-card {
+  background-color: #FFFFFF;
+  border: transparent none;
+  box-shadow: none;
+}
+mat-card-header {
+  margin: auto;
+  text-align: center;
 }
 
-.form-card legend {
+mat-card-content {
+  margin: 1em 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+mat-card-title {
   font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -20,7 +34,7 @@ mat-form-field {
 }
 
 .form-buttons button {
-  border-radius: 5px;
+  border-radius: 8px;
   width: 139px;
   height: 40px;
   font-family: Inter, sans-serif;

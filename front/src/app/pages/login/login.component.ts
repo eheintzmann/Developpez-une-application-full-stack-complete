@@ -6,11 +6,11 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";
+import { MatCardModule } from "@angular/material/card";
+import { tap } from "rxjs";
 import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
 import { AuthService } from "../../services/auth.service";
 import { BearerToken } from "../../interfaces/bearerToken";
-import { tap } from "rxjs";
-
 
 @Component({
   selector: 'app-login',
@@ -26,6 +26,7 @@ import { tap } from "rxjs";
     MatButtonModule,
     ReactiveFormsModule,
     TopBarComponent,
+    MatCardModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

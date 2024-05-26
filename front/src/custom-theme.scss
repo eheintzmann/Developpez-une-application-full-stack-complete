@@ -3,7 +3,6 @@
 @use '@angular/material' as mat;
 @use 'app/styles/m3-theme';
 // Plus imports for other components in your app.
-@import '@angular/material/prebuilt-themes/azure-blue.css';
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -22,7 +21,7 @@ $mdd-app-theme: mat.define-theme((
 // that you are using.
 :root {
   @include mat.all-component-themes(m3-theme.$light-theme);
-  @include mat.all-component-densities($mdd-app-theme)
+  @include mat.all-component-densities($mdd-app-theme);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
