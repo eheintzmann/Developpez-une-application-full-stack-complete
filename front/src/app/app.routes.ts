@@ -14,6 +14,12 @@ export const routes: Routes = [
     title: 'MDD Article'
   },
   {
+    path: 'topics',
+    loadComponent: () => import('./pages/topics-list/topics-list.component').then(m => m.TopicsListComponent),
+    canActivate: [authGuard],
+    title: 'MDD THèmes'
+  },
+  {
     path: '',
     loadComponent:() => import('./pages/home/home.component').then(m => m.HomeComponent),
     canActivate: [authGuard],

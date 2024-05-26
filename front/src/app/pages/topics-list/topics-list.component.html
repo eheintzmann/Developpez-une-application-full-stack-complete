@@ -1,0 +1,20 @@
+@if(topics$ | async; as topics) {
+  <mat-grid-list cols="{{ (isPhone$ | async) ? 1 : 2 }}" rowHeight="1:2">
+    @for (topic of topics.topics; track $index) {
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ topic.title }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            {{ topic.description }}
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-flat-button type="submit" [disabled]="topic.subscribed">Se connecter</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    }
+  </mat-grid-list>
+}
