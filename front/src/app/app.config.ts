@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { jwtInterceptor } from "./interceptors/jwt.interceptor";
+import { GlobalErrorHandler } from "./errrors/global-error-handler";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([jwtInterceptor])
     ),
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ]
 };
