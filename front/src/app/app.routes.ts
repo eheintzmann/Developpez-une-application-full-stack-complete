@@ -8,6 +8,12 @@ export const routes: Routes = [
     title: 'MDD Login'
   },
   {
+    path:'post-details/:id',
+    loadComponent: () => import('./pages/post-details/post-details.component').then(m => m.PostDetailsComponent),
+    canActivate: [authGuard],
+    title: 'MDD Article'
+  },
+  {
     path: '',
     loadComponent:() => import('./pages/home/home.component').then(m => m.HomeComponent),
     canActivate: [authGuard],

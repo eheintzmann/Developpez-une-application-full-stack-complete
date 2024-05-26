@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BearerToken } from "../interfaces/bearerToken.interface";
+import { BearerToken } from "../interfaces/bearer-token.interface";
 
 @Injectable({
   providedIn: 'root'

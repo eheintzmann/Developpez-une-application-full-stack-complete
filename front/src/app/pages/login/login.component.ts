@@ -9,7 +9,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
 import { AuthService } from "../../services/auth.service";
-import { BearerToken } from "../../interfaces/bearerToken.interface";
+import { BearerToken } from "../../interfaces/bearer-token.interface";
 import { TokenService } from "../../services/token.service";
 import { Router } from "@angular/router";
 
