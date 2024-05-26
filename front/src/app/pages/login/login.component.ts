@@ -7,10 +7,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
-import { tap } from "rxjs";
 import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
 import { AuthService } from "../../services/auth.service";
-import { BearerToken } from "../../interfaces/bearerToken";
+import { BearerToken } from "../../interfaces/bearerToken.interface";
+import { TokenService } from "../../services/token.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -34,12 +35,14 @@ import { BearerToken } from "../../interfaces/bearerToken";
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
-  error: string =  '';
+  error: string = '';
   hide: boolean = true;
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private tokenService: TokenService,
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
   }
 
@@ -55,27 +58,26 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.authService.login(this.loginForm.value.login, this.loginForm.value.password)
-      .pipe(
-        tap({
-            next: (bearer: BearerToken): void => {
-              this.error = '';
-              console.log('Token: ' + bearer.token)
-            },
-            error: err => {
-              if (err.status) {
-                if (err.status === 401) {
-                  this.error = 'Identifiants invalides';
-                  return
-                } else if (err.status === 400) {
-                  this.error = 'Mauvaise requête';
-                  return;
-                }
-              }
-              this.error = 'Erreur inconnue';
+    this.authService
+      .login(this.loginForm.value.login, this.loginForm.value.password)
+      .subscribe({
+        next: (bearer: BearerToken): void => {
+          this.error = '';
+          this.tokenService.setToken(bearer);
+          this.router.navigate(['']);
+        },
+        error: err => {
+          if (err.status) {
+            if (err.status === 401) {
+              this.error = 'Identifiants invalides';
+              return
+            } else if (err.status === 400) {
+              this.error = 'Mauvaise requête';
+              return;
             }
           }
-        )
-      ).subscribe();
+          this.error = 'Erreur inconnue';
+        }
+      });
   }
 }
