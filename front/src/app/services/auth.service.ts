@@ -7,13 +7,13 @@ import { shareReplay } from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl:string = 'http://localhost:8080/api/v1/';
+  baseUrl: string = 'http://localhost:8080/api/v1/auth';
   passwordPattern: string = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,}$"
 
   constructor(private http: HttpClient) {}
 
   login(login: string, password: string) {
-    return this.http.post<BearerToken>(`${this.baseUrl}auth/login`, {login, password})
+    return this.http.post<BearerToken>(`${this.baseUrl}/login`, {login, password})
       .pipe(shareReplay());
   }
 }
