@@ -6,6 +6,7 @@ import { AsyncPipe, DatePipe, JsonPipe } from "@angular/common";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/l
     JsonPipe,
     MatGridListModule,
     MatCardModule,
-    DatePipe
+    DatePipe,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
