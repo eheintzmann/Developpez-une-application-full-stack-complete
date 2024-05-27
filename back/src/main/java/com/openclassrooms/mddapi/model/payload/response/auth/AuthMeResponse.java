@@ -28,11 +28,9 @@ public class AuthMeResponse implements IResponse {
 
     @NotNull
     @JsonProperty(value = "created_at")
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "UTC")
     private Instant createdAt;
 
     @NotNull
     @JsonProperty(value = "updated_at")
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "UTC" )
     private Instant updateAt;
 }

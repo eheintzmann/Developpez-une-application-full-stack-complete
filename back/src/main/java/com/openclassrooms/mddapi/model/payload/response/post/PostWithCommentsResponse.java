@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.model.payload.response.post;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.openclassrooms.mddapi.model.dto.comment.CommentDTO;
 import lombok.Builder;
@@ -26,7 +25,6 @@ public class PostWithCommentsResponse {
 	private List<CommentDTO> comments;
 
 	@JsonProperty(value = "updated_at")
-	@JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "UTC")
 	private Instant updatedAt;
 
 }
