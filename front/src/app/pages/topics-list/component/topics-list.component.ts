@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable } from "rxjs";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute, Data, RouterLink } from "@angular/router";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
-import { Topics } from "../../interfaces/topics.interface";
-import { TopicService } from "../../services/topic.service";
+import { Topics } from "../../../interfaces/topics.interface";
+import { TopicService } from "../../../services/topic.service";
 import { AsyncPipe, DatePipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -49,6 +49,9 @@ export class TopicsListComponent implements OnInit {
       })
     )
 
-    this.topics$ = this.topicService.getTopics();
+    this.topics$ = this.route.data
+      .pipe(
+        map((data: Data) => data['topics'])
+      );
   }
 }

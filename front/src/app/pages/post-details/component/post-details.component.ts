@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Data } from "@angular/router";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
 import { map, Observable } from "rxjs";
-import { PostService } from "../../services/post.service";
-import { PostWithComments } from "../../interfaces/post-with-comments.interface";
+import { PostService } from "../../../services/post.service";
+import { PostWithComments } from "../../../interfaces/post-with-comments.interface";
 import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
@@ -38,6 +38,9 @@ export class PostDetailsComponent implements OnInit {
       })
     )
 
-    this.post$ = this.postService.getPostById(+this.route.snapshot.paramMap.get('id')!)
+    this.post$ = this.route.data
+      .pipe(
+        map((data: Data) => data['post'])
+      );
   }
 }

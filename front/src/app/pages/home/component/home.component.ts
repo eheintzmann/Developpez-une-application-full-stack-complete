@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable } from "rxjs";
-import { Feed } from "../../interfaces/feed.interface";
-import { PostService } from "../../services/post.service";
+import { Feed } from "../../../interfaces/feed.interface";
 import { AsyncPipe, DatePipe, JsonPipe } from "@angular/common";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
-import { RouterLink } from "@angular/router";
+import { ActivatedRoute, Data, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -28,7 +27,7 @@ export class HomeComponent implements OnInit {
   feed$!: Observable<Feed>
 
   constructor(
-    private postService: PostService,
+    private route: ActivatedRoute,
     private responsive: BreakpointObserver,
   ) {
   }
@@ -43,8 +42,9 @@ export class HomeComponent implements OnInit {
       })
     )
 
-    this.feed$ = this.postService.getFeed();
-
-
+    this.feed$ = this.route.data
+      .pipe(
+        map((data: Data) => data['feed'])
+      );
   }
 }

@@ -7,10 +7,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule, MatIconButton } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
-import { TopBarComponent } from "../../shared/top-bar/top-bar.component";
-import { AuthService } from "../../services/auth.service";
-import { BearerToken } from "../../interfaces/bearer-token.interface";
-import { TokenService } from "../../services/token.service";
+import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
+import { AuthService } from "../../../services/auth.service";
+import { BearerToken } from "../../../interfaces/bearer-token.interface";
+import { TokenService } from "../../../services/token.service";
 import { Router } from "@angular/router";
 
 @Component({
