@@ -1,52 +1,47 @@
 <app-top-bar></app-top-bar>
 <div id="login-page">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Se connecter</mat-card-title>
-    </mat-card-header>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-card">
-
-      <mat-card-content>
-        <div class="form-group">
-          <div class="form-group-label">
-            <label for="login">E-mail ou nom d’utilisateur</label>
-          </div>
-          <div class="form-group-field">
-            <mat-form-field>
-              <input matInput id="login" formControlName="login">
-            </mat-form-field>
-          </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-card">
+    <fieldset>
+      <div class="form-group">
+        <legend> Se connecter </legend>
+      </div>
+      <div class="form-group">
+        <div class="form-group-label">
+          <label for="login">E-mail ou nom d’utilisateur</label>
         </div>
-      </mat-card-content>
-
-      <mat-card-content>
-        <div class="form-group">
-          <div class="form-group-label">
-            <label for="password">Mot de passe</label>
-          </div>
-          <div class="form-group-field">
-            <mat-form-field>
-              <input matInput id="password" [type]="hide ? 'password' : 'text'" formControlName="password">
-              <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
-                      [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
-            </mat-form-field>
-          </div>
+        <div class="form-group-field">
+          <mat-form-field>
+            <input matInput id="login" formControlName="login">
+          </mat-form-field>
         </div>
-      </mat-card-content>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-label">
+          <label for="password">Mot de passe</label>
+        </div>
+        <div class="form-group-field">
+          <mat-form-field>
+            <input matInput id="password" [type]="hide ? 'password' : 'text'" formControlName="password">
+            <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
 
       <div class="form-buttons">
         <div>
           <button mat-flat-button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
         </div>
         @if (!!error) {
-          <a color="warn" class="error" mat-fab extended>
+          <a class="error" mat-fab extended>
             <mat-icon>error</mat-icon>
             {{ error }}
           </a>
         }
       </div>
-    </form>
-  </mat-card>
+    </fieldset>
+  </form>
 </div>
