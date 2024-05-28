@@ -1,11 +1,7 @@
 #login-page {
   margin: auto calc(50vw - 125px );
 }
-mat-card {
-  background-color: #FFFFFF;
-  border: transparent none;
-  box-shadow: none;
-}
+
 mat-card-header {
   margin: auto;
   text-align: center;

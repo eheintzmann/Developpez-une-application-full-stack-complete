@@ -1,29 +1,32 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AsyncPipe } from "@angular/common";
-import { LoadingService } from "../../../services/loading.service";
-import { Observable, tap } from "rxjs";
+import { AsyncPipe } from '@angular/common';
+import { LoadingService } from '../../../services/loading.service';
+import { Observable, tap } from 'rxjs';
 import {
   NavigationCancel,
   NavigationEnd,
   NavigationError,
   NavigationStart,
   Router
-} from "@angular/router";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+} from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-loading-indicator',
   standalone: true,
   imports: [
     AsyncPipe,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormsModule,
   ],
   templateUrl: './loading-indicator.component.html',
   styleUrl: './loading-indicator.component.css'
 })
 export class LoadingIndicatorComponent implements OnInit {
+
   @Input()
-  detectRouteTransitions: boolean = false;
+  detectNavigation: boolean = false;
 
   loading$: Observable<boolean>;
 
@@ -35,7 +38,7 @@ export class LoadingIndicatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.detectRouteTransitions) {
+    if (this.detectNavigation) {
       this.router.events
         .pipe(
           tap({

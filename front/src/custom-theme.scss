@@ -10,7 +10,11 @@
 @include mat.core();
 
 // Define the theme object.
-$mdd-app-theme: mat.define-theme((
+$no-color-theme: mat.define-theme((
+  typography: (
+    brand-family: 'Inter',
+    plain-family: 'Inter',
+  ),
   density: (
     scale: -2,
   )
@@ -20,8 +24,12 @@ $mdd-app-theme: mat.define-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
-  @include mat.all-component-themes(m3-theme.$light-theme);
-  @include mat.all-component-densities($mdd-app-theme);
+  @include mat.core-theme($no-color-theme);
+  //@include mat.card-theme($no-color-theme);
+
+  @include mat.form-field-theme(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.button-theme(m3-theme.$light-theme, $color-variant: primary);
+  @include mat.progress-spinner-theme(m3-theme.$light-theme, $color-variant: secondary);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
@@ -29,4 +37,4 @@ $mdd-app-theme: mat.define-theme((
 // @include mat.typography-hierarchy($theme);
 
 // Comment out the line below if you want to use the deprecated `color` inputs.
-// @include mat.color-variants-backwards-compatibility($theme);
+//@include mat.color-variants-backwards-compatibility(mdd-theme.$light-theme);
