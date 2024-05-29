@@ -1,0 +1,54 @@
+.content {
+  margin: auto calc(50vw - 125px );
+}
+
+fieldset {
+  border: transparent none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+legend {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form-group {
+  margin: 1em 0 0 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+mat-form-field {
+  width: 250px;
+}
+
+.form-buttons {
+  margin: auto;
+  text-align: center;
+}
+
+.form-buttons button {
+  border-radius: 8px;
+  width: 139px;
+  height: 40px;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+.error {
+  margin-top: 0.5em;
+  pointer-events: none;
+}
+

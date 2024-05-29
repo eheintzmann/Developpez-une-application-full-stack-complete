@@ -4,6 +4,7 @@ import { map, Observable } from "rxjs";
 import { AsyncPipe, NgOptimizedImage } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
 import { MatIconAnchor } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-top-bar',
@@ -12,7 +13,8 @@ import { MatIconAnchor } from "@angular/material/button";
     AsyncPipe,
     MatIconModule,
     NgOptimizedImage,
-    MatIconAnchor
+    MatIconAnchor,
+    RouterLink
   ],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css'

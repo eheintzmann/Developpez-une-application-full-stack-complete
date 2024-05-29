@@ -8,7 +8,12 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/component/login.component').then(m => m.LoginComponent),
-    title: 'MDD Login'
+    title: 'MDD Connexion'
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./pages/register/component/register.component').then(m => m.RegisterComponent),
+    title: 'MDD Inscription'
   },
   {
     path:'post-details/:id',
@@ -22,7 +27,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/topics-list/component/topics-list.component').then(m => m.TopicsListComponent),
     canActivate: [authGuard],
     resolve: { topics: topicsResolver },
-    title: 'MDD THèmes'
+    title: 'MDD Thèmes'
   },
   {
     path: '',

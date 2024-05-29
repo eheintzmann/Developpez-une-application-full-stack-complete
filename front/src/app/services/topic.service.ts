@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Observable, shareReplay } from "rxjs";
+import { Observable, take } from "rxjs";
 import { Topics } from "../interfaces/topics.interface";
 
 @Injectable({
@@ -13,7 +13,8 @@ export class TopicService {
 
   getTopics(): Observable<Topics> {
     return this.http.get<Topics>(`${this.baseUrl}`)
-      .pipe(shareReplay());
+      .pipe(
+        take(1)
+      );
   }
-
 }

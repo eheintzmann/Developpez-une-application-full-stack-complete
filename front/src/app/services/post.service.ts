@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Feed } from "../interfaces/feed.interface";
 import { HttpClient } from "@angular/common/http";
-import { Observable, shareReplay } from "rxjs";
+import { Observable, take } from "rxjs";
 import { PostWithComments } from "../interfaces/post-with-comments.interface";
 
 @Injectable({
@@ -15,11 +15,15 @@ export class PostService {
 
   getFeed(): Observable<Feed> {
     return this.http.get<Feed>(`${this.baseUrl}/user`)
-      .pipe(shareReplay());
+      .pipe(
+        take(1)
+      );
   }
 
   getPostById(postId: number): Observable<PostWithComments> {
     return this.http.get<PostWithComments>(`${this.baseUrl}/${postId}`)
-      .pipe(shareReplay());
+      .pipe(
+        take(1)
+      );
   }
 }

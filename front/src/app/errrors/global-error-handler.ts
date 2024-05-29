@@ -2,24 +2,20 @@ import { ErrorHandler, Injectable } from "@angular/core";
 import { HttpErrorResponse } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { TokenService } from "../services/token.service";
+import { DisplayErrorService } from "./display-error.service";
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
 
   constructor(
     private _snackBar: MatSnackBar,
-    private _tokenService: TokenService
+    private _tokenService: TokenService,
+    private _displayErrorService: DisplayErrorService,
   ) {
   }
   handleError(wrappedError: any): void {
-    this._snackBar.open(
-      this._filterError(wrappedError.rejection ?? wrappedError),
-      'Fermer',
-      {
-        verticalPosition: 'top',
-        horizontalPosition:'center'
-      }
-    );
+    this._displayErrorService.show(
+      this._filterError(wrappedError.rejection ?? wrappedError),'Fermer');
   }
 
   private _filterError(error: any): string {

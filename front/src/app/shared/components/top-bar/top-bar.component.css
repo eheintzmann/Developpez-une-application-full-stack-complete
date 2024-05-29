@@ -1,4 +1,19 @@
-#top-bar header {
-  margin: auto;
+#top-bar {
+  margin: 1em calc(50vw - 125px );
+}
+a {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+mat-icon {
+  font-size: 50px;
+  height: 50px;
+  width: 50px;
+}
+
+header {
+  margin: 0 auto;
   text-align: center;
 }

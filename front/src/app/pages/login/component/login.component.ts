@@ -1,33 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { AsyncPipe, NgOptimizedImage } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule, MatIconButton } from "@angular/material/button";
-import { MatGridListModule } from "@angular/material/grid-list";
-import { MatCardModule } from "@angular/material/card";
+import { MatButtonModule } from "@angular/material/button";
 import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
 import { AuthService } from "../../../services/auth.service";
 import { BearerToken } from "../../../interfaces/bearer-token.interface";
 import { TokenService } from "../../../services/token.service";
 import { Router } from "@angular/router";
+import { catchError, EMPTY, tap } from "rxjs";
+import { DisplayErrorService } from "../../../errrors/display-error.service";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     AsyncPipe,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatIconButton,
-    MatGridListModule,
-    NgOptimizedImage,
     MatButtonModule,
-    ReactiveFormsModule,
     TopBarComponent,
-    MatCardModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -42,7 +38,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private displayErrorService: DisplayErrorService,
   ) {
   }
 
@@ -60,24 +57,20 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.authService
       .login(this.loginForm.value.login, this.loginForm.value.password)
-      .subscribe({
-        next: (bearer: BearerToken): void => {
-          this.error = '';
+      .pipe(
+        tap((bearer: BearerToken): void => {
+          this.displayErrorService.hide();
           this.tokenService.setToken(bearer);
-          this.router.navigate(['']);
-        },
-        error: err => {
-          if (err.status) {
-            if (err.status === 401) {
-              this.error = 'Identifiants invalides';
-              return
-            } else if (err.status === 400) {
-              this.error = 'Mauvaise requête';
-              return;
-            }
+          this.router.navigate([''])
+        }),
+        catchError(err => {
+          if (err.status && err.status === 401) {
+            this.displayErrorService.show('Identifiants invalides', 'Fermer');
+            return EMPTY;
           }
-          this.error = 'Erreur inconnue';
-        }
-      });
+          throw err;
+        })
+      )
+      .subscribe();
   }
 }

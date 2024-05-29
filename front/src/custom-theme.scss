@@ -16,10 +16,12 @@
 :root {
   @include mat.core-theme(m3-theme.$light-theme);
 
+  @include mat.icon-theme(m3-theme.$light-theme);
   @include mat.fab-theme(m3-theme.$light-theme, $color-variant: primary);
   @include mat.form-field-theme(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.button-theme(m3-theme.$light-theme, $color-variant: primary);
   @include mat.progress-spinner-theme(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.snack-bar-theme(m3-theme.$light-theme);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
