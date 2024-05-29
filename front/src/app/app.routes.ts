@@ -3,17 +3,26 @@ import { authGuard } from "./guards/auth.guard";
 import { feedResolver } from "./pages/home/resolver/feed.resolver";
 import { topicsResolver } from "./pages/topics-list/resolver/topics.resolver";
 import { postResolver } from "./pages/post-details/resolver/post.resolver";
+import { subscriptionsResolver } from "./pages/profile/resolver/subscriptions.resolver";
+import { userResolver } from "./pages/profile/resolver/user.resolver";
 
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/component/login.component').then(m => m.LoginComponent),
+    loadComponent: () => import('./pages/home/auth/login/component/login.component').then(m => m.LoginComponent),
     title: 'MDD Connexion'
   },
   {
     path: 'register',
-    loadComponent: () => import('./pages/register/component/register.component').then(m => m.RegisterComponent),
+    loadComponent: () => import('./pages/home/auth/register/component/register.component').then(m => m.RegisterComponent),
     title: 'MDD Inscription'
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/component/profile.component').then(m => m.ProfileComponent),
+    canActivate: [authGuard],
+    resolve: { subscriptions: subscriptionsResolver, user: userResolver },
+    title: 'MDD Profile'
   },
   {
     path:'post-details/:id',

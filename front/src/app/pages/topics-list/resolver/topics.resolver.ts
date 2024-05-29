@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { inject } from "@angular/core";
-import { TopicService } from "../../../services/topic.service";
+import { TopicService } from "../../../services/http/topic.service";
 import { Topics } from "../../../interfaces/topics.interface";
 import { Observable } from "rxjs";
 

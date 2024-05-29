@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { map, Observable } from "rxjs";
-import { Feed } from "../../../interfaces/feed.interface";
+import { Component } from '@angular/core';
 import { AsyncPipe, DatePipe, JsonPipe } from "@angular/common";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
-import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
-import { ActivatedRoute, Data, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
+import { FeedComponent } from "../feed/feed.component";
 
 @Component({
   selector: 'app-home',
@@ -16,35 +14,12 @@ import { ActivatedRoute, Data, RouterLink } from "@angular/router";
     MatGridListModule,
     MatCardModule,
     DatePipe,
-    RouterLink
+    RouterLink,
+    FeedComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
-  isPhone$!: Observable<boolean>;
-  feed$!: Observable<Feed>
-
-  constructor(
-    private route: ActivatedRoute,
-    private responsive: BreakpointObserver,
-  ) {
-  }
-
-  ngOnInit(): void {
-
-    this.isPhone$ = this.responsive.observe([
-      Breakpoints.XSmall
-    ]).pipe(
-      map((result: BreakpointState) => {
-        return result.matches;
-      })
-    )
-
-    this.feed$ = this.route.data
-      .pipe(
-        map((data: Data) => data['feed'])
-      );
-  }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Feed } from "../interfaces/feed.interface";
+import { Feed } from "../../interfaces/feed.interface";
 import { HttpClient } from "@angular/common/http";
 import { Observable, take } from "rxjs";
-import { PostWithComments } from "../interfaces/post-with-comments.interface";
+import { PostWithComments } from "../../interfaces/post-with-comments.interface";
 
 @Injectable({
   providedIn: 'root'

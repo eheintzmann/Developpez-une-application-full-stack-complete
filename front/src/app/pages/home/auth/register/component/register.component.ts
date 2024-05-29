@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { AuthService } from "../../../services/auth.service";
-import { TokenService } from "../../../services/token.service";
+import { AuthService } from "../../../../../services/http/auth.service";
+import { TokenService } from "../../../../../services/token.service";
 import { Router } from "@angular/router";
-import { BearerToken } from "../../../interfaces/bearer-token.interface";
+import { BearerToken } from "../../../../../interfaces/bearer-token.interface";
 import { MatButton, MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
+import { TopBarComponent } from "../../../../../shared/components/top-bar/top-bar.component";
 import { catchError, EMPTY, tap } from "rxjs";
-import { DisplayErrorService } from "../../../errrors/display-error.service";
-import { LoadingService } from "../../../services/loading.service";
+import { DisplayErrorService } from "../../../../../errrors/display-error.service";
+import { LoadingService } from "../../../../../services/loading.service";
 
 @Component({
   selector: 'app-register',

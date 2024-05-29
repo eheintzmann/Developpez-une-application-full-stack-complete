@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, take } from "rxjs";
-import { Topics } from "../interfaces/topics.interface";
+import { User } from "../../interfaces/user.interface";
 
 @Injectable({
   providedIn: 'root'
 })
-export class TopicService {
-  baseUrl: string = 'http://localhost:8080/api/v1/topics';
+export class UserService {
+  baseUrl: string = 'http://localhost:8080/api/v1/user';
 
   constructor(private http: HttpClient) { }
 
-  getTopics(): Observable<Topics> {
-    return this.http.get<Topics>(`${this.baseUrl}`)
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}`)
       .pipe(
         take(1)
       );

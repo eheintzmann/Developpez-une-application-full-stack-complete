@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { BearerToken } from "../interfaces/bearer-token.interface";
+import { BearerToken } from "../../interfaces/bearer-token.interface";
 import { shareReplay, take } from "rxjs";
 
 @Injectable({

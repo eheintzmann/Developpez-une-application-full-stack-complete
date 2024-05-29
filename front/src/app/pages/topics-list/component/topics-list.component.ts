@@ -3,7 +3,7 @@ import { map, Observable } from "rxjs";
 import { ActivatedRoute, Data, RouterLink } from "@angular/router";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
 import { Topics } from "../../../interfaces/topics.interface";
-import { TopicService } from "../../../services/topic.service";
+import { TopicService } from "../../../services/http/topic.service";
 import { AsyncPipe, DatePipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";

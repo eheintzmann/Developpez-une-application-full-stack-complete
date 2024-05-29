@@ -5,14 +5,14 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
-import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
-import { AuthService } from "../../../services/auth.service";
-import { BearerToken } from "../../../interfaces/bearer-token.interface";
-import { TokenService } from "../../../services/token.service";
+import { TopBarComponent } from "../../../../../shared/components/top-bar/top-bar.component";
+import { AuthService } from "../../../../../services/http/auth.service";
+import { BearerToken } from "../../../../../interfaces/bearer-token.interface";
+import { TokenService } from "../../../../../services/token.service";
 import { Router } from "@angular/router";
 import { catchError, EMPTY, tap } from "rxjs";
-import { DisplayErrorService } from "../../../errrors/display-error.service";
-import { LoadingService } from "../../../services/loading.service";
+import { DisplayErrorService } from "../../../../../errrors/display-error.service";
+import { LoadingService } from "../../../../../services/loading.service";
 
 @Component({
   selector: 'app-login',
