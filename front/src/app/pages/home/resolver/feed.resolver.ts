@@ -1,9 +1,15 @@
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
-import { Observable } from "rxjs";
+import { ResolveFn } from '@angular/router';
+import { Observable, of } from "rxjs";
 import { Feed } from "../../../interfaces/feed.interface";
 import { inject } from "@angular/core";
 import { PostService } from "../../../services/http/post.service";
+import { TokenService } from "../../../services/token.service";
 
-export const feedResolver: ResolveFn<Feed> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Feed> => {
-  return inject(PostService).getFeed();
+export const feedResolver: ResolveFn<Feed|null> = (): Observable<Feed|null> => {
+
+  if (inject(TokenService).isLogged()) {
+    return inject(PostService).getFeed();
+  } else {
+    return of(null);
+  }
 };

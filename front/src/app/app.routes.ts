@@ -5,16 +5,19 @@ import { topicsResolver } from "./pages/topics-list/resolver/topics.resolver";
 import { postResolver } from "./pages/post-details/resolver/post.resolver";
 import { subscriptionsResolver } from "./pages/profile/resolver/subscriptions.resolver";
 import { userResolver } from "./pages/profile/resolver/user.resolver";
+import { unauthGuard } from "./guards/unauth.guard";
 
 export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/home/auth/login/component/login.component').then(m => m.LoginComponent),
-    title: 'MDD Connexion'
+    canActivate: [unauthGuard],
+    title: 'MDD Connexion',
   },
   {
     path: 'register',
     loadComponent: () => import('./pages/home/auth/register/component/register.component').then(m => m.RegisterComponent),
+    canActivate: [unauthGuard],
     title: 'MDD Inscription'
   },
   {
@@ -41,7 +44,6 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent:() => import('./pages/home/component/home.component').then(m => m.HomeComponent),
-    canActivate: [authGuard],
     resolve: { feed: feedResolver },
     title: 'MDD Home'
   }

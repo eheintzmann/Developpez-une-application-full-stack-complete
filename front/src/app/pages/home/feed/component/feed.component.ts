@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { map, Observable } from "rxjs";
-import { Feed } from "../../../interfaces/feed.interface";
-import { ActivatedRoute, Data, RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { AsyncPipe, DatePipe } from "@angular/common";
+import { Feed } from "../../../../interfaces/feed.interface";
 
 @Component({
   selector: 'app-feed',
@@ -16,8 +16,9 @@ import { AsyncPipe, DatePipe } from "@angular/common";
 })
 export class FeedComponent implements OnInit {
 
+  @Input() public feed!: Feed | null;
+
   isPhone$!: Observable<boolean>;
-  feed$!: Observable<Feed>
 
   constructor(
     private route: ActivatedRoute,
@@ -34,10 +35,5 @@ export class FeedComponent implements OnInit {
         return result.matches;
       })
     )
-
-    this.feed$ = this.route.data
-      .pipe(
-        map((data: Data) => data['feed'])
-      );
   }
 }

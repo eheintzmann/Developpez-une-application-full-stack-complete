@@ -1,6 +1,7 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from "@angular/core";
 import { TokenService } from "../services/token.service";
+import { delay } from "rxjs";
 
 export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   const tokenService: TokenService = inject(TokenService);
@@ -11,5 +12,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: H
       }
     })
   }
-  return next(req);
+  return next(req)
+    // .pipe(
+    //   delay(3000)
+    // );
 };

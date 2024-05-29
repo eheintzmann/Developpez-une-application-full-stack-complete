@@ -1,2 +1,8 @@
-<app-feed>
-</app-feed>
+@if (isLogged) {
+  <h1>FEED</h1>
+  <app-feed [feed]="feed$ | async"></app-feed>
+} @else {
+  <h1>NO FEED</h1>
+  <button routerLink="register">Register</button>
+  <button routerLink="/login">Login</button>
+}
