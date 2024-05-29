@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AsyncPipe } from "@angular/common";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -12,6 +12,7 @@ import { TokenService } from "../../../services/token.service";
 import { Router } from "@angular/router";
 import { catchError, EMPTY, tap } from "rxjs";
 import { DisplayErrorService } from "../../../errrors/display-error.service";
+import { LoadingService } from "../../../services/loading.service";
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ import { DisplayErrorService } from "../../../errrors/display-error.service";
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm!: FormGroup;
   error: string = '';
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private displayErrorService: DisplayErrorService,
+    private loading: LoadingService,
   ) {
   }
 
@@ -54,17 +56,22 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  ngOnDestroy():void {
+    this.displayErrorService.hide();
+  }
+
   onSubmit(): void {
+    this.loading.loadingOn();
     this.authService
       .login(this.loginForm.value.login, this.loginForm.value.password)
       .pipe(
         tap((bearer: BearerToken): void => {
-          this.displayErrorService.hide();
           this.tokenService.setToken(bearer);
           this.router.navigate([''])
         }),
         catchError(err => {
           if (err.status && err.status === 401) {
+            this.loading.loadingOff();
             this.displayErrorService.show('Identifiants invalides', 'Fermer');
             return EMPTY;
           }

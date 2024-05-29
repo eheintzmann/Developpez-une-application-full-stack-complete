@@ -9,7 +9,10 @@ export class DisplayErrorService {
   constructor(private _snackBar: MatSnackBar) { }
 
   show(message: string, action: string): MatSnackBarRef<TextOnlySnackBar> {
-    return this._snackBar.open(message, action);
+    return this._snackBar.open(message, action, {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
 
   hide(): void {
