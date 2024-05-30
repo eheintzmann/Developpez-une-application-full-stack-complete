@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from "./guards/auth.guard";
-import { feedResolver } from "./pages/home/resolver/feed.resolver";
+import { feedResolver } from "./pages/home/feed/resolver/feed.resolver";
 import { topicsResolver } from "./pages/topics-list/resolver/topics.resolver";
 import { postResolver } from "./pages/post-details/resolver/post.resolver";
 import { subscriptionsResolver } from "./pages/profile/resolver/subscriptions.resolver";

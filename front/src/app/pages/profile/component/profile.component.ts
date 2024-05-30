@@ -6,6 +6,7 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
 import { User } from "../../../interfaces/user.interface";
 import { TokenService } from "../../../services/token.service";
 import { LoadingService } from "../../../services/loading.service";
+import { ResponsiveService } from "../../../services/responsive.service";
 
 @Component({
   selector: 'app-profile',
@@ -19,18 +20,22 @@ import { LoadingService } from "../../../services/loading.service";
 })
 export class ProfileComponent implements OnInit {
 
+  isPhone$!: Observable<boolean>;
+  user$!: Observable<User>;
+  subscriptions$!: Observable<Subscriptions>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private tokenService: TokenService,
     private loadingService: LoadingService,
+    private responsive: ResponsiveService
   ) {
   }
 
-  user$!: Observable<User>;
-  subscriptions$!: Observable<Subscriptions>;
-
   ngOnInit(): void {
+    this.isPhone$ = this.responsive.isPhone();
+
     this.subscriptions$ = this.route.data
       .pipe(
         map((data: Data) => data['subscriptions'])

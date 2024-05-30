@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { map, Observable } from "rxjs";
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { BreakpointObserver, Breakpoints, BreakpointState } from "@angular/cdk/layout";
+import { Observable } from "rxjs";
+import { RouterLink } from "@angular/router";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { AsyncPipe, DatePipe } from "@angular/common";
 import { Feed } from "../../../../interfaces/feed.interface";
+import { ResponsiveService } from "../../../../services/responsive.service";
 
 @Component({
   selector: 'app-feed',
@@ -21,19 +21,11 @@ export class FeedComponent implements OnInit {
   isPhone$!: Observable<boolean>;
 
   constructor(
-    private route: ActivatedRoute,
-    private responsive: BreakpointObserver,
-  ) {
+    private responsive: ResponsiveService   ) {
   }
 
   ngOnInit(): void {
 
-    this.isPhone$ = this.responsive.observe([
-      Breakpoints.XSmall
-    ]).pipe(
-      map((result: BreakpointState) => {
-        return result.matches;
-      })
-    )
+    this.isPhone$ = this.responsive.isPhone();
   }
 }
