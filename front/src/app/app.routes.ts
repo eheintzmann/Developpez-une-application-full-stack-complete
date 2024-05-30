@@ -10,13 +10,13 @@ import { unauthGuard } from "./guards/unauth.guard";
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./pages/home/auth/login/component/login.component').then(m => m.LoginComponent),
+    loadComponent: () => import('./pages/auth/login/component/login.component').then(m => m.LoginComponent),
     canActivate: [unauthGuard],
     title: 'MDD Connexion',
   },
   {
     path: 'register',
-    loadComponent: () => import('./pages/home/auth/register/component/register.component').then(m => m.RegisterComponent),
+    loadComponent: () => import('./pages/auth/register/component/register.component').then(m => m.RegisterComponent),
     canActivate: [unauthGuard],
     title: 'MDD Inscription'
   },
@@ -42,7 +42,7 @@ export const routes: Routes = [
     title: 'MDD Thèmes'
   },
   {
-    path: '',
+    path: '**',
     loadComponent:() => import('./pages/home/component/home.component').then(m => m.HomeComponent),
     resolve: { feed: feedResolver },
     title: 'MDD Home'

@@ -34,14 +34,8 @@
 
         <div class="form-buttons">
           <div>
-            <button mat-flat-button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+            <button mat-flat-button type="submit" [disabled]="loginForm.invalid || disabled">Se connecter</button>
           </div>
-          @if (!!error) {
-            <a class="error" mat-fab extended>
-              <mat-icon>error</mat-icon>
-              {{ error }}
-            </a>
-          }
         </div>
       </fieldset>
     </form>

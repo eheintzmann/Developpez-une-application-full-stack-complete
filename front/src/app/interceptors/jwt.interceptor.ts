@@ -13,7 +13,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: H
     })
   }
   return next(req)
-    // .pipe(
-    //   delay(3000)
-    // );
+    .pipe(
+      delay(2500)
+    );
 };
