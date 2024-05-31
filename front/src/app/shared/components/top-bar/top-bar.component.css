@@ -5,12 +5,9 @@
     margin: 0;
     padding: 0;
     text-align: left;
-  }
-
-  mat-icon {
     font-size: 50px;
+    color: black;
     height: 50px;
-    width: 50px;
   }
 
   header {
