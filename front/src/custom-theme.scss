@@ -15,7 +15,6 @@
 // that you are using.
 :root {
   @include mat.core-theme(m3-theme.$light-theme);
-
   @include mat.icon-theme(m3-theme.$light-theme);
   @include mat.fab-theme(m3-theme.$light-theme, $color-variant: primary);
   @include mat.button-theme(m3-theme.$light-theme, $color-variant: primary);
@@ -27,10 +26,23 @@
   @include mat.divider-theme(m3-theme.$light-theme);
   @include mat.dialog-theme(m3-theme.$light-theme);
 }
+
+.primary-color {
+  @include mat.icon-color(m3-theme.$light-theme,  $color-variant: primary);
+  @include mat.button-color(m3-theme.$light-theme, $color-variant: primary);
+  @include mat.fab-color(m3-theme.$light-theme, $color-variant: primary);
+}
+
 .secondary-color {
   @include mat.icon-color(m3-theme.$light-theme,  $color-variant: secondary);
   @include mat.button-color(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.fab-color(m3-theme.$light-theme, $color-variant: secondary);
+}
+
+.tertiary-color {
+  @include mat.icon-color(m3-theme.$light-theme,  $color-variant: tertiary);
+  @include mat.button-color(m3-theme.$light-theme, $color-variant: tertiary);
+  @include mat.fab-color(m3-theme.$light-theme, $color-variant: tertiary);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

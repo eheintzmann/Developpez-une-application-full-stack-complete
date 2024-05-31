@@ -31,11 +31,20 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
-    color: #6C5CCF;
+    color: #000000;
+
+    :disabled {
+      color: #6C5CCF;
+    }
   }
 
   .icon-link {
     margin: 0 1rem;
+
+
+    mat-icon {
+      transform: scale(1.2);
+    }
 
     * {
       border-radius: 100%;

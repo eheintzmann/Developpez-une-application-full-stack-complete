@@ -30,16 +30,43 @@
       <span class="spacer"></span>
 
       @if (isLogged) {
-        <span class="text-link">
-          <a mat-button routerLink="/">Articles</a>
-        </span>
-        <span class="text-link">
-          <a mat-button routerLink="/topics">Thèmes</a>
-        </span>
-        <span class="icon-link">
-          <a mat-mini-fab routerLink="/profile">
-            <mat-icon>person_outline</mat-icon>
+        <span class="text-link primary-color">
+          <a
+            mat-button
+            routerLink="/"
+            routerLinkActive #rla1="routerLinkActive"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [disabled]="rla1.isActive"
+          >
+            Articles
           </a>
+        </span>
+        <span class="text-link">
+          <a
+            mat-button
+            routerLink="/topics"
+            routerLinkActive #rla2="routerLinkActive"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [disabled]="rla2.isActive"
+          >
+            Thèmes
+          </a>
+        </span>
+        <span class="icon-link secondary-color">
+          <button
+            mat-mini-fab
+            routerLink="/profile"
+            routerLinkActive #rla3="routerLinkActive"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [disabled]="rla3.isActive"
+          >
+            <mat-icon
+              [style]="rla3.isActive ? 'transform: scale(1.8)' : ''"
+              fontSet="material-icons-outlined"
+            >
+              {{ rla3.isActive ? 'account_circle' : 'person' }}
+            </mat-icon>
+          </button>
         </span>
       }
 

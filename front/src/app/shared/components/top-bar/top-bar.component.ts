@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
-import { AsyncPipe, NgOptimizedImage } from "@angular/common";
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { AsyncPipe, NgClass, NgOptimizedImage } from "@angular/common";
 
 import { Observable, tap } from "rxjs";
 
@@ -28,6 +28,8 @@ import { SideDialogComponent } from "./side-dialog/side-dialog.component";
     MatButtonModule,
     MatDividerModule,
     MatDialogClose,
+    RouterLinkActive,
+    NgClass,
   ],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css'
