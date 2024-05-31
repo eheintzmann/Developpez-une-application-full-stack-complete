@@ -18,10 +18,19 @@
 
   @include mat.icon-theme(m3-theme.$light-theme);
   @include mat.fab-theme(m3-theme.$light-theme, $color-variant: primary);
-  @include mat.form-field-theme(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.button-theme(m3-theme.$light-theme, $color-variant: primary);
+  @include mat.icon-button-theme(m3-theme.$light-theme);
+  @include mat.form-field-theme(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.progress-spinner-theme(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.snack-bar-theme(m3-theme.$light-theme);
+  @include mat.toolbar-theme(m3-theme.$light-theme);
+  @include mat.divider-theme(m3-theme.$light-theme);
+  @include mat.dialog-theme(m3-theme.$light-theme);
+}
+.secondary-color {
+  @include mat.icon-color(m3-theme.$light-theme,  $color-variant: secondary);
+  @include mat.button-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.fab-color(m3-theme.$light-theme, $color-variant: secondary);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

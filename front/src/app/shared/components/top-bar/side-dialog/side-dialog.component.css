@@ -1,0 +1,28 @@
+#side-menu {
+  padding-top: 53px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#side-menu .content {
+  flex: 1 1 0;
+
+  * {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+  }
+}
+
+footer {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  flex: 0 1 0;
+  * {
+    border-radius: 100%;
+  }
+}

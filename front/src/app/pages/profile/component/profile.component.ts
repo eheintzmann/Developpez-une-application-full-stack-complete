@@ -7,13 +7,15 @@ import { User } from "../../../interfaces/user.interface";
 import { TokenService } from "../../../services/token.service";
 import { LoadingService } from "../../../services/loading.service";
 import { ResponsiveService } from "../../../services/responsive.service";
+import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
     AsyncPipe,
-    JsonPipe
+    JsonPipe,
+    TopBarComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'

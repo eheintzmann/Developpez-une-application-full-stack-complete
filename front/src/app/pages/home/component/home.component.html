@@ -1,5 +1,4 @@
 @if (isLogged) {
-  <h1>FEED</h1>
   <app-feed [feed]="feed$ | async"></app-feed>
 } @else {
   <h1>NO FEED</h1>

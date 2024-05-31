@@ -1,0 +1,23 @@
+@if (isPhone$ | async) {
+
+  @if (isLogged) {
+    <div id="side-menu" class="secondary-color">
+
+      <div class="content">
+        <div>
+          <a mat-button routerLink="/" mat-dialog-close="true">Articles</a>
+        </div>
+        <div>
+          <a mat-button routerLink="/topics" mat-dialog-close="true">Thèmes</a>
+        </div>
+      </div>
+
+      <footer>
+        <a mat-mini-fab routerLink="/profile" mat-dialog-close="true">
+          <mat-icon>person_outline</mat-icon>
+        </a>
+      </footer>
+
+    </div>
+  }
+}

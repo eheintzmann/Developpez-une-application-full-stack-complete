@@ -1,13 +1,49 @@
 @if (isPhone$ | async) {
-  <div id="top-bar">
-    <a mat-icon-button aria-hidden="false" aria-label="Back" routerLink="/">
-      <mat-icon>keyboard_backspace</mat-icon>
-    </a>
 
-    <header>
-      <img alt="MDD" ngSrc="mdd.png" width="225" height="130" priority>
-    </header>
-  </div>
+  @if (isLogged) {
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <img alt="MDD" ngSrc="mdd.png" width="92" height="53" priority>
+        <span class="spacer"></span>
+        <button mat-icon-button (click)="openSideDialog()" aria-label="icon-button with a menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+  } @else {
+    <div id="not-logged">
+      <a mat-icon-button aria-hidden="false" aria-label="Back" routerLink="/">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </a>
+
+      <header>
+        <img alt="MDD" ngSrc="mdd.png" width="225" height="130" priority>
+      </header>
+    </div>
+  }
 } @else {
-  <div>desktop Toolbar </div>
+  <mat-toolbar id="desktop-toolbar">
+    <mat-toolbar-row>
+      <img alt="MDD" ngSrc="mdd.png" width="140" height="81" priority>
+      <span class="spacer"></span>
+
+      @if (isLogged) {
+        <span class="text-link">
+          <a mat-button routerLink="/">Articles</a>
+        </span>
+        <span class="text-link">
+          <a mat-button routerLink="/topics">Thèmes</a>
+        </span>
+        <span class="icon-link">
+          <a mat-mini-fab routerLink="/profile">
+            <mat-icon>person_outline</mat-icon>
+          </a>
+        </span>
+      }
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-divider></mat-divider>
 }

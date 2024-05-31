@@ -9,6 +9,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatSuffix } from "@angular/material/form-field";
 import { ResponsiveService } from "../../../services/responsive.service";
+import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.component";
 
 @Component({
   selector: 'app-topics-list',
@@ -22,7 +23,8 @@ import { ResponsiveService } from "../../../services/responsive.service";
     MatIcon,
     MatIconButton,
     MatSuffix,
-    MatButton
+    MatButton,
+    TopBarComponent
   ],
   templateUrl: './topics-list.component.html',
   styleUrl: './topics-list.component.css'

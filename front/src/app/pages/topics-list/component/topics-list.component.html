@@ -1,3 +1,4 @@
+<app-top-bar></app-top-bar>
 @if(topics$ | async; as topics) {
   <mat-grid-list cols="{{ (isPhone$ | async) ? 1 : 2 }}" rowHeight="1:2">
     @for (topic of topics.topics; track $index) {
