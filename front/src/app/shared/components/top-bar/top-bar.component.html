@@ -61,7 +61,8 @@
             [disabled]="rla3.isActive"
           >
             <mat-icon
-              [style]="rla3.isActive ? 'transform: scale(1.8)' : ''"
+              [class]="rla3.isActive ? 'primary-color': ''"
+              [style]="rla3.isActive ? 'transform: scale(1.8)' : 'transform: scale(1.5)'"
               fontSet="material-icons-outlined"
             >
               {{ rla3.isActive ? 'account_circle' : 'person' }}
