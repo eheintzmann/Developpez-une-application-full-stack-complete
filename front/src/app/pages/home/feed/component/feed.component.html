@@ -1,23 +1,48 @@
 <div id="feed-page">
   <app-top-bar></app-top-bar>
-  @if (feed) {
-    <mat-grid-list cols="{{ (isPhone$ | async) ? 1 : 2 }}" rowHeight="11em">
-      @for (post of feed.feed; track $index) {
-        <mat-grid-tile>
-          <mat-card [routerLink]="['post-details', post.id]">
-            <mat-card-header>
-              <mat-card-title>{{ post.title }}</mat-card-title>
-              <mat-card-subtitle>{{ post.updated_at | date:'dd/MM/YYYY' }} {{ post.author }}</mat-card-subtitle>
-            </mat-card-header>
+  <div class="content">
 
-            <mat-card-content>
-              {{ post.content }}
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
+    @if (feed) {
+      @if (isPhone$ | async) {
+
+        <div class="button-row-phone">
+          <button mat-flat-button routerLink="/create-post" class="creation-button">Créer un article</button>
+        </div>
+        <mat-nav-list>
+          @for (post of feed.feed; track $index) {
+            <mat-list-item lines="3" [routerLink]="['post-details', post.id]" class="item">
+              <span matListItemTitle class="item-title">{{ post.title }}</span>
+              <span matListItemLine class="flex-row">
+                <span>{{ post.updated_at | date:'dd/MM/YYYY' }}</span>
+                <span>{{ post.author }}</span>
+              </span>
+              <span>{{ post.content }}</span>
+            </mat-list-item>
+          }
+        </mat-nav-list>
+
+      } @else {
+
+        <div>
+          <button mat-flat-button routerLink="/create-post" class="creation-button">Créer un article</button>
+        </div>
+        <mat-grid-list cols="2" rowHeight="230px">
+          @for (post of feed.feed; track $index) {
+            <mat-grid-tile>
+              <div [routerLink]="['post-details', post.id]" class="card">
+                <div class="card-title">
+                  {{ post.title }}
+                </div>
+                <div class="flex-row">
+                  <span>{{ post.updated_at | date:'dd/MM/YYYY' }}</span>
+                  <span>{{ post.author }}</span>
+                </div>
+                <div class="card-content">{{ post.content }}</div>
+              </div>
+            </mat-grid-tile>
+          }
+        </mat-grid-list>
       }
-    </mat-grid-list>
-  } @else {
-    <p>Empty dataset</p>
-  }
+    }
+  </div>
 </div>

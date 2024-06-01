@@ -1,0 +1,78 @@
+.content {
+  margin: 27px;
+  padding: 1em;
+}
+
+.button-row-phone {
+  margin: auto;
+  text-align: center;
+}
+
+.creation-button {
+  margin: auto;
+
+  padding: 0;
+  width: 153px;
+  height: 40px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+}
+
+.item {
+  background-color: #F5F5F5;
+  border-radius: 8px !important;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+
+  .item-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: left;
+  }
+}
+
+.card {
+  margin: 20px 0;
+  width: calc( 50vw - 35px);
+  height: 180px;
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+
+  .card-title {
+    margin: 1em;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: left;
+  }
+  .card-content {
+    padding: 1em;
+  }
+  .flex-row {
+    padding: 0 1em;
+  }
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  > span {
+    flex: 1 1 auto;
+  }
+}

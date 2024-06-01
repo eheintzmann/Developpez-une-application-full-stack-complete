@@ -25,6 +25,8 @@
   @include mat.toolbar-theme(m3-theme.$light-theme);
   @include mat.divider-theme(m3-theme.$light-theme);
   @include mat.dialog-theme(m3-theme.$light-theme);
+  @include mat.list-theme(m3-theme.$light-theme);
+  @include mat.grid-list-theme(m3-theme.$light-theme);
 }
 
 .primary-color {

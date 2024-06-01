@@ -7,11 +7,22 @@ import { AsyncPipe, DatePipe } from "@angular/common";
 import { Feed } from "../../../../interfaces/feed.interface";
 import { ResponsiveService } from "../../../../services/responsive.service";
 import { TopBarComponent } from "../../../../shared/components/top-bar/top-bar.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatListModule } from "@angular/material/list";
 
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [MatCardModule, MatGridListModule, AsyncPipe, RouterLink, DatePipe, TopBarComponent],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    DatePipe,
+    TopBarComponent,
+    MatButtonModule,
+    MatListModule,
+    MatCardModule,
+    MatGridListModule,
+  ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css'
 })
