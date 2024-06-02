@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Observable, take } from "rxjs";
+import { Observable, shareReplay, take } from "rxjs";
 import { Topics } from "../../interfaces/topics.interface";
 import { Subscriptions } from "../../interfaces/subscriptions.interface";
 
@@ -22,6 +22,14 @@ export class TopicService {
   getUserTopics(): Observable<Subscriptions> {
     return this.http.get<Subscriptions>(`${this.baseUrl}/user`)
       .pipe(
+        take(1)
+      );
+  }
+
+  subscribeTo(topicId: number): Observable<Subscriptions> {
+    return this.http.post<Subscriptions>(`${this.baseUrl}/${topicId}/user`, null)
+      .pipe(
+        shareReplay(),
         take(1)
       );
   }

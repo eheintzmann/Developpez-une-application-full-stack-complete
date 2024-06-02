@@ -97,8 +97,6 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    console.log(this.newPostForm.value)
-
     this.loadingService.loadingOn();
     this.postService
       .postPost(this.newPostForm.value.title, this.newPostForm.value.content, +this.newPostForm.value.topic)
