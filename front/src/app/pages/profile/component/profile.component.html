@@ -2,4 +2,12 @@
 <h2>Profil utilisateur</h2>
 <p> {{ user$ | async | json }}</p>
 <button (click)="onDisconnect()"> Se déconnecter</button>
-<p> {{ subscriptions$ | async | json }}</p>
+
+<mat-divider></mat-divider>
+
+@for (subscription of (subscriptions$ | async)?.subscriptions; track $index) {
+  <div>
+    <p>{{ subscription | json }}</p>
+    <button mat-flat-button type="submit" (click)="onUnsubscribe(subscription.id)">Se désabonner</button>
+  </div>
+}

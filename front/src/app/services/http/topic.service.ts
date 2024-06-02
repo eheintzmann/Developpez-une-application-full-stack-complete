@@ -10,7 +10,8 @@ import { Subscriptions } from "../../interfaces/subscriptions.interface";
 export class TopicService {
   baseUrl: string = 'http://localhost:8080/api/v1/topics';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getTopics(): Observable<Topics> {
     return this.http.get<Topics>(`${this.baseUrl}`)
@@ -28,6 +29,14 @@ export class TopicService {
 
   subscribeTo(topicId: number): Observable<Subscriptions> {
     return this.http.post<Subscriptions>(`${this.baseUrl}/${topicId}/user`, null)
+      .pipe(
+        shareReplay(),
+        take(1)
+      );
+  }
+
+  unSubscribeTo(topicId: number): Observable<Subscriptions> {
+    return this.http.delete<Subscriptions>(`${this.baseUrl}/${topicId}/user`)
       .pipe(
         shareReplay(),
         take(1)
