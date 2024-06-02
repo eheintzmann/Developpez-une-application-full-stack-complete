@@ -1,0 +1,61 @@
+<div id="create-post-page">
+  <app-top-bar></app-top-bar>
+  <span [class]="(isPhone$|async) ? 'no-row' : 'flex-row'">
+    <div class="flex-item">
+      <a
+        mat-button
+        aria-hidden="false"
+        aria-label="Back"
+        routerLink="/"
+        class="secondary-color"
+      >
+        &larr;
+      </a>
+    </div>
+    <div class="flex-item-center create-post-title">Créer un nouvel article</div>
+  </span>
+  <div id="create-post-content">
+    <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+      <fieldset class="primary-color">
+        <div class="form-group">
+          <div class="form-group-field">
+            <mat-form-field>
+              <mat-label>Sélectionner un thème</mat-label>
+              <mat-select formControlName="topic">
+                @for (topic of (topics$ | async)?.topics; track $index) {
+                  <mat-option [value]="topic.id">{{ topic.title }}</mat-option>
+                }
+              </mat-select>
+              <mat-error>{{ getErrorMessage(newPostForm.controls['topic']) }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group">
+        </div>
+
+        <div class="form-group-field">
+          <mat-form-field>
+            <mat-label>Titre de l’article</mat-label>
+            <input matInput formControlName="title">
+            <mat-error>{{ getErrorMessage(newPostForm.controls['title']) }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group-field">
+          <mat-form-field>
+            <mat-label>Contenu de l’article</mat-label>
+            <textarea matInput formControlName="content"></textarea>
+            <mat-error>{{ getErrorMessage(newPostForm.controls['content']) }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-buttons">
+          <div>
+            <button mat-flat-button type="submit" [disabled]="newPostForm.invalid || disabled">Créer</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

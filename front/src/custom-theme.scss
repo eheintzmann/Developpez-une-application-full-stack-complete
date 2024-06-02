@@ -20,6 +20,7 @@
   @include mat.button-theme(m3-theme.$light-theme, $color-variant: primary);
   @include mat.icon-button-theme(m3-theme.$light-theme);
   @include mat.form-field-theme(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.input-theme(m3-theme.$light-theme);
   @include mat.progress-spinner-theme(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.snack-bar-theme(m3-theme.$light-theme);
   @include mat.toolbar-theme(m3-theme.$light-theme);
@@ -27,24 +28,33 @@
   @include mat.dialog-theme(m3-theme.$light-theme);
   @include mat.list-theme(m3-theme.$light-theme);
   @include mat.grid-list-theme(m3-theme.$light-theme);
+  @include mat.select-theme(m3-theme.$light-theme);
+  @include mat.option-theme(m3-theme.$light-theme);
 }
 
 .primary-color {
+  @include mat.form-field-color(m3-theme.$light-theme, $color-variant: primary);
   @include mat.icon-color(m3-theme.$light-theme,  $color-variant: primary);
   @include mat.button-color(m3-theme.$light-theme, $color-variant: primary);
   @include mat.fab-color(m3-theme.$light-theme, $color-variant: primary);
+  @include mat.option-color(m3-theme.$light-theme, $color-variant: primary);
 }
 
 .secondary-color {
+  @include mat.form-field-color(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.icon-color(m3-theme.$light-theme,  $color-variant: secondary);
   @include mat.button-color(m3-theme.$light-theme, $color-variant: secondary);
   @include mat.fab-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.option-color(m3-theme.$light-theme, $color-variant: secondary);
+
 }
 
 .tertiary-color {
+  @include mat.form-field-color(m3-theme.$light-theme, $color-variant: tertiary);
   @include mat.icon-color(m3-theme.$light-theme,  $color-variant: tertiary);
   @include mat.button-color(m3-theme.$light-theme, $color-variant: tertiary);
   @include mat.fab-color(m3-theme.$light-theme, $color-variant: tertiary);
+  @include mat.option-color(m3-theme.$light-theme, $color-variant: tertiary);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

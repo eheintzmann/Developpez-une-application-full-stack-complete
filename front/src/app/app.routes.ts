@@ -42,6 +42,13 @@ export const routes: Routes = [
     title: 'MDD Thèmes'
   },
   {
+    path: 'create-post',
+    loadComponent: () => import('./pages/create-post/component/create-post.component').then(m => m.CreatePostComponent),
+    canActivate: [authGuard],
+    resolve: { topics: topicsResolver },
+    title: 'MDD Nouvel Article'
+  },
+  {
     path: '**',
     loadComponent:() => import('./pages/home/component/home.component').then(m => m.HomeComponent),
     resolve: { feed: feedResolver },

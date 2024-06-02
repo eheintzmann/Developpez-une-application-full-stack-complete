@@ -31,7 +31,7 @@ import { TopBarComponent } from "../../../shared/components/top-bar/top-bar.comp
 })
 export class TopicsListComponent implements OnInit {
   isPhone$!: Observable<boolean>;
-  topics$!: Observable<Topics>
+  topics$!: Observable<Topics>;
 
 
   constructor(
