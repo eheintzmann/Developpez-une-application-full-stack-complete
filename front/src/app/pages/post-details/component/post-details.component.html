@@ -1,8 +1,26 @@
 <div id="post-details-page">
-<app-top-bar></app-top-bar>
+  <app-top-bar></app-top-bar>
 
-@if (post$ | async; as post) {
-  <pre>{{ post | json }}</pre>
-}
+  @if (post$ | async; as post) {
+    <pre>{{ post | json }}</pre>
+    <form [formGroup]="commentForm" (ngSubmit)="onComment(post.id)">
 
+      <div class="form-group">
+
+        <div class="form-group-field">
+          <mat-form-field>
+            <mat-label>Écrivez ici votre commentaire</mat-label>
+            <textarea matInput formControlName="comment"></textarea>
+            <mat-error>{{ getErrorMessage(commentForm.controls['comment']) }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-buttons">
+          <div>
+            <button mat-flat-button type="submit" [disabled]="commentForm.invalid || disabled">Créer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  }
 </div>
