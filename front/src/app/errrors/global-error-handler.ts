@@ -35,7 +35,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     // Invalid Country ID
     if (error.status === 400) {
-      return 'Mauvaise requête'
+      return 'Requête invalide'
     }
 
     if (error.status === 401) {

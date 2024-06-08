@@ -78,10 +78,17 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate([''])
         }),
         catchError(err => {
-          if (err.status && err.status === 401) {
-            this.loadingService.loadingOff();
-            this.displayErrorService.show('Identifiants invalides', 'Fermer');
-            return EMPTY;
+          if (err.status) {
+            if (err.status === 401) {
+              this.loadingService.loadingOff();
+              this.displayErrorService.show('Identifiants inconnus', 'Fermer');
+              return EMPTY;
+            }
+            if (err.status === 400) {
+              this.loadingService.loadingOff();
+              this.displayErrorService.show('Identifiants invalides', 'Fermer');
+              return EMPTY;
+            }
           }
           throw err;
         }),

@@ -84,7 +84,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
         catchError(err => {
           if (err.status && err.status === 400) {
             this.loadingService.loadingOff()
-            this.displayErrorService.show('Nom d\'utilisateur ou e-email indisponible', 'Fermer');
+            console.log(err)
+            let msg: string = (err.error?.properties?.['errors']) ?
+              'Un ou plusieurs champs sont invalides' :
+              'Nom d\'utilisateur ou e-mail indisponible';
+            this.displayErrorService.show(msg, 'Fermer');
             return EMPTY;
           }
           throw err;
