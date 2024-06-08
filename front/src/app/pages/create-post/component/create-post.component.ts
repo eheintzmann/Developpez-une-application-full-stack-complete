@@ -106,10 +106,26 @@ export class CreatePostComponent implements OnInit, OnDestroy {
           this.router.navigate([`/post-details/${post.id}`]);
         }),
         catchError(err => {
-          if (err.status && err.status === 400) {
-            this.loadingService.loadingOff()
-            this.displayErrorService.show('Ce titre a déjà été utilisé', 'Fermer');
-            return EMPTY;
+          if (err.status) {
+            if (err.status === 400) {
+
+              if (err.error?.properties.errors) {
+                this.loadingService.loadingOff()
+                this.displayErrorService.show('Un ou plusieurs champs sont invalides', 'Fermer');
+                return EMPTY;
+
+              } else {
+
+                this.loadingService.loadingOff()
+                this.displayErrorService.show('Ce titre a déjà été utilisé', 'Fermer');
+                return EMPTY;
+              }
+            }
+            if (err.status === 404) {
+              this.loadingService.loadingOff()
+              this.displayErrorService.show('Thème inexistant ', 'Fermer');
+              return EMPTY;
+            }
           }
           throw err;
         }),
