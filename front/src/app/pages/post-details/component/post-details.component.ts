@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from "@angular/router";
-import { map, Observable, Subject, takeUntil, tap } from "rxjs";
+import { catchError, EMPTY, map, Observable, Subject, takeUntil, tap } from "rxjs";
 import { PostWithComments } from "../../../interfaces/post-with-comments.interface";
 import { AsyncPipe, JsonPipe } from "@angular/common";
 import { ResponsiveService } from "../../../services/responsive.service";
@@ -14,6 +14,7 @@ import { MatSelect } from "@angular/material/select";
 import { LoadingService } from "../../../services/loading.service";
 import { CommentService } from "../../../services/http/comment.service";
 import { PostService } from "../../../services/http/post.service";
+import { DisplayErrorService } from "../../../errrors/display-error.service";
 
 @Component({
   selector: 'app-post-details',
@@ -51,6 +52,7 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private postService: PostService,
     private commentService: CommentService,
+    private displayErrorService: DisplayErrorService,
   ) {}
 
   ngOnDestroy(): void {
@@ -92,6 +94,25 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
           this.post$ = this.postService.getPostById(postId).pipe(
             tap(() => this.loadingService.loadingOff())
           );
+        }),
+        catchError(err => {
+          if (err.status) {
+            if (err.status === 400) {
+
+              if (err.error?.properties.errors) {
+                this.loadingService.loadingOff()
+                this.displayErrorService.show('Un ou plusieurs champs sont invalides', 'Fermer');
+                return EMPTY;
+
+              }
+            }
+            if (err.status === 404) {
+              this.loadingService.loadingOff()
+              this.displayErrorService.show('Article inexistant ', 'Fermer');
+              return EMPTY;
+            }
+          }
+          throw err;
         }),
         takeUntil(this.destroy$)
       ).subscribe();
