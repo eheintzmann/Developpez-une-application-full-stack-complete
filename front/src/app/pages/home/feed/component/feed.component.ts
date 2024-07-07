@@ -9,6 +9,7 @@ import { ResponsiveService } from "../../../../services/responsive.service";
 import { TopBarComponent } from "../../../../shared/components/top-bar/top-bar.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
+import { ShortenPipe } from "../../../../shared/pipes/shorten.pipe";
 
 @Component({
   selector: 'app-feed',
@@ -22,6 +23,7 @@ import { MatListModule } from "@angular/material/list";
     MatListModule,
     MatCardModule,
     MatGridListModule,
+    ShortenPipe,
   ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css'
