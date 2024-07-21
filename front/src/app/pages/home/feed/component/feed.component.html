@@ -18,7 +18,7 @@
                 <span>{{ post.updated_at | date:'dd/MM/YYYY' }}</span>
                 <span>{{ post.author }}</span>
               </div>
-              <div class="card-content">{{ post.content | shorten:(isPhone$ | async) ? 110 : 180 }}</div>
+              <div class="card-content">{{ post.content }}</div>
             </div>
           </mat-grid-tile>
         }
